@@ -814,7 +814,7 @@ var pToken = "<%= pToken%>";
 		$('#_height .point_box:eq(0)').css('cursor','pointer');
 		chart_index=0;
 		var val = jo.value;
-		var data = [ [['나', val.value]], [['표준', val.averageOfNation]], [['반평균', val.averageOfClass]], [['학교평균', val.averageOfSchool]], [['광명평균', val.averageOfLocal]] ]; 
+		var data = [ [['나', val.value]], [['표준', val.averageOfNation]], [['반평균', val.averageOfClass]], [['학교평균', val.averageOfSchool]], [['전체평균', val.averageOfLocal]] ]; 
 		setMinMax(val.value, val.averageOfNation, val.averageOfClass, val.averageOfSchool);
 		gradeIdHeight = val.gradeId;
 	//	console.log(gradeId);
@@ -869,7 +869,7 @@ var pToken = "<%= pToken%>";
 		$('#_weight .point_box:eq(0)').css('cursor','pointer');
 		chart_index=1;
 		var val = jo.value;
-		var data = [ [['나', val.value]], [['표준', val.averageOfNation]], [['반평균', val.averageOfClass]], [['학교평균', val.averageOfSchool]], [['광명평균', val.averageOfLocal]] ]; 
+		var data = [ [['나', val.value]], [['표준', val.averageOfNation]], [['반평균', val.averageOfClass]], [['학교평균', val.averageOfSchool]], [['전체평균', val.averageOfLocal]] ]; 
 		setMinMax(val.value, val.averageOfNation, val.averageOfClass, val.averageOfSchool);
 
 		gradeIdWeight = val.gradeId;
@@ -1524,8 +1524,8 @@ var pToken = "<%= pToken%>";
            // console.log("vSchoolYear[schoolFirstIdx]).toFixed(1) :::: "+(vSchoolYear[schoolLastIdx] - vSchoolYear[schoolFirstIdx]).toFixed(1) : 0) );
             
            
-            //$("#chart_datail_info").html('이번 달 ' + subItemStr + ' 성장 학교평균 : ' + (vSchool[lastIdx] - vSchool[lastIdx-1]).toFixed(1) + subUnitStr +'<BR>광명평균 : ' + (vLocal[lastIdx] - vLocal[lastIdx-1]).toFixed(1) + subUnitStr + '<BR>나 : ' + (vMe[lastIdx] - vMe[lastIdx-1]).toFixed(1) + subUnitStr);
-            $("#chart_datail_info").html('이번 달 ' + subItemStr + ' 성장 학교평균 : ' +  (vSchool[schoolFirstIdx]>0 ? (vSchool[schoolLastIdx] - vSchool[schoolFirstIdx]).toFixed(1) : 0) + subUnitStr +'<BR>광명평균 : ' +  (vLocal[localFirstIdx] > 0 ? (vLocal[localLastIdx] - vLocal[localFirstIdx]).toFixed(1) : 0) + subUnitStr + '<BR>나 : ' + (vMe[meFirstIdx] > 0 ? (vMe[meLastIdx] - vMe[meFirstIdx]).toFixed(1) : 0) + subUnitStr);
+            //$("#chart_datail_info").html('이번 달 ' + subItemStr + ' 성장 학교평균 : ' + (vSchool[lastIdx] - vSchool[lastIdx-1]).toFixed(1) + subUnitStr +'<BR>전체평균 : ' + (vLocal[lastIdx] - vLocal[lastIdx-1]).toFixed(1) + subUnitStr + '<BR>나 : ' + (vMe[lastIdx] - vMe[lastIdx-1]).toFixed(1) + subUnitStr);
+            $("#chart_datail_info").html('이번 달 ' + subItemStr + ' 성장 학교평균 : ' +  (vSchool[schoolFirstIdx]>0 ? (vSchool[schoolLastIdx] - vSchool[schoolFirstIdx]).toFixed(1) : 0) + subUnitStr +'<BR>전체평균 : ' +  (vLocal[localFirstIdx] > 0 ? (vLocal[localLastIdx] - vLocal[localFirstIdx]).toFixed(1) : 0) + subUnitStr + '<BR>나 : ' + (vMe[meFirstIdx] > 0 ? (vMe[meLastIdx] - vMe[meFirstIdx]).toFixed(1) : 0) + subUnitStr);
             
             $('#sub_height table td a').click(function () {
                 var opstionIdx = document.getElementById('selYear');
@@ -1773,7 +1773,7 @@ var pToken = "<%= pToken%>";
                 
                // console.log("vSchoolYear[schoolFirstIdx]).toFixed(1) :::: "+(vSchoolYear[schoolLastIdx] - vSchoolYear[schoolFirstIdx]).toFixed(1) : 0) );
                 
-                $("#chart_datail_info").html('올해 ' + subItemStr + ' 성장 학교평균 : ' + (vSchoolYear[schoolFirstIdx]>0 ? (vSchoolYear[schoolLastIdx] - vSchoolYear[schoolFirstIdx]).toFixed(1) : 0) + subUnitStr +'<BR>광명평균 : ' + (vLocalYear[localFirstIdx]>0 ? (vLocalYear[localLastIdx] - vLocalYear[localFirstIdx]).toFixed(1) : 0) + subUnitStr + '<BR>나 : ' + (vMeYear[meFirstIdx]>0 ? (vMeYear[meLastIdx] - vMeYear[meFirstIdx]).toFixed(1) : 0) + subUnitStr);
+                $("#chart_datail_info").html('올해 ' + subItemStr + ' 성장 학교평균 : ' + (vSchoolYear[schoolFirstIdx]>0 ? (vSchoolYear[schoolLastIdx] - vSchoolYear[schoolFirstIdx]).toFixed(1) : 0) + subUnitStr +'<BR>전체평균 : ' + (vLocalYear[localFirstIdx]>0 ? (vLocalYear[localLastIdx] - vLocalYear[localFirstIdx]).toFixed(1) : 0) + subUnitStr + '<BR>나 : ' + (vMeYear[meFirstIdx]>0 ? (vMeYear[meLastIdx] - vMeYear[meFirstIdx]).toFixed(1) : 0) + subUnitStr);
 
                 var data1 = [
                     [1, vMeYear[0]],

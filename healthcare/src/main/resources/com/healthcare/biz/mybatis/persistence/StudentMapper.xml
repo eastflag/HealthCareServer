@@ -10,16 +10,21 @@
 		    student_info.STU_Name AS name,
 		    student_info.STU_Sex AS sex,
 		    Convert(Convert(Date_Format(now(),'%Y'),UNSIGNED) - Convert(substring(student_info.STU_Birth, 1, 4),UNSIGNED)  +1,CHAR) AS age ,
-		    DATE_FORMAT(student_info.STU_Birth, '%Y-%m-%d') AS birthDate
+		    DATE_FORMAT(student_info.STU_Birth, '%Y-%m-%d') AS birthDate,
+		    school_info.address AS address
 		from
 		    guardian_info,
 		    student_info,
-			student_guardian_mapping
+			student_guardian_mapping,
+			school_register,
+			school_info
 		where
 			1 = 1
 		    	and guardian_info.Mdn = #{mdn}
 		        and guardian_info.Mdn = student_guardian_mapping.Mdn
-				and student_info.Student_ID = student_guardian_mapping.Student_ID;
+				and student_info.Student_ID = student_guardian_mapping.Student_ID
+				and student_info.Student_ID = school_register.Student_ID
+				and school_register.School_ID = school_info.School_ID;
 	</select>
 	
 	<!--   DATE_FORMAT(FROM_DAYS(TO_DAYS(now()) - TO_DAYS(student_info.STU_Birth)), '%Y') + 1 + 1  AS age, -->

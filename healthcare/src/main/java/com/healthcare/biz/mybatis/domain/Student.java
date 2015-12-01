@@ -23,7 +23,8 @@ public class Student implements Serializable {
 	String measureDate;
 	
 	//학기년도 
-	String schoolYear; //학기년도 
+	String schoolYear; //학기년도
+	String address;
 
 	public String getUserId() {
 		return userId;
@@ -104,15 +105,22 @@ public class Student implements Serializable {
 	public void settSchoolYear(String schoolYear) {
 		this.schoolYear = schoolYear;
 	}
-
 	
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 	@Override
 	public String toString() {
 		return "Student [userId=" + userId + ", name=" + name + ", sex=" + sex
 				+ ", age=" + age + ", birthDate=" + birthDate
 				+ ", classNumber=" + classNumber + ", schoolGradeId="
 				+ schoolGradeId + ", schoolId=" + schoolId + ", measureDate="
-				+ measureDate + "]";
+				+ measureDate + ", address=" + address + "]";
 	}
 
 }
