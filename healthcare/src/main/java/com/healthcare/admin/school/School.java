@@ -9,6 +9,7 @@ public class School implements Serializable{
 	private String school_id;
 	private String school_name;
 	private String section;
+	private String address;
 	
 	public School(){}
 
@@ -34,5 +35,13 @@ public class School implements Serializable{
 
 	public void setSection(String section) {
 		this.section = section;
-	}	
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
 }

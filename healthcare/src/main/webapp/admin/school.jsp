@@ -84,15 +84,18 @@
 			<td height="2" bgcolor="67AEB8" ><img src="./images/blank.gif" width="1" height="1"></td>
 			<td height="2" bgcolor="67AEB8" ><img src="./images/blank.gif" width="1" height="1"></td>
 			<td height="2" bgcolor="67AEB8" ><img src="./images/blank.gif" width="1" height="1"></td>
-			<td height="2" bgcolor="67AEB8" ><img src="./images/blank.gif" width="1" height="1"></td>		
+			<td height="2" bgcolor="67AEB8" ><img src="./images/blank.gif" width="1" height="1"></td>
+			<td height="2" bgcolor="67AEB8" ><img src="./images/blank.gif" width="1" height="1"></td>	
 		</tr>
 		<tr align="center">            
 			<td width='3%'  bgcolor="F6F5F5" class="darkgray11" style="padding-bottom:1;padding-top:3"><strong>SEQ</strong></td>
 			<td width='10%' bgcolor="F6F5F5" class="darkgray11" style="padding-bottom:1;padding-top:3"><strong>Schoo_Id</strong></td>
 			<td width='25%' bgcolor="F6F5F5" class="darkgray11" style="padding-bottom:1;padding-top:3"><strong>학교명</strong></td>
 			<td width='5%' bgcolor="F6F5F5" class="darkgray11" style="padding-bottom:1;padding-top:3"><strong>구분</strong></td>
+			<td width='5%' bgcolor="F6F5F5" class="darkgray11" style="padding-bottom:1;padding-top:3"><strong>주소</strong></td>
 		</tr>                     
 		<tr align="center"> 
+			<td height="1" bgcolor="67AEB8"><img src="./images/blank.gif" width="1" height="1"></td>
 			<td height="1" bgcolor="67AEB8"><img src="./images/blank.gif" width="1" height="1"></td>
 			<td height="1" bgcolor="67AEB8"><img src="./images/blank.gif" width="1" height="1"></td>
 			<td height="1" bgcolor="67AEB8"><img src="./images/blank.gif" width="1" height="1"></td>
@@ -132,6 +135,7 @@
 					<a href="school_modify.jsp?school_id=<%=school.getSchool_id()%>"><%=school.getSchool_name()%></a>
 				</td>
 				<td align="center" style="padding-bottom:1;padding-top:3"><%=sectionName%></td>
+				<td align="center" style="padding-bottom:1;padding-top:3"><%=school.getAddress()%></td>
 			</tr>
 			
 			<tr align="center"> 

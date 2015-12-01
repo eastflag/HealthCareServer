@@ -17,7 +17,6 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import com.healthcare.admin.statistics.Statistics;
 import com.healthcare.common.AES256Util;
 import com.healthcare.common.DBConnectionManager;
 
@@ -57,7 +56,8 @@ public class SchoolDAO {
 			.append(" SELECT ")
 			.append(      "SCHOOL_ID, \n")
 			.append(      "SCHOOL_NAME, \n")
-			.append(      "SECTION \n")
+			.append(      "SECTION, \n")
+			.append(      "ADDRESS \n")
 			.append("   FROM SCHOOL_INFO \n")
 	        //.append(" WHERE SCHOOL_ID NOT IN ( '2', '5', '6')   \n")
 			//.append(" WHERE SCHOOL_ID NOT IN ( '1','2', '5', '6', '19' )   \n")
@@ -81,6 +81,7 @@ public class SchoolDAO {
         		school.setSchool_id(rs.getString("SCHOOL_ID"));
         		school.setSchool_name(aes.decode(rs.getString("SCHOOL_NAME")));
         		school.setSection(rs.getString("SECTION"));
+        		school.setAddress(rs.getString("ADDRESS"));
         		
 
         		schools.add(school);
@@ -141,8 +142,8 @@ public class SchoolDAO {
 		
 		StringBuffer qr =new StringBuffer()
 		.append(" INSERT INTO SCHOOL_INFO \n")
-		.append(" 	(SCHOOL_ID, SCHOOL_NAME, SECTION) \n")
-		.append(" VALUES (?,?,?)");
+		.append(" 	(SCHOOL_ID, SCHOOL_NAME, SECTION, ADDRESS) \n")
+		.append(" VALUES (?,?,?,?)");
 		
 		String queryStr = qr.toString();
 		
@@ -162,6 +163,7 @@ public class SchoolDAO {
 			pstmt.setString(++j, Integer.toString(tmpNo));
 			pstmt.setString(++j, aes.encode(school.getSchool_name()));
 			pstmt.setString(++j, school.getSection());
+			pstmt.setString(++j, school.getAddress());
 			
 			int result = pstmt.executeUpdate(); 
 			
@@ -250,6 +252,7 @@ public class SchoolDAO {
     			school.setSchool_id       (rs.getString("SCHOOL_ID"));
     			school.setSchool_name     (aes.decode(rs.getString("SCHOOL_NAME")));
     			school.setSection         (rs.getString("SECTION"));
+    			school.setAddress         (rs.getString("address"));
         		
 				schools.add(school);
         	}
@@ -377,6 +380,7 @@ public class SchoolDAO {
     			school.setSchool_id       (rs.getString("SCHOOL_ID"));
     			school.setSchool_name     (aes.decode(rs.getString("SCHOOL_NAME")));
     			school.setSection         (rs.getString("SECTION"));
+    			school.setAddress         (rs.getString("ADDRESS"));
             }
         }catch(SQLException se) {
 			System.out.println(se);
@@ -408,7 +412,8 @@ public class SchoolDAO {
 		StringBuffer qr0 =new StringBuffer()
 			.append(" UPDATE SCHOOL_INFO SET \n")
 			.append(   " SCHOOL_NAME     = ?, \n")
-			.append(   " SECTION         = ?  \n")
+			.append(   " SECTION         = ?,  \n")
+			.append(   " ADDRESS         = ?  \n")
 			.append(" WHERE SCHOOL_ID = ? ");
 		String queryStr = qr0.toString();
 
@@ -420,6 +425,7 @@ public class SchoolDAO {
 
 			pstmt.setString (++i, aes.encode(school.getSchool_name    ()));
 			pstmt.setString (++i, school.getSection        ());
+			pstmt.setString (++i, school.getAddress()  );
 			pstmt.setString (++i, school.getSchool_id  ());
 
 			int resultCount = pstmt.executeUpdate();

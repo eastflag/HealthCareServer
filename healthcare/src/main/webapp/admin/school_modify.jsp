@@ -33,7 +33,18 @@
 				alert("학교명에 금지된 특수문자는 사용할 수 없습니다..\n");
 	            form.school_name.focus();
 	            return;
-			}		
+			}
+			if("" == form.address.value) {
+				alert("학교 주소를 입력해 주십시오.\n");
+	            form.school_name.focus();
+	            return;
+	        }
+			
+			if(special_pattern.test(form.address.value)){
+				alert("학교 주소에 금지된 특수문자는 사용할 수 없습니다..\n");
+	            form.school_name.focus();
+	            return;
+			}
 			
 			i++;
 			form.action= pAction;
@@ -112,6 +123,16 @@
 			  </td>
 	        </tr>
 	        <tr> 
+	          <td height="1" bgcolor="#67AEB8"></td>
+	          <td bgcolor="cccccc"></td>
+	        </tr>
+	        <tr> 
+	          <td align="right" bgcolor="F8F6F6" style="padding-right:10">주소</td>
+	          <td style="padding-left:10">
+	          	<input name="address" type="text" value="<%= school.getAddress() %>" class="darkgray12" maxlength="40" style="WIDTH: 130px; HEIGHT: 19px; border:solid 1 #cccccc" >
+			  </td>
+	        </tr>
+	        <tr>
 	          <td height="1" bgcolor="#67AEB8"></td>
 	          <td bgcolor="cccccc"></td>
 	        </tr>
