@@ -1,0 +1,227 @@
+@CHARSET "UTF-8";
+
+/* meyer reset start */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+	padding:0px;
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+/* meyer reset end */
+
+/* --------------- my css start --------------- */
+
+body,th,td,input,select,textarea,button{
+	font-size:15px;
+	font-family:'Nanum Gothic','Malgun Gothic','맑은 고딕',dotum,'돋움',sans-serif;
+	color:#444;
+}
+
+html,body{
+	height:100%;
+}
+
+a{
+	text-decoration:none;
+}
+body{
+	background:none;
+}
+/* left,right에 속하는 학교 */
+/* .contents .slide_box div:nth-child(1){
+	position:absolute;
+	left:0px;
+	top:0px;
+}
+.contents .slide_box div:nth-child(2){
+	position:absolute;
+	left:296px;
+	top:0px;
+}
+.contents .slide_box div:nth-child(3){
+	position:absolute;
+	left:592px;
+	top:0px;
+}
+.contents .slide_box div:nth-child(4){
+	position:absolute;
+	left:888px;
+	top:0px;
+}
+.contents .slide_box div:nth-child(5){
+	position:absolute;
+	left:1184px;
+	top:0px;
+}
+.contents .slide_box div:nth-child(6){
+	position:absolute;
+	left:1480px;
+	top:0px;
+}
+.contents .slide_box div:nth-child(7){
+	position:absolute;
+	left:1776px;
+	top:0px;
+}
+.contents .slide_box div:nth-child(8){
+	position:absolute;
+	left:2072px;
+	top:0px;
+}
+.contents .slide_box div:nth-child(9){
+	position:absolute;
+	left:2368px;
+	top:0px;
+}
+.contents .slide_box div:nth-child(10){
+	position:absolute;
+	left:2664px;
+	top:0px;
+}
+.contents .slide_box div:nth-child(11){
+	position:absolute;
+	left:2960px;
+	top:0px;
+} */
+/* top,down에 속하는 요일 */
+
+.swipe {
+  overflow: hidden;
+  visibility: hidden;
+  position: relative;
+}
+
+.swipe-wrap {
+  overflow: hidden;
+  position: relative;
+}
+
+.swipe-wrap > div {
+  float:left;
+  width:100%;
+  position: relative;
+
+  /*height: 500px;*/
+}
+
+.rollingCircle{width:100%; text-align:center; 
+position:absolute; bottom:20px; z-index:102;}
+.rollingCircle a{display:inline-block; }
+.rollingCircle a span{
+	width:10px;
+	height:10px;
+	display:inline-block;
+	padding:2px;
+	background:url('../../images/common/navidot_re.png') no-repeat;
+	text-indent:-9999em;
+	/* background-size:auto 10px; */
+}
+.rollingCircle a.on span{background:url('../../images/common/navidot_red_re.png') no-repeat; /* background-size:auto 10px; */}
+
+
+	.slide_box{width:100%; height:100%; position:absolute; overflow:hidden; z-index:50;}
+	.slide_box .school_layout h1{height:25px; font-weight:bold; margin:5px 0 0 0; padding-top:4px; text-align:center;
+		font-size:18px; color:#fff; background-color:#444444; }
+	.image_box{ width:280px; height:180px; margin:10px auto; border:1px solid #aaa; border-radius:1px;
+		box-shadow:2px 2px 2px gray; background-color:#fff; }
+	.image_box .image{ position:relative; margin:5px 0 0 5px; width:270px; height:170px; }
+	.school_layout h2{ font-weight:bold; font-size:small; text-align:center; margin:0.5em auto; color:#444444; }
+	.school_layout p{ text-align:center;  line-height:18px;  padding:0 0 5px 0; border-bottom:1px solid;
+		border-bottom-color:gainsboro; color:#666; 
+		}
+		
+	#arrowBox{width:100%; height:100%; position:absolute; top:0px; left:0px; z-index:100;}
+	#arrowTop{ position:absolute; top:0; left:50%; margin-left:-25px; overflow:hidden; z-index:100;}
+	#arrowDown{ position:absolute; bottom:0; left:50%; margin-left:-25px; overflow:hidden; }
+	#arrowLeft{ position:absolute; left:0; top:50%; margin-top:-25px; overflow:hidden; }
+	#arrowRight{ position:absolute; right:0; top:50%; margin-top:-25px; overflow:hidden;  }
+	
+	.wrapDiv{padding-top:10px;}
+	.btnDinnerWrap{position:absolute; bottom:10px; width:100%;}
+	.btnDiv{ width:91%; height:30px; text-align:center; color:#fff; font-weight:bold; padding-top:10px;
+		 margin:auto; margin-top:15px; background-color:#3d8dc2; cursor:pointer; }
+	.stuInfo{}
+	.title{width:91%; background-color:#7f7f7f; color:#fff; text-align:center; font-size:18px;
+		margin:auto; margin-bottom:15px;  padding-top:10px; padding-bottom:10px; font-weight:bold; }
+	table.menuInfoTb{width:91%; margin:auto; margin-bottom:15px;}
+	table.menuInfoTb th{background-color:#444444; color:#fff; padding-top:6px; padding-bottom:6px; 
+		border:1px solid gray; vertical-align:middle;}
+	table.menuInfoTb td{height:15px; text-align:center; padding-top:6px; padding-bottom:6px; border:1px solid gray;}
+	
+	.menuSetting{padding:0px;}
+	.slide_box2{position:relative;}
+	.slide_box2 div.subDiv{position:absolute; left:0px; top:0px; padding-top:10px;}
+	.slide_box2{ width:100%; height:100%; position:absolute; overflow:hidden; }
+	#rightInfoBtn{position:absolute; right:20px; bottom:60px;}
+	.breakfast {width:91%; margin:auto;}
+	.breakfast td{height:38px; font-size:18px; padding-top:10px;}
+	.breakfast td input{vertical-align: middle; width:20px; height:20px;}
+	.breakfast th{height:28px; font-size:16px; text-align:left; padding-left:20px;}
+	
+	.allergy table{width:91%; margin:auto;}
+	.allergy table.allergyList td{font-size:16px; height:28px;}
+	.allergy table.search td input{float:left; width:95%; border:1px solid #7f7f7f; }
+	.allergy table.search td{}
+	.allergy table.search th{text-align:left;}
+	.allergy table.search th div{width:100%; height:200px; overflow-y:scroll; border:1px solid #7f7f7f; margin-top:10px;}
+	.allergy table.search th div ul li{padding:6px 0px 6px 10px;}
+	.allergy table.search th div ul li span{display:inline-block; padding:6px; background-color:#7f7f7f; font-weight:bold; color:#fff; margin-left:10px; cursor:pointer;}
+	.allergy table.search .btnSearch{width:60px; height:12px; float:right; background-color:#7f7f7f; 
+		cursor:pointer; padding:8px 10px 12px 10px; color:#fff; text-align:center;}
+	
+	.selectMenu table{width:91%; margin:auto; margin-bottom:10px; cursor:pointer;}
+	.selectMenu table img{width:100%;}
+	.selectMenu table th{border:1px solid gray; background-color:#7f7f7f; font-weight:bold; height:28px; color:#fff;  vertical-align:middle;}
+	.selectMenu table td{border:1px solid gray; vertical-align:middle; padding:10px; text-align:center; line-height:20px;}
+	
+	table.btnTable{width:91%; margin:auto;}
+ 	table.btnTable div{color:#fff; padding-top:10px; padding-bottom:10px; text-align:center; cursor:pointer;}
+ 	table.btnTable th{border:0px; padding:0px; background:none; font-weight:normal; line-height:14px;}
+	table.btnTable th div{ background-color:#3d8dc2; }
+	table.btnTable td{border:none; background-color:none; text-align:right; padding:0px; line-height:14px;}
+	table.btnTable td div{background-color:#7f7f7f;}
+	
+	.recipe{}
+	.recipe table{width:91%; margin:auto; margin-bottom:10px;}
+	.recipe table th{height:10px;}
+	.recipe table td{vertical-align:middle; font-weight:bold; text-align:center; color:#fff; height:120px; 
+	font-size:18px; }
+

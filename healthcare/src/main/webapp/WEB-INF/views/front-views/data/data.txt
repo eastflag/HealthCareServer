@@ -1,0 +1,15 @@
+{
+	"result":"0",
+	"errMsg":"",
+	"value":{
+		"value":"7",
+		"gradeId":"",
+		"gradeString":"",
+		"date":"",
+		"schoolGrade":"45",
+		"totalNumberOfStudent":"430",
+		"localAverage":"164.3",
+		"schoolAverage":"163.7",
+		"classAverage":"162.5"
+	}
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.healthcare.biz.mybatis.persistence.SMSCertMapper">
+
+	<select id="getSMSCertKeyInfo" parameterType="String" resultType="SMSCert">
+		SELECT CERTIFICATION_TEMPKEY.MDN AS mdn,
+		       CERTIFICATION_TEMPKEY.TEMP_KEY AS certificationNumber
+		  FROM CERTIFICATION_TEMPKEY
+		 WHERE CERTIFICATION_TEMPKEY.MDN = #{mdn}
+	</select>
+
+	<insert id="insertSMSCertKeyInfo" parameterType="SMSCert">
+		INSERT INTO CERTIFICATION_TEMPKEY (MDN, TEMP_KEY)
+			   VALUES (#{mdn}, #{certificationNumber})
+	</insert>
+	
+	<delete id="deleteSMSCertKeyInfo" parameterType="String">
+		DELETE FROM CERTIFICATION_TEMPKEY
+		 WHERE CERTIFICATION_TEMPKEY.MDN = #{mdn}
+	</delete>
+</mapper>

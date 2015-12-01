@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.healthcare.biz.mybatis.persistence.MeasureNoticeMapper">
+
+	<select id="getMeasureNoticeListPerSchool" resultType="MeasureNotice" parameterType="GcmRequest">
+		SELECT B.STUDENT_ID AS userId,
+		       B.STU_NAME AS name,
+			   A.MDN AS mdn,
+			   A.MDN_REGID AS registrationId
+		  FROM (SELECT MDN,
+				       IF (MDN_REGID='', NULL, MDN_REGID) AS MDN_REGID 
+			      FROM GUARDIAN_INFO ) A,
+		       STUDENT_INFO B,
+		       STUDENT_GUARDIAN_MAPPING C,		    
+		       (SELECT SCHOOL_YEAR,
+                       STUDENT_ID,
+                       SCHOOL_ID,
+                       GRADE_ID,
+                       GRADE,
+                       CLASS,
+                	   STATUS,
+                	   MAX( MOD_DATE) 
+                  FROM SCHOOL_REGISTER
+                 GROUP BY STUDENT_ID) D
+		  WHERE 1 = 1
+			AND D.SCHOOL_ID = #{schoolId}
+			AND A.MDN_REGID IS NOT NULL
+	        AND A.MDN = C.MDN
+	        AND B.STUDENT_ID = C.STUDENT_ID
+	        AND D.STUDENT_ID = B.STUDENT_ID				
+			AND D.SCHOOL_YEAR = #{year};
+	</select>
+	
+	<select id="getMeasureNoticeListPerSchoolNoOverlap" resultType="MeasureNotice" parameterType="GcmRequest">
+		SELECT B.STUDENT_ID AS userId,
+		       B.STU_NAME AS name,
+			   A.MDN AS mdn,
+			   A.MDN_REGID AS registrationId
+		  FROM (SELECT MDN,
+				       IF (MDN_REGID='', NULL, MDN_REGID) AS MDN_REGID 
+			      FROM GUARDIAN_INFO ) A,
+		       STUDENT_INFO B,
+		       STUDENT_GUARDIAN_MAPPING C,		    
+		       (SELECT SCHOOL_YEAR,
+                       STUDENT_ID,
+                       SCHOOL_ID,
+                       GRADE_ID,
+                       GRADE,
+                       CLASS,
+                	   STATUS,
+                	   MAX( MOD_DATE) 
+                  FROM SCHOOL_REGISTER
+                 GROUP BY STUDENT_ID) D
+		  WHERE 1 = 1
+			AND D.SCHOOL_ID = #{schoolId}
+			AND A.MDN_REGID IS NOT NULL
+	        AND A.MDN = C.MDN
+	        AND B.STUDENT_ID = C.STUDENT_ID
+	        AND D.STUDENT_ID = B.STUDENT_ID				
+			AND D.SCHOOL_YEAR = #{year}
+		group by mdn asc;
+	</select>
+
+</mapper>

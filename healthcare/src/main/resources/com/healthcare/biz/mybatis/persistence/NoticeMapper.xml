@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.healthcare.biz.mybatis.persistence.NoticeMapper">
+
+	<!-- 
+	<select id="getNoticeCount" resultType="int">
+		select count(*) as count from notice;
+	</select>
+	-->
+	
+	<select id="getNoticeCount" resultType="int">
+		select count(*) as count from BOARD_INFO;
+	</select>
+	
+	<select id="getNoticeList" resultType="Board">
+		 SELECT BOARD_ID,
+				BOARD_TYPE,
+				TITLE,
+				CONTENT,
+				NAME,
+				EMAIL,
+				TEL,
+				USE_YN,
+				END_DATE,
+				REMARK,
+				REG_DATE,
+				REG_ID,
+				UPD_DATE,
+				UPD_ID
+		   FROM BOARD_INFO 
+		  WHERE BOARD_TYPE = '1'
+		    AND USE_YN = 'Y'
+		    AND TO_DAYS(END_DATE) > TO_DAYS(NOW() - 1)
+		  ORDER BY BOARD_ID DESC;
+	</select>
+	
+	<insert id="setQuestion" parameterType="Board">
+		insert into board_info
+				(
+				board_type,
+				title,
+				content,
+				name,
+				email,
+				tel,
+				use_yn,
+				end_date,
+				remark,
+				reg_date,
+				reg_id,
+				upd_date,
+				upd_id
+				)
+				values
+				(
+				#{board_type},
+				#{title},
+				#{content},
+				#{name},
+				#{email},
+				#{tel},
+				#{use_yn},
+				#{end_date},
+				#{remark},
+				NOW(),
+				#{reg_id},
+				NOW(),
+				#{upd_id}
+				);
+	</insert>
+	
+</mapper>

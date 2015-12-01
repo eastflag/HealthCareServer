@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.healthcare.biz.mybatis.persistence.HealthAdviserMapper">
+
+	<select id="getHealthDeacription" parameterType="string" resultType="string">
+		select 
+		    health_description.DC_DISCRIPTION
+		from
+		    health_description,
+		    health_description_category
+		where
+		    health_description_category.MS_Grade_ID = #{bimGradeId}
+		        and health_description.DC_ID = health_description_category.DC_ID;
+	</select>
+	
+	<select id="getEatingDescription" parameterType="string" resultType="string">
+		select 
+		    eating_description.EDC_DISCRIPTION
+		from
+		    eating_description,
+		    eating_description_category
+		where
+		    eating_description_category.MS_Grade_ID = #{bimGradeId}
+		        and eating_description.EDC_ID = eating_description_category.EDC_ID;
+	</select>
+	
+	<select id="getExerciseDescription" parameterType="string" resultType="string">
+		select 
+		    exercise_description.EXD_DISCRIPTION
+		from
+		    exercise_description,
+		    exercise_description_category
+		where
+		    exercise_description_category.MS_Grade_ID = #{bimGradeId}
+		        and exercise_description.EXD_ID = exercise_description_category.EXD_ID;
+	</select>
+	
+	
+</mapper>

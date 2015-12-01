@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.healthcare.biz.mybatis.persistence.SignUpMapper">
+
+	<select id="getSignUpByMdn" parameterType="string" resultType="SignUp">
+		SELECT guardian_info.Mdn AS mdn,
+		       guardian_info.Mdn_RegId AS registrationId
+		 FROM guardian_info
+		WHERE guardian_info.mdn = #{mdn}
+	</select>
+
+	<update id="updateSignUp" parameterType="signUp">
+		UPDATE guardian_info SET
+		       guardian_info.Mdn_RegId = #{registrationId}
+		 WHERE guardian_info.mdn = #{mdn}
+	</update>
+
+</mapper>

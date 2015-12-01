@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.healthcare.biz.mybatis.persistence.BodyMeasureMapper">
+
+	<!-- select id="getSummary" parameterType="string" resultType="BodyMeasureSummary" -->
+	<!--     DATE_FORMAT(FROM_DAYS(TO_DAYS(now()) - TO_DAYS(student_info.STU_Birth)), '%Y') + 2  AS age,-->
+	<!-- growthGrade : Fitness_Score -> TOT_SCORE update  2015-06-02 -->
+	<select id="getSummary" parameterType="java.util.Map" resultType="BodyMeasureSummary">
+		select 
+			inbody.userId,
+			inbody.name,
+			inbody.sex,
+			inbody.age,
+			inbody.birthDate,
+			inbody.measureDate,
+			inbody.height,
+			inbody.weight,
+			inbody.bmi,
+			inbody.percentageOfBodyFat,
+			inbody.growthGrade,
+			smoke_info.ppm,
+			smoke_info.cohd,
+			inbody.schoolGradeId,
+			inbody.schoolId,
+			inbody.classNumber,
+			inbody.schoolYear
+		from
+		(select 
+				    student_info.Student_ID AS userId,
+				    student_info.STU_Name AS name,
+				    student_info.STU_Sex AS sex,
+				    Convert(Convert(Date_Format(now(),'%Y'),UNSIGNED) - Convert(substring(student_info.STU_Birth, 1, 4),UNSIGNED)  +1,CHAR) AS age ,
+				    DATE_FORMAT(student_info.STU_Birth, '%Y-%m-%d') AS birthDate,
+					body_measure_plan.Measure_Date AS measureDate,
+					truncate(inbody_info.HEIGHT, 1) AS height,
+					truncate(inbody_info.Weight, 1) AS weight,
+					truncate(inbody_info.BMI, 2) AS bmi,
+					inbody_info.Percent_Body_Fat AS percentageOfBodyFat,
+					truncate(inbody_info.TOT_SCORE, 0) AS growthGrade,
+					body_measure_plan.Smoke_seq AS Smoke_seq,
+					body_measure_plan.Grade_ID AS schoolGradeId,
+					body_measure_plan.School_ID AS schoolId,
+					body_measure_plan.class AS classNumber,
+					school_register.School_Year AS schoolYear
+				from
+				    student_info,
+				    school_register,
+				    body_measure_plan,
+					inbody_info
+				where
+					1 = 1 
+						and student_info.Student_ID = #{userId}
+						and student_info.Student_ID = school_register.Student_ID
+				        and student_info.Student_ID = body_measure_plan.Student_ID
+				        and school_register.student_id = body_measure_plan.student_id
+				        and school_register.school_id = body_measure_plan.school_id
+				        and school_register.grade_id = body_measure_plan.grade_id
+						and body_measure_plan.Inbody_seq = inbody_info.Inbody_seq
+				<if test="selYear != null">
+					 and YEAR(body_measure_plan.Measure_Date) = #{selYear} 
+				</if>
+		) inbody 
+			LEFT OUTER JOIN smoke_info ON inbody.Smoke_seq = smoke_info.Smoke_seq
+		order by inbody.measureDate desc;
+	</select>
+	
+	<!-- select id="getSummaryExceptSmoke" parameterType="string" resultType="BodyMeasureSummary" -->
+	<!-- growthGrade : Fitness_Score -> TOT_SCORE update  2015-06-02 -->
+	
+	<select id="getSummaryExceptSmoke" parameterType="java.util.Map" resultType="BodyMeasureSummary">
+		select 
+		    student_info.Student_ID AS userId,
+		    student_info.STU_Name AS name,
+		    student_info.STU_Sex AS sex,
+		    DATE_FORMAT(FROM_DAYS(TO_DAYS(now()) - TO_DAYS(student_info.STU_Birth)), '%Y') + 1 AS age,
+		    DATE_FORMAT(student_info.STU_Birth, '%Y-%m-%d') AS birthDate,
+			body_measure_plan.Measure_Date AS measureDate,
+			truncate(inbody_info.HEIGHT, 1) AS height,
+			truncate(inbody_info.Weight, 1) AS weight,
+			truncate(inbody_info.BMI, 2) AS bmi,
+			inbody_info.Percent_Body_Fat AS percentageOfBodyFat,
+			truncate(inbody_info.TOT_SCORE, 0) AS growthGrade,
+			body_measure_plan.Grade_ID AS schoolGradeId,
+			body_measure_plan.School_ID AS schoolId,
+			body_measure_plan.class AS classNumber,
+			school_register.School_Year AS schoolYear
+		from
+		    student_info,
+		    body_measure_plan,
+			inbody_info,
+			school_register
+		where
+			1 = 1 
+				and student_info.Student_ID = #{userId}
+		        and student_info.Student_ID = body_measure_plan.Student_ID
+				and student_info.Student_ID = school_register.Student_ID
+				and body_measure_plan.Inbody_seq = inbody_info.Inbody_seq 
+				and body_measure_plan.School_ID = school_register.School_ID
+				and body_measure_plan.Grade_ID = school_register.Grade_ID 
+				and body_measure_plan.Class = school_register.Class
+				<if test="selYear != null">
+					 and YEAR(body_measure_plan.Measure_Date) = #{selYear} 
+				</if>
+		order by body_measure_plan.Measure_Date desc;
+	</select>
+	
+	<select id="getGradeBySection" parameterType="BodyMeasureGrade" resultType="BodyMeasureGrade">
+		select 
+			ms_grade_data.Ms_Grade_ID as gradeId,
+			ms_grade_data.Srandard_Grade as gradeDesc,
+			ms_grade_data.Section as section,
+			#{value} as value,
+			ms_grade_data.Grade_ID as schoolGradeId,
+			ms_grade_data.sex as sex,
+			standard_data.Year as year
+		from
+		    ms_grade_data,
+			standard_data
+		where
+		    ms_grade_data.Grade_ID = #{schoolGradeId}
+				and ms_grade_data.sex = #{sex}
+				and ms_grade_data.Section = #{section}
+				and standard_data.Year = #{year}
+				and standard_data.Ms_Grade_ID = ms_grade_data.Ms_Grade_ID
+				and standard_data.Start_Int &lt;= #{value} and  standard_data.End_Int &gt; #{value};
+	</select>
+
+	<select id="getSmokerGrade" parameterType="string" resultType="BodyMeasureGrade">
+		select 
+			smoke_data.Smoke_Data_ID as gradeId,
+			smoke_data.DISCRIPTION as gradeDesc
+		from
+			smoke_data
+		where
+			1 = 1
+			and (#{ppm} between smoke_data.Start_Int and smoke_data.End_Int);
+	</select>
+
+	<select id="getGradeRankingBySection" parameterType="BodyMeasureGrade" resultType="BodyMeasureGrade">
+	  SELECT  T.ROWNUM AS SCHOOLGRADE, 
+              @ROWNUM AS TOTALNUMBEROFSTUDENT           
+		FROM                                                                                                              
+		     (SELECT (@ROWNUM:=@ROWNUM + 1) AS ROWNUM, 
+		             A.*    
+		                                                                    
+		        FROM 
+		              (SELECT SI.STUDENT_ID AS USERID,      
+		                      SI.STU_SEX,  
+		                      BP.GRADE_ID,     
+		                      BP.SCHOOL_ID,                                                                   
+		                      BP.MEASURE_DATE AS MEASUREDATE,                                                         
+       		        <choose>                                                                                                  
+       					<when test="section == 'Height'">                                                                     
+       						TRUNCATE(II.HEIGHT, 1) AS VALUE                                                           
+       					</when>                                                                                               
+       					<when test="section == 'Weight'">                                                                     
+       						TRUNCATE(II.WEIGHT, 1) AS VALUE                                                         
+       					</when>                                                                                               
+       				</choose>                                                  
+		              
+		                 FROM STUDENT_INFO      SI, 
+		                      BODY_MEASURE_PLAN BP, 
+		                      (SELECT SCHOOL_ID, 
+		                              GRADE_ID
+		                         FROM BODY_MEASURE_PLAN
+		                        WHERE STUDENT_ID = #{userId}
+		                          AND DATE_FORMAT(MEASURE_DATE, '%Y%m') = DATE_FORMAT(#{measureDate}, '%Y%m')) BB,
+		                      INBODY_INFO II                                             
+		     
+           	    	    WHERE 1 = 1                                                                                                     
+             		   	  AND SI.STU_SEX   = #{sex}                                                                      
+             		      AND BP.SCHOOL_ID = BB.SCHOOL_ID                                                           
+             			  AND BP.GRADE_ID  = BB.GRADE_ID                                                      
+             		      AND DATE_FORMAT(BP.MEASURE_DATE, '%Y%m') = DATE_FORMAT(#{measureDate}, '%Y%m')   
+             		      AND SI.STUDENT_ID = BP.STUDENT_ID                                            
+             		      AND BP.INBODY_SEQ = II.INBODY_SEQ                                                                                                   
+   		    	<choose>                                                                                                  
+   					<when test="section == 'Height'">                                                                     
+   						ORDER BY II.HEIGHT  DESC                                                                                    
+   					</when>                                                                                               
+   					<when test="section == 'Weight'">                                                                     
+   						ORDER BY II.WEIGHT  DESC                                                                                   
+   					</when>                                                                                               
+   				</choose> 
+    				  ) A, 
+		              (SELECT @ROWNUM:=0) RNUM
+		     ) T                                                                      
+	   WHERE T.USERID = #{userId};   
+	</select>
+	
+	<!--<select id="getBeforeMeasureDate" parameterType="BodyMeasureGrade" resultType="string">
+		select 
+		    measure_Date AS beforeMeasureDate
+		from
+		    body_measure_plan
+		where
+		    Student_ID = #{userId}
+		 and Measure_Date &#60; str_to_date(#{measureDate}, '%Y-%m-%d%')
+		group by measure_date
+		order by measure_date desc
+		limit 1;
+</select>-->
+
+<select id="getNowSchoolYear" parameterType="BodyMeasureGrade" resultType="string">
+	
+	SELECT 	s_register.school_year as nowSchoolYear
+	FROM    	body_measure_plan meausre_plan , school_register s_register
+	WHERE  	meausre_plan.student_id=s_register.student_id
+	and   		meausre_plan.Grade_ID = s_register.Grade_ID 
+	and   		meausre_plan.student_id = #{userId}
+	AND   		str_to_date(meausre_plan.Measure_Date,'%Y-%m-%d%' ) = str_to_date(#{measureDate}, '%Y-%m-%d%') ;
+	
+</select>
+
+<select id="getBeforeMeasureDate" parameterType="BodyMeasureGrade" resultType="string">
+	
+		SELECT    (str_to_date(max(str_to_date(Measure_Date,'%Y-%m-%d%')),'%Y-%m-%d%' )) AS beforeMeasureDate 
+		FROM       body_measure_plan
+		WHERE     Student_ID = #{userId}
+		AND         Measure_Date &#60; str_to_date(#{measureDate}, '%Y-%m-%d%');
+</select>    
+
+<select id="getBeforeMeasureGradeId" parameterType="BodyMeasureGrade" resultType="string">
+	
+	SELECT Grade_ID AS  schoolGradeId
+	FROM   body_measure_plan
+	WHERE  Student_ID = #{userId}
+	AND    str_to_date(Measure_Date,'%Y-%m-%d%' ) = (
+									                                            		SELECT (str_to_date(max(str_to_date(Measure_Date,'%Y-%m-%d%')),'%Y-%m-%d%' )) AS beforeMeasureDate 
+									                                            		FROM     body_measure_plan
+									                                            		WHERE  Student_ID = #{userId}
+									                                            		AND     Measure_Date &#60; str_to_date(#{measureDate}, '%Y-%m-%d%'));
+</select>    
+
+
+<select id="getBeforeSchoolYear" parameterType="BodyMeasureGrade" resultType="string">
+	
+SELECT 	s_register.school_year as beforeSchoolYear
+FROM    	body_measure_plan meausre_plan , school_register s_register
+WHERE  	meausre_plan.student_id=s_register.student_id
+and   		meausre_plan.Grade_ID = s_register.Grade_ID 
+and   		meausre_plan.student_id = #{userId}
+AND   		str_to_date(meausre_plan.Measure_Date,'%Y-%m-%d%' ) = (
+																                                            		SELECT (str_to_date(max(str_to_date(Measure_Date,'%Y-%m-%d%')),'%Y-%m-%d%' )) AS beforeMeasureDate 
+																                                            		FROM     body_measure_plan
+																                                            		WHERE  Student_ID = #{userId}
+																                                            		AND       Measure_Date &#60; str_to_date(#{measureDate}, '%Y-%m-%d%')
+															                                            		);
+															                                            		
+</select>    
+
+
+	<select id="getBeforeGradeRankingBySection" parameterType="BodyMeasureGrade" resultType="BodyMeasureGrade">
+	  SELECT T.ROWNUM AS BEFORESCHOOLGRADE, 
+		     T.VALUE AS BEFOREVALUE            
+		FROM                                                                                                              
+		     (SELECT (@ROWNUM:=@ROWNUM + 1) AS ROWNUM, 
+		             A.*    
+		                                                                    
+		        FROM 
+		              (SELECT SI.STUDENT_ID AS USERID,      
+		                      SI.STU_SEX,  
+		                      BP.GRADE_ID,     
+		                      BP.SCHOOL_ID,                                                                   
+		                      BP.MEASURE_DATE AS MEASUREDATE,                                                         
+       		        <choose>                                                                                                  
+       					<when test="section == 'Height'">                                                                     
+       						TRUNCATE(II.HEIGHT, 1) AS VALUE                                                           
+       					</when>                                                                                               
+       					<when test="section == 'Weight'">                                                                     
+       						TRUNCATE(II.WEIGHT, 1) AS VALUE                                                         
+       					</when>                                                                                               
+       				</choose>                                                  
+		              
+		                 FROM STUDENT_INFO      SI, 
+		                      BODY_MEASURE_PLAN BP, 
+		                      (SELECT SCHOOL_ID, 
+		                              GRADE_ID
+		                         FROM BODY_MEASURE_PLAN
+		                        WHERE STUDENT_ID = #{userId}
+		                          AND DATE_FORMAT(MEASURE_DATE, '%Y%m') = DATE_FORMAT(#{beforeMeasureDate}, '%Y%m')) BB,
+		                      INBODY_INFO II                                             
+		     
+           	    	    WHERE 1 = 1                                                                                                     
+             		   	  AND SI.STU_SEX   = #{sex}                                                                      
+             		      AND BP.SCHOOL_ID = BB.SCHOOL_ID                                                           
+             			  AND BP.GRADE_ID  = BB.GRADE_ID                                                      
+             		      AND DATE_FORMAT(BP.MEASURE_DATE, '%Y%m') = DATE_FORMAT(#{beforeMeasureDate}, '%Y%m')   
+             		      AND SI.STUDENT_ID = BP.STUDENT_ID                                            
+             		      AND BP.INBODY_SEQ = II.INBODY_SEQ                                                                                                   
+   		    	<choose>                                                                                                  
+   					<when test="section == 'Height'">                                                                     
+   						ORDER BY II.HEIGHT  DESC                                                                                    
+   					</when>                                                                                               
+   					<when test="section == 'Weight'">                                                                     
+   						ORDER BY II.WEIGHT  DESC                                                                                   
+   					</when>                                                                                               
+   				</choose> 
+    				  ) A, 
+		              (SELECT @ROWNUM:=0) RNUM
+		     ) T                                                                      
+	   WHERE T.USERID = #{userId};                                                                                      
+	</select>
+</mapper>

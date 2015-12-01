@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.healthcare.biz.mybatis.persistence.StatisticsMapper">
+
+	<select id="getAverageList" parameterType="StatisticsParma" resultType="AverageItem">
+		select 
+			A.*,
+			(@rownum:=@rownum + 1) AS ranking
+		from
+		(
+			select
+			 	DATE_FORMAT(body_measure_plan.Measure_Date, '%Y%m') AS measureDate,
+			 	school_grade.grade_id AS schoolGrade, school_register.School_Year AS schoolYear,
+			<choose>
+				<when test="scale == 'class'">
+			    school_register.Class AS name,
+			    </when>
+			    <when test="scale == 'school'">
+			    school_info.School_Name AS name,
+			    </when>
+			      <when test="scale == 'schoolLank'">
+			    school_info.School_Name AS name,
+			    </when>
+			    <when test="scale == 'local'">
+			    'local' AS name,
+			    </when>
+			</choose>
+		    <choose>
+				<when test="section == 'Height'">
+				truncate(avg(inbody_info.HEIGHT), 1) AS value
+				</when>
+				<when test="section == 'Weight'">
+				truncate(avg(inbody_info.Weight), 1) AS value
+				</when>
+				<when test="section == 'BMI'">
+				truncate(avg(inbody_info.BMI), 2) AS value
+				</when>
+			</choose>
+				from
+				    student_info,
+					school_grade,
+					school_info,
+					school_register,
+				    body_measure_plan,
+					inbody_info
+				where
+					1 = 1
+					and school_register.Grade_ID = #{schoolGradeId}
+					<choose>
+						 <when test="scale == 'schoolLank'">
+					     	</when>
+					    <when test="scale == 'local'">
+					    </when>
+					    
+						<when test="scale == 'class'">
+							<if test="classNumber != null and classNumber != ''">
+						and school_register.Class = #{classNumber}
+							</if>
+					    and school_register.School_ID = #{schoolId}
+					    </when>
+					    <when test="scale == 'school'">
+						 and school_register.School_ID = #{schoolId} 
+					    </when>
+					    
+					</choose>	 
+						<if test="isEqualMeasureDate == true">					
+						and DATE_FORMAT(body_measure_plan.Measure_Date, '%Y%m') = DATE_FORMAT(#{measureDate}, '%Y%m')
+						</if>
+						<if test="isEqualMeasureDate != true">					
+						and DATE_FORMAT(body_measure_plan.Measure_Date, '%Y%m') &lt;= DATE_FORMAT(#{measureDate}, '%Y%m')
+						</if>
+						and student_info.STU_Sex =#{sex}	
+						<if test="schoolYear != null">
+						and school_register.School_Year =#{schoolYear}	
+						</if>
+						and student_info.Student_ID = school_register.Student_ID
+						and student_info.Student_ID = body_measure_plan.Student_ID
+						and school_grade.Grade_ID = school_register.Grade_ID
+						and school_grade.Grade_ID = body_measure_plan.Grade_ID
+						and school_info.School_ID = school_register.School_ID
+						and school_info.School_ID = body_measure_plan.School_ID
+						and body_measure_plan.Inbody_seq = inbody_info.Inbody_seq
+						and inbody_info.inbody_seq is not null
+						<if  test="scale == 'schoolLank'">		
+						 and school_info.School_ID NOT IN ( '1','2', '5', '6', '19' )
+						 </if>
+			<!-- group by -->
+			group by
+				<choose>
+						<when test="scale == 'class'">
+					    school_register.Class, 
+					    </when>
+					    <when test="scale == 'school'">
+					    school_info.School_Name, 
+					    </when>
+					    <when test="scale == 'schoolLank'">
+					    school_info.School_Name, 
+					    </when>
+					</choose> 
+						body_measure_plan.Measure_Date
+			<!-- order by -->
+			<choose>
+				<when test="section == 'Height'">
+				order by value desc, body_measure_plan.Measure_Date desc
+				</when>
+				<when test="section == 'Weight'">
+				order by value desc, body_measure_plan.Measure_Date desc
+				</when>
+				<when test="section == 'BMI'">
+				order by value asc
+				</when>
+			</choose>
+		)A,(select @rownum:=0) RNUM
+		group by ranking
+		order by ranking asc;
+	</select>
+	
+	
+	
+	<select id="getAveragePerClass" parameterType="StatisticsParma" resultType="AverageItem">
+		select 
+			DATE_FORMAT(body_measure_plan.Measure_Date, '%Y%m') AS measureDate,
+		    school_register.Class AS name,
+	    <choose>
+			<when test="section == 'Height'">
+			truncate(avg(inbody_info.HEIGHT), 1) AS value
+			</when>
+			<when test="section == 'Weight'">
+			truncate(avg(inbody_info.Weight), 1) AS value
+			</when>
+			<when test="section == 'BMI'">
+			truncate(avg(inbody_info.BMI), 2) AS value
+			</when>
+		</choose>
+			from
+			    student_info,
+				school_grade,
+				school_register,
+			    body_measure_plan,
+				inbody_info
+			where
+				school_register.School_ID = #{schoolId}
+					and school_register.Grade_ID = #{schoolGradeId}
+					and school_register.Class = #{classNumber}
+					and student_info.STU_Sex =#{sex}
+					and DATE_FORMAT(body_measure_plan.Measure_Date, '%Y%m') = DATE_FORMAT(#{measureDate}, '%Y%m')
+					and student_info.Student_ID = school_register.Student_ID
+					and school_register.Grade_ID = school_grade.Grade_ID
+			        and student_info.Student_ID = body_measure_plan.Student_ID
+					and body_measure_plan.Inbody_seq = inbody_info.Inbody_seq
+			group by body_measure_plan.Measure_Date, school_register.Class	
+		<choose>
+			<when test="section == 'Height'">
+			order by value desc;
+			</when>
+			<when test="section == 'Weight'">
+			order by value desc;
+			</when>
+			<when test="section == 'BMI'">
+			order by value asc;
+			</when>
+		</choose>
+	</select>
+	
+	<select id="getAveragePerSchool" parameterType="StatisticsParma" resultType="AverageItem">
+		select 
+			DATE_FORMAT(body_measure_plan.Measure_Date, '%Y%m') AS measureDate,
+		    school_info.School_Name AS name,
+	    <choose>
+			<when test="section == 'Height'">
+			truncate(avg(inbody_info.HEIGHT), 1) AS value
+			</when>
+			<when test="section == 'Weight'">
+			truncate(avg(inbody_info.Weight), 1) AS value
+			</when>
+			<when test="section == 'BMI'">
+			truncate(avg(inbody_info.BMI), 2) AS value
+			</when>
+		</choose>
+			from
+			    student_info,
+			    school_info,
+				school_grade,
+				school_register,
+			    body_measure_plan,
+				inbody_info
+			where
+				school_register.School_ID = #{schoolId}
+					and school_register.Grade_ID = #{schoolGradeId}
+					and student_info.STU_Sex =#{sex}
+					and DATE_FORMAT(body_measure_plan.Measure_Date, '%Y%m') = DATE_FORMAT(#{measureDate}, '%Y%m')
+					and student_info.Student_ID = school_register.Student_ID
+					and school_register.Grade_ID = school_grade.Grade_ID
+					and school_register.School_ID = school_info.School_ID
+			        and student_info.Student_ID = body_measure_plan.Student_ID
+					and body_measure_plan.Inbody_seq = inbody_info.Inbody_seq
+			group by body_measure_plan.Measure_Date, school_info.School_Name	
+		<choose>
+			<when test="section == 'Height'">
+			order by value desc;
+			</when>
+			<when test="section == 'Weight'">
+			order by value desc;
+			</when>
+			<when test="section == 'BMI'">
+			order by value asc;
+			</when>
+		</choose>
+	</select>
+	
+	<select id="getAveragePerLocal" parameterType="StatisticsParma" resultType="AverageItem">
+		select 
+			DATE_FORMAT(body_measure_plan.Measure_Date, '%Y%m') AS measureDate,
+		    'local average' AS name,
+	    <choose>
+			<when test="section == 'Height'">
+			truncate(avg(inbody_info.HEIGHT), 1) AS value
+			</when>
+			<when test="section == 'Weight'">
+			truncate(avg(inbody_info.Weight), 1) AS value
+			</when>
+			<when test="section == 'BMI'">
+			truncate(avg(inbody_info.BMI), 2) AS value
+			</when>
+		</choose>
+			from
+			    student_info,
+				school_grade,
+				school_register,
+			    body_measure_plan,
+				inbody_info
+			where
+				school_register.Grade_ID = #{schoolGradeId}
+					and student_info.STU_Sex =#{sex}
+					and DATE_FORMAT(body_measure_plan.Measure_Date, '%Y%m') = DATE_FORMAT(#{measureDate}, '%Y%m')
+					and student_info.Student_ID = school_register.Student_ID
+					and school_register.Grade_ID = school_grade.Grade_ID
+			        and student_info.Student_ID = body_measure_plan.Student_ID
+					and body_measure_plan.Inbody_seq = inbody_info.Inbody_seq
+			group by body_measure_plan.Measure_Date
+		<choose>
+			<when test="section == 'Height'">
+			order by value desc;
+			</when>
+			<when test="section == 'Weight'">
+			order by value desc;
+			</when>
+			<when test="section == 'BMI'">
+			order by value asc;
+			</when>
+		</choose>
+	</select>
+	
+	<select id="getAveragePerNation" parameterType="StatisticsParma" resultType="AverageItem">
+		select
+			standard_data.Year AS measureDate, 
+		    'nation average' as name,
+		    standard_data.value 
+			from
+			    ms_grade_data,
+				standard_data
+			where
+				ms_grade_data.Grade_ID = #{schoolGradeId}
+					and ms_grade_data.sex = #{sex}
+					and ms_grade_data.Section = #{section}
+					and standard_data.Year = DATE_FORMAT(#{measureDate}, '%Y')
+					and ms_grade_data.Srandard_Grade = '표준'
+					and standard_data.Ms_Grade_ID = ms_grade_data.Ms_Grade_ID;
+	</select>
+	
+	<select id="getBMIIsNormal" parameterType="StatisticsParma" resultType="String">
+		select 
+			ms_grade_data.SRANDARD_GRADE AS bmi_status,
+			standard_data.Year
+			from
+			    ms_grade_data,
+				standard_data
+			where
+				ms_grade_data.Grade_ID = #{schoolGradeId}
+					and ms_grade_data.sex = #{sex}
+					and ms_grade_data.Section = #{section}
+					and standard_data.Year = DATE_FORMAT(#{measureDate}, '%Y')
+					and standard_data.Ms_Grade_ID = ms_grade_data.Ms_Grade_ID
+					and (#{bmi} between standard_data.start_int and  standard_data.end_int);
+	</select>
+	
+</mapper>

@@ -1,0 +1,5 @@
+eclipse.preferences.version=1
+encoding//src/main/resources/jdbc.properties=UTF-8
+encoding//src/main/resources/service.properties=UTF-8
+encoding//src/main/webapp/WEB-INF/views=UTF-8
+encoding//src/main/webapp/admin/calendar/calendar-eraser_lim.js=UTF-8

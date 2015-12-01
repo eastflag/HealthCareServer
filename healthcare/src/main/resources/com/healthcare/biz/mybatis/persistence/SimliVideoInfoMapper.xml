@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.healthcare.biz.mybatis.persistence.SimliVideoInfoMapper">
+
+
+	<select id="getSimliStuVideoInfoList" parameterType="string" resultType="SimliVideoInfo">
+	select quest.SIMLI_QUEST_NUMBER AS Quest_Number,concat('http://210.127.55.205/contents/simlitest_media/video/answer/', answer.SIMLI_ANS_VIDEO ) AS videoUrl ,
+	concat('http://210.127.55.205/contents/simlitest_media/thumnail/', answer.SIMLI_ANS_THUM_IMG) AS thumbnailUrl
+		from 
+		simlitest_answer answer ,
+		simlitest_category cate,
+		simlitest_question quest
+		where answer.SIMLI_QUEST_ID = quest.SIMLI_QUEST_ID
+		and answer.SIMLI_CATE_ID = quest.SIMLI_CATE_ID
+		and cate.SIMLI_CATE_ID = answer.SIMLI_CATE_ID
+		and (cate.SIMLI_CATE_TARGET_FROM_GRADE =(select grade_id from school_register where student_id =#{userId})
+		or cate.SIMLI_CATE_TARGET_FROM_GRADE =(select grade_id from school_register where student_id =#{userId}))
+		group by quest.SIMLI_QUEST_NUMBER;
+	</select>
+	
+</mapper>   

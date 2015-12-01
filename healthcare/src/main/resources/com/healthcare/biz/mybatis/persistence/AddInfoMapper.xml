@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.healthcare.biz.mybatis.persistence.AddInfoMapper">
+
+	<select id="getAddInfoList" parameterType="java.util.Map" resultType="java.util.Map">
+			SELECT * from school_regster where student_id=#{userId}
+	</select>
+
+<select id="getAddInfoMenu" parameterType="java.util.Map" resultType="java.util.Map">
+		select a.SIMLI_QUEST_NUMBER , a.simli_quest_Text,b.SIMLI_ANS_VIDEO,b.SIMLI_ANS_THUM_IMG
+		 from add_info_menu;
+	</select>
+	
+
+	
+	<select id="getQuestAnswerPlay" parameterType="java.util.Map" resultType="java.util.Map">
+		select a.SIMLI_QUEST_NUMBER , a.simli_quest_Text,b.SIMLI_ANS_VIDEO,b.SIMLI_ANS_THUM_IMG
+		 from simlitest_question a,  simlitest_answer b
+		where a.SIMLI_QUEST_ID = b.SIMLI_QUEST_ID
+		and a.simli_quest_id=#{questId};
+	</select>
+	
+	<select id="getStuSelResultScore" parameterType="java.util.Map" resultType="java.util.Map">
+		select a.SIMLI_QUEST_NUMBER , a.simli_quest_Text,b.SIMLI_ANS_VIDEO,b.SIMLI_ANS_THUM_IMG
+		 from simlitest_question a,  simlitest_answer b
+		where a.SIMLI_QUEST_ID = b.SIMLI_QUEST_ID
+		and a.simli_quest_id=#{questId};
+	</select>
+	
+	<select id="getStuExpertEstimate" parameterType="java.util.Map" resultType="java.util.Map">
+		select a.SIMLI_QUEST_NUMBER , a.simli_quest_Text,b.SIMLI_ANS_VIDEO,b.SIMLI_ANS_THUM_IMG
+		 from simlitest_question a,  simlitest_answer b
+		where a.SIMLI_QUEST_ID = b.SIMLI_QUEST_ID
+		and a.simli_quest_id=#{questId};
+	</select>
+	<select id="getParentExpertEstimate" parameterType="java.util.Map" resultType="java.util.Map">
+		select a.SIMLI_QUEST_NUMBER , a.simli_quest_Text,b.SIMLI_ANS_VIDEO,b.SIMLI_ANS_THUM_IMG
+		 from simlitest_question a,  simlitest_answer b
+		where a.SIMLI_QUEST_ID = b.SIMLI_QUEST_ID
+		and a.simli_quest_id=#{questId};
+	</select>
+	
+	
+	
+	
+	
+</mapper>

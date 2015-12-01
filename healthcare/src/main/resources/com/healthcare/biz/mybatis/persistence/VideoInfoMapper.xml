@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.healthcare.biz.mybatis.persistence.VideoInfoMapper">
+
+	<!--<select id="getVideoInfoListByMasterGradeId" parameterType="string" resultType="VideoInfo">
+		select 
+			healthcare_contents.CT_NAME AS title,
+			concat('http://210.127.55.205/contents/', healthcare_contents.ct_url) AS videoUrl,
+			concat('http://210.127.55.205/contents/', healthcare_contents.CT_URL_THUM) AS thumbnailUrl,
+			healthcare_contents.ct_duration AS duration
+		from
+		    ms_grade_data,
+		    contents_category,
+		    healthcare_contents
+		where
+		    ms_grade_data.Ms_Grade_ID = #{masterGradeId}
+		        and ms_grade_data.Ms_Grade_ID = contents_category.MS_Grade_ID
+		        and contents_category.CT_ID = healthcare_contents.CT_ID;
+	</select>
+-->
+<!--
+	<select id="getVideoInfoListByInfoType" parameterType="string" resultType="VideoInfo">
+		select 
+			healthcare_contents.CT_NAME AS title,
+			concat('http://210.127.55.205/contents/', healthcare_contents.ct_url) AS videoUrl,
+			concat('http://210.127.55.205/contents/', healthcare_contents.CT_URL_THUM) AS thumbnailUrl,
+			healthcare_contents.ct_duration AS duration
+		from
+		    healthcare_contents
+		where
+		    healthcare_contents.ct_info = #{infoType};
+	</select>
+-->
+
+	<select id="getVideoInfoListByMasterGradeId" parameterType="string" resultType="VideoInfo">
+		select 
+			healthcare_contents.CT_NAME AS title,
+			concat('http://210.127.55.205/contents/eng_filename/', healthcare_contents.CT_URL_ENG) AS videoUrl,
+			concat('http://210.127.55.205/contents/eng_filename/thumbnail/', healthcare_contents.CT_URL_THUM_ENG) AS thumbnailUrl,
+			healthcare_contents.ct_duration AS duration
+		from
+		    ms_grade_data,
+		    contents_category,
+		    healthcare_contents
+		where
+		    ms_grade_data.Ms_Grade_ID = #{masterGradeId}
+		        and ms_grade_data.Ms_Grade_ID = contents_category.MS_Grade_ID
+		        and contents_category.CT_ID = healthcare_contents.CT_ID;
+	</select>
+
+
+	<select id="getVideoInfoListByInfoType" parameterType="string" resultType="VideoInfo">
+		select 
+			healthcare_contents.CT_NAME AS title,
+			concat('http://210.127.55.205/contents/eng_filename/', healthcare_contents.CT_URL_ENG) AS videoUrl,
+			concat('http://210.127.55.205/contents/eng_filename/thumbnail/', healthcare_contents.CT_URL_THUM_ENG) AS thumbnailUrl,
+			healthcare_contents.ct_duration AS duration
+		from
+		    healthcare_contents
+		where
+		    healthcare_contents.ct_info = #{infoType};
+	</select>
+
+</mapper>

@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.healthcare.biz.mybatis.persistence.FoodMapper">
+
+	<select id="getEveryFoodList" parameterType="java.util.Map" resultType="java.util.Map">
+			SELECT * FROM
+			(
+				(
+				 SELECT '1' AS isOwn,
+				 	A.school_id,
+				 	A.school_name,
+				 	A.section,
+				 	A.qw,
+				 	B.menu_id,
+					B.school_year,   
+					B.school_month,  
+					B.school_date,   
+					B.school_day,    
+					( CASE B.lunch_main WHEN '' THEN '<![CDATA[&nbsp;]]>' ELSE B.lunch_main END ) AS lunch_main,    
+					( CASE B.lunch_detl     WHEN '' THEN '<![CDATA[&nbsp;]]>' ELSE B.lunch_detl     END ) AS lunch_detl    ,    
+					( CASE B.lunch_calorie  WHEN '' THEN '<![CDATA[&nbsp;]]>' ELSE B.lunch_calorie  END ) AS lunch_calorie , 
+					( CASE B.dinner_main    WHEN '' THEN '<![CDATA[&nbsp;]]>' ELSE B.dinner_main    END ) AS dinner_main   ,   
+					( CASE B.dinner_detl    WHEN '' THEN '<![CDATA[&nbsp;]]>' ELSE B.dinner_detl    END ) AS dinner_detl   ,   
+					( CASE B.dinner_calorie WHEN '' THEN '<![CDATA[&nbsp;]]>' ELSE B.dinner_calorie END ) AS dinner_calorie,
+					B.carbohydrate,
+					B.protein,
+					B.fat,
+					B.calcium,
+					B.vitamin_A,
+					B.vitamin_C,
+					B.nutrient_etc,
+					B.img_url,       
+					B.use_yn       
+				  FROM (
+				        SELECT * 
+				          FROM (SELECT * FROM SCHOOL_INFO
+				                 WHERE SECTION = #{section}) SI,
+				               (SELECT #{date-4} AS QW FROM DUAL UNION ALL
+				                SELECT #{date-3} AS QW FROM DUAL UNION ALL
+				                SELECT #{date-2} AS QW FROM DUAL UNION ALL
+				                SELECT #{date-1} AS QW FROM DUAL UNION ALL
+				                SELECT #{date-0} AS QW FROM DUAL) TMPDATE
+				       ) A
+				       LEFT JOIN MENU_INFO AS B
+				              ON A.QW = CONCAT(B.SCHOOL_YEAR, B.SCHOOL_MONTH, B.SCHOOL_DATE) 
+				                 AND A.SCHOOL_ID = B.SCHOOL_ID
+				 WHERE A.SCHOOL_ID = #{school_id}
+				)
+				
+				UNION ALL
+				
+				(
+				 SELECT '2' AS isOwn,
+				 	A.school_id,
+				 	A.school_name,
+				 	A.section,
+				 	A.qw,
+				 	B.menu_id,
+					B.school_year,   
+					B.school_month,  
+					B.school_date,   
+					B.school_day,   
+					( CASE B.lunch_main WHEN '' THEN '<![CDATA[&nbsp;]]>' ELSE B.lunch_main END ) AS lunch_main,    
+					( CASE B.lunch_detl     WHEN '' THEN '<![CDATA[&nbsp;]]>' ELSE B.lunch_detl     END ) AS lunch_detl    ,    
+					( CASE B.lunch_calorie  WHEN '' THEN '<![CDATA[&nbsp;]]>' ELSE B.lunch_calorie  END ) AS lunch_calorie , 
+					( CASE B.dinner_main    WHEN '' THEN '<![CDATA[&nbsp;]]>' ELSE B.dinner_main    END ) AS dinner_main   ,   
+					( CASE B.dinner_detl    WHEN '' THEN '<![CDATA[&nbsp;]]>' ELSE B.dinner_detl    END ) AS dinner_detl   ,   
+					( CASE B.dinner_calorie WHEN '' THEN '<![CDATA[&nbsp;]]>' ELSE B.dinner_calorie END ) AS dinner_calorie,
+					B.carbohydrate,
+					B.protein,
+					B.fat,
+					B.calcium,
+					B.vitamin_A,
+					B.vitamin_C,
+					B.nutrient_etc,
+					B.img_url,       
+					B.use_yn  
+				  FROM (
+				        SELECT * 
+				          FROM (SELECT * FROM SCHOOL_INFO
+				                 WHERE SECTION = #{section}) SI,
+				               (SELECT #{date-4} AS QW FROM DUAL UNION ALL
+				                SELECT #{date-3} AS QW FROM DUAL UNION ALL
+				                SELECT #{date-2} AS QW FROM DUAL UNION ALL
+				                SELECT #{date-1} AS QW FROM DUAL UNION ALL
+				                SELECT #{date-0} AS QW FROM DUAL) TMPDATE
+				       ) A
+				       LEFT JOIN MENU_INFO AS B
+				              ON A.QW = CONCAT(B.SCHOOL_YEAR, B.SCHOOL_MONTH, B.SCHOOL_DATE) 
+				                 AND A.SCHOOL_ID = B.SCHOOL_ID
+				 WHERE A.SCHOOL_ID NOT IN (#{school_id}, '1', '2','5','6','19')
+				)
+			) C 
+			ORDER BY C.isOwn ASC, C.school_id asc, C.qw desc ; 
+			
+	</select>
+	
+	
+	<!--
+	<select id="getMySchoolInfo" parameterType="string" resultType="java.util.Map">
+		SELECT SCHOOL_REGISTER.STUDENT_ID,
+				SCHOOL_INFO.SCHOOL_ID,
+				SCHOOL_INFO.SECTION,
+				MAX(SCHOOL_YEAR)
+		FROM SCHOOL_REGISTER,
+			 SCHOOL_INFO 
+			WHERE SCHOOL_REGISTER.STUDENT_ID = #{userId}
+			AND SCHOOL_REGISTER.SCHOOL_ID = SCHOOL_INFO.SCHOOL_ID;
+	</select>
+	-->
+	<select id="getMySchoolInfo" parameterType="string" resultType="java.util.Map">
+		SELECT SCHOOL_REGISTER.STUDENT_ID,
+				SCHOOL_INFO.SCHOOL_ID,
+				SCHOOL_INFO.SECTION,
+				SCHOOL_YEAR
+		FROM SCHOOL_REGISTER,
+			 SCHOOL_INFO 
+			WHERE SCHOOL_REGISTER.SCHOOL_ID = SCHOOL_INFO.SCHOOL_ID
+			AND SCHOOL_REGISTER.STUDENT_ID = #{userId}
+			AND SCHOOL_YEAR = (SELECT MAX(SCHOOL_YEAR) FROM SCHOOL_REGISTER WHERE STUDENT_ID=#{userId});
+	</select>
+	<select id="getAlgMainList" parameterType="java.util.Map" resultType="java.util.Map">
+		select 
+		    A.alg_food_id as alg_id,
+		    alg_food_name as alg_name,
+		    IF(ISNULL(B.STU_ALG_SET_IN_ID),
+		        'N',
+		        'Y') AS stu_alg_set_yn
+		from
+		    allergy_food_info A
+		        LEFT OUTER join
+		    student_allergy_set_input B ON A.ALG_FOOD_ID = B.ALG_FOOD_ID
+		        and B.STUDENT_ID = #{userId}
+		        AND B.STU_ALG_SET_IN_STATE='Y'
+		where
+		    alg_food_state = 'Y'
+		        and ALG_FOOD_MAIN_YN = 'Y'
+		order by alg_food_name
+	</select>
+	
+	<select id="getBreakfastCate" parameterType="java.util.Map" resultType="java.util.Map">
+		select 
+		    A.BKST_EAT_CATE_ID as bkst_id,
+		    BKST_EAT_CATE_NAME as bkst_name,
+		    ifnull(BKST_EAT_CATE_DISCRIPTION, '') as bkst_info,
+		    if(isnull(B.BKST_EAT_CATE_ID), 'N', 'Y') as bkst_yn
+		from
+		    breakfast_eat_category A
+		        left outer join
+		    student_breakfast_set_input B ON A.BKST_EAT_CATE_ID = B.BKST_EAT_CATE_ID
+		        and B.STUDENT_ID = #{userId}
+		where
+		    BKST_EAT_CATE_STATE = 'Y'
+		order by BKST_EAT_CATE_SORT
+	</select>
+	
+	<select id="searchAlg" parameterType="java.util.Map" resultType="java.util.Map">
+		select 
+		    alg_food_id as alg_id, 
+		    alg_food_name as alg_name
+		from
+		    allergy_food_info
+		where
+		    ALG_FOOD_NAME like concat('%', #{search_alg}, '%')
+		    and alg_food_main_yn='N'
+		order by alg_food_name
+	</select>
+	
+	<select id="getBmiStandAmt" parameterType="java.lang.String" resultType="java.lang.String">
+		select 
+		    BMI_STAND_EAT_AMT
+		from
+		    bmi_standard_eat
+		where
+		    BMI_STAND_EAT_NAME = #{bmi_status}
+	</select>
+	
+	<insert id="insertTempAlg" parameterType="Food" >
+		INSERT INTO student_allergy_set_input(
+		  STUDENT_ID
+		  ,ALG_FOOD_ID
+		  ,STU_ALG_SET_IN_STATE_TEMP
+		) VALUES (
+		  #{userId}  
+		  ,#{alg_id}  
+		  ,#{alg_state}
+		)
+	</insert>
+	
+	<insert id="insertBkstSetInput" parameterType="Food" >
+		INSERT INTO student_breakfast_set_input(
+		  STUDENT_ID
+		  ,BKST_EAT_CATE_ID
+		) VALUES (
+		  #{userId}  
+		  ,#{bkst_id}  
+		)
+	</insert>
+	
+	<update id="updateTempAlg" parameterType="Food" >
+		UPDATE student_allergy_set_input
+		SET
+		   STU_ALG_SET_IN_STATE_TEMP = #{alg_state} 
+		   ,STU_ALG_SET_IN_UPDATE = NOW()
+		WHERE 
+		    student_id = #{userId}
+		        and ALG_FOOD_ID = #{alg_id}
+	</update>
+	
+	<update id="updateBkstSetInput" parameterType="Food" >
+		UPDATE student_breakfast_set_input
+		SET
+		   BKST_EAT_CATE_ID = #{bkst_id} 
+		   ,STU_BKST_SET_IN_UPDATE = NOW()
+		WHERE 
+		    student_id = #{userId}
+	</update>
+	
+	<select id="getAlgSelectedCnt" parameterType="Food" resultType="java.lang.Integer">
+		select 
+		    count(*)
+		from
+		    student_allergy_set_input
+		where
+		    student_id = #{userId}
+		        and ALG_FOOD_ID = #{alg_id}
+	</select>
+	
+	<select id="cntSetInfo" parameterType="Food" resultType="java.lang.Integer">
+		select 
+		    count(*)
+		from
+		    student_breakfast_set_input A
+		        left outer join
+		    student_allergy_set_input B ON A.STUDENT_ID = B.STUDENT_ID
+		where
+		    A.student_id = #{userId}
+		        and STU_BKST_SET_IN_STATE = 'Y'
+	</select>
+	
+	<select id="getStuBkstInfo" parameterType="Food" resultType="Food">
+		select 
+		    A.BKST_EAT_CATE_ID as bkst_id,
+		    BKST_EAT_CATE_STANDARD_AMT as bksk_stand_amt
+		from
+		    student_breakfast_set_input A
+		        join
+		    breakfast_eat_category B ON A.BKST_EAT_CATE_ID = B.BKST_EAT_CATE_ID
+		where
+		    student_id = #{userId}
+	</select>
+	
+	<select id="getStuSelectedAlg" parameterType="java.util.Map" resultType="java.util.Map">
+		select 
+		    B.ALG_FOOD_ID as alg_id,
+		    B.ALG_FOOD_NAME as alg_name,
+		    A.STU_ALG_SET_IN_STATE as alg_state
+		from
+		    student_allergy_set_input A
+		        join
+		    allergy_food_info B ON A.ALG_FOOD_ID = B.ALG_FOOD_ID
+		where
+		    A.STUDENT_ID = #{userId} 
+		    and 
+				(A.STU_ALG_SET_IN_STATE = 'Y' 
+				and (
+						STU_ALG_SET_IN_STATE_TEMP IS NULL OR STU_ALG_SET_IN_STATE_TEMP &lt;&gt; 'N'
+					)
+				or A.STU_ALG_SET_IN_STATE_TEMP = 'Y')
+			and B.alg_food_main_yn='N'
+		order by alg_food_name
+	</select>
+	
+	<update id="saveStuAlg" parameterType="Food" >
+		UPDATE student_allergy_set_input
+		SET
+		   STU_ALG_SET_IN_STATE = STU_ALG_SET_IN_STATE_TEMP
+		   ,STU_ALG_SET_IN_STATE_TEMP = NULL
+		   ,STU_ALG_SET_IN_UPDATE = NOW()
+		WHERE 
+		    student_id = #{userId}
+		    and STU_ALG_SET_IN_STATE_TEMP is not null
+	</update>
+	
+	<update id="deleteTempAlg" parameterType="java.util.Map">
+		UPDATE student_allergy_set_input
+		SET
+		   STU_ALG_SET_IN_STATE_TEMP = NULL
+		   ,STU_ALG_SET_IN_UPDATE = NOW()
+		WHERE 
+		    student_id = #{userId}
+		    and STU_ALG_SET_IN_STATE_TEMP is not null
+	</update>
+	
+	<select id="getAgeGroupInfo" parameterType="java.util.Map" resultType="Food">
+		select 
+		    AGE_GROUP_CATE_CAL as cal,
+		    AGE_GROUP_CATE_CARBOHY as carbohy,
+		    AGE_GROUP_CATE_PROTEIN as protein,
+		    AGE_GROUP_CATE_FAT as fat,
+		    AGE_GROUP_CATE_VITAMIN_A as vitamin_a,
+		    AGE_GROUP_CATE_VITAMIN_C as vitamin_c,
+		    AGE_GROUP_CATE_CALCIUM as calcium
+		from
+		    age_group_category
+		where
+		    convert(AGE_GROUP_CATE_FROM,unsigned) &lt;= #{age}
+		        and convert(AGE_GROUP_CATE_TO,unsigned) &gt;= #{age}
+		        and AGE_GROUP_CATE_STATE = 'Y'
+	</select>
+	
+	<select id="getDinnerMenuList" parameterType="Food" resultType="java.util.Map">
+		SELECT 
+		    DINNER_MENU_ID as menu_id,
+		    DINNER_MENU_PHOTO as menu_photo,
+		    DINNER_MENU_CAL as menu_cal,
+		    ifnull(DINNER_MENU_MEAL,'') as menu_meal,
+		    ifnull(DINNER_MENU_SOUP,'') as menu_souop,
+		    ifnull(DINNER_MENU_SIDE1,'') as menu_side1,
+		    ifnull(DINNER_MENU_SIDE2,'') as menu_side2,
+		    ifnull(DINNER_MENU_SIDE3,'') as menu_side3,
+		    ifnull(DINNER_MENU_DESSERT,'') as menu_dessert,
+		    ifnull(DINNER_MENU_SAUCE,'') as menu_sauce,
+		    DINNER_MENU_CARBOHY as carbohy,
+		    DINNER_MENU_PROTEIN as protein,
+		    DINNER_MENU_FAT as fat,
+		    DINNER_MENU_VITAMIN_A as vitamin_a,
+		    DINNER_MENU_VITAMIN_C as vitamin_c,
+		    DINNER_MENU_CALCIUM as calcium
+		from
+		    dinner_menu_info
+		where
+		    DINNER_MENU_CAL between #{cal} - 10 AND #{cal} + 10
+		        AND DINNER_MENU_STATE = 'Y'
+		        AND DINNER_MENU_ID NOT IN (SELECT 
+		            B.DINNER_MENU_ID
+		        FROM
+		            student_allergy_set_input A
+		                JOIN
+		            dinner_allergy_mapping B ON A.ALG_FOOD_ID = B.ALG_FOOD_ID
+		        WHERE
+		            STUDENT_ID = #{userId}
+		                AND A.STU_ALG_SET_IN_STATE = 'Y')
+		order by rand()
+		limit 2
+	</select>
+	
+	<select id="getDinnerInfo" parameterType="java.lang.String" resultType="Food">
+		SELECT 
+		    DINNER_MENU_ID as menu_id,
+		    DINNER_MENU_PHOTO as menu_photo,
+		    DINNER_MENU_CAL as menu_cal,
+		    ifnull(DINNER_MENU_MEAL,'') as menu_meal,
+		    ifnull(DINNER_MENU_SOUP,'') as menu_souop,
+		    ifnull(DINNER_MENU_SIDE1,'') as menu_side1,
+		    ifnull(DINNER_MENU_SIDE2,'') as menu_side2,
+		    ifnull(DINNER_MENU_SIDE3,'') as menu_side3,
+		    ifnull(DINNER_MENU_DESSERT,'') as menu_dessert,
+		    ifnull(DINNER_MENU_SAUCE,'') as menu_sauce,
+		    DINNER_MENU_CARBOHY as carbohy,
+		    DINNER_MENU_PROTEIN as protein,
+		    DINNER_MENU_FAT as fat,
+		    DINNER_MENU_VITAMIN_A as vitamin_a,
+		    DINNER_MENU_VITAMIN_C as vitamin_c,
+		    DINNER_MENU_CALCIUM as calcium
+		from
+		    dinner_menu_info
+		where
+		    DINNER_MENU_ID = #{menu_id}
+		        AND DINNER_MENU_STATE = 'Y'
+	</select>
+	
+	<select id="getCalMinMax" resultType="Food">
+		select 
+		    min(DINNER_MENU_CAL) as min_cal,
+		    max(DINNER_MENU_CAL) as max_cal
+		from
+		    dinner_menu_info
+		where
+		    DINNER_MENU_STATE = 'Y'
+	</select>
+	
+	<select id="getAgeMinMax" resultType="Food">
+		select 
+		    min(age_group_cate_from * 1) as min_age,
+		    max(age_group_cate_to * 1) max_age
+		from
+		    age_group_category
+		where
+		    AGE_GROUP_CATE_STATE = 'Y'
+	</select>
+</mapper>
