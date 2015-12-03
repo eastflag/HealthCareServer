@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.healthcare.bean.VideoListRequest;
 import com.healthcare.biz.mybatis.domain.VideoInfo;
 import com.healthcare.biz.mybatis.persistence.VideoInfoMapper;
 import com.healthcare.biz.service.VideoInfoService;
@@ -25,4 +26,8 @@ public class VideoInfoServiceImpl implements VideoInfoService {
 		return videoInfoMapper.getVideoInfoListByInfoType(infoType);
 	}
 
+	@Override
+	public List<VideoInfo> getVideoInfoListByMasterGradeIdAndUserId(VideoListRequest videoListRequest) {
+		return videoInfoMapper.getVideoInfoListByMasterGradeIdAndUserId(videoListRequest);
+	}
 }

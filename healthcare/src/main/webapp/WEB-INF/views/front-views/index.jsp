@@ -1215,7 +1215,7 @@ var pToken = "<%= pToken%>";
 		//console.log(gradeId);
 
 		if (deviceType != "1") {
-			parent.setUserData('GetVideoList', '{"masterGradeId":"' + gradeId + '"}', parent.getVideoList);
+			parent.setUserData('GetVideoList', '{"masterGradeId":"' + gradeId + '", "user_id":"' + parent.selUserId + '"}', parent.getVideoList);
 		} else {
 			alert(type+','+gradeId);
 		}

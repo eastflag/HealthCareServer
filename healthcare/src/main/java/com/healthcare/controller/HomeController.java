@@ -239,7 +239,11 @@ public class HomeController {
 		List<VideoInfo> list = null;
 		
 		if (videoListRequest.getMasterGradeId() != null && videoListRequest.getMasterGradeId().length() > 0) {
-			list = videoInfoService.getVideoInfoListByMasterGradeId(videoListRequest.getMasterGradeId());
+			if(videoListRequest.getUser_id() != null && videoListRequest.getUser_id().length() > 0){
+				list = videoInfoService.getVideoInfoListByMasterGradeIdAndUserId(videoListRequest);
+			}else{
+				list = videoInfoService.getVideoInfoListByMasterGradeId(videoListRequest.getMasterGradeId());
+			}
 		} else if (videoListRequest.getSchoolGradeId() != null && videoListRequest.getSchoolGradeId().length() > 0) {
 			// TODO : school ID로 분별하여 처리 요망.
 			String infoType = "초등학교";

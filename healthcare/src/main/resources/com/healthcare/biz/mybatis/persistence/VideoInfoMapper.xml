@@ -62,5 +62,28 @@
 		where
 		    healthcare_contents.ct_info = #{infoType};
 	</select>
+	
+	
+	<select id="getVideoInfoListByMasterGradeIdAndUserId" parameterType="VideoListRequest" resultType="VideoInfo">
+		select 
+			healthcare_contents.CT_NAME AS title,
+			concat(IF(STRCMP(A.address,'경기도 광명시'), 'http://210.127.55.205/contents2/eng_filename/', 'http://210.127.55.205/contents/eng_filename/'), healthcare_contents.CT_URL_ENG) AS videoUrl,
+			concat(IF(STRCMP(A.address,'경기도 광명시'), 'http://210.127.55.205/contents2/eng_filename/thumbnail/', 'http://210.127.55.205/contents/eng_filename/thumbnail/'), healthcare_contents.CT_URL_THUM_ENG) AS thumbnailUrl,
+			healthcare_contents.ct_duration AS duration
+		from
+		    ms_grade_data,
+		    contents_category,
+		    healthcare_contents,
+		    (
+				SELECT SCHOOL_INFO.address AS address FROM healthcare_gwangmyeong.SCHOOL_REGISTER, healthcare_gwangmyeong.SCHOOL_INFO
+		        WHERE SCHOOL_REGISTER.Student_ID = #{user_id}
+		        AND SCHOOL_REGISTER.School_ID = SCHOOL_INFO.School_ID
+		        ORDER BY SCHOOL_REGISTER.School_Year DESC LIMIT 1
+		    ) A
+		where
+		    ms_grade_data.Ms_Grade_ID = #{masterGradeId}
+	        and ms_grade_data.Ms_Grade_ID = contents_category.MS_Grade_ID
+	        and contents_category.CT_ID = healthcare_contents.CT_ID;
+	</select>
 
 </mapper>
