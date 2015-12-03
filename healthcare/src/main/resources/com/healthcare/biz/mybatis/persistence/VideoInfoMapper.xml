@@ -68,7 +68,7 @@
 		select 
 			healthcare_contents.CT_NAME AS title,
 			concat(IF(STRCMP(A.address,'경기도 광명시'), 'http://210.127.55.205/contents2/eng_filename/', 'http://210.127.55.205/contents/eng_filename/'), healthcare_contents.CT_URL_ENG) AS videoUrl,
-			concat(IF(STRCMP(A.address,'경기도 광명시'), 'http://210.127.55.205/contents2/eng_filename/thumbnail/', 'http://210.127.55.205/contents/eng_filename/thumbnail/'), healthcare_contents.CT_URL_THUM_ENG) AS thumbnailUrl,
+			concat('http://210.127.55.205/contents/eng_filename/thumbnail/', healthcare_contents.CT_URL_THUM_ENG) AS thumbnailUrl,
 			healthcare_contents.ct_duration AS duration
 		from
 		    ms_grade_data,
