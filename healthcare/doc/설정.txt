@@ -1,0 +1,14 @@
+* 로컬 환경 세팅
+db관련 세팅 두가지 변경
+- jdbc.properties
+- DBConnectionManager
+rootpath관련 두가지 변경
+- webapp/admin/js/utils.js
+- webapp/WEB-INF/view/front-view/js/util.js
+
+* 로컬 실행시 key 관련 문제가 나올시
+아래 링크 참고
+https://www.evernote.com/shard/s354/sh/981814d2-c62b-4e61-841a-2df4fc04747c/a1bc3eddc7f2bb57046371d830682b8f
+아래 사이트에서 jce로 검색후 관련 zip 다운로드 후 압축해제하고 나오는 jar 두개를 (local_policy.jar US_export_policy.jar)
+C:\Program Files\Java 1.6.0\lib\security\ 아래에 오버라이트한다.
+http://www.oracle.com/technetwork/java/javase/downloads/index.html
