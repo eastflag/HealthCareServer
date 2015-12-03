@@ -1366,7 +1366,7 @@
 			$('#page17').css('display','block');
 		}
 		if(menuCode == '0109'){
-			setUserData('GetVideoList', '{"masterGradeId":"' + pBmiGradeId + '", "schoolGradeId":"' + selSchoolGradeId + '", "user_id":"' + selUserId + '"}', getVideoList);
+			setUserData('GetVideoList', '{"masterGradeId":"' + pBmiGradeId + '", "schoolGradeId":"' + selSchoolGradeId + '", "userId":"' + selUserId + '"}', getVideoList);
 		}
 	}
 	

@@ -720,7 +720,7 @@ var pToken = "<%= pToken%>";
 					"\",\"token\":\"" + pToken +"\"}";
 			//console.log(pars);
 		//console.log(" 1 . 사용자 정보 가져오기 setUserData::: "+JSON.stringify(pUrl));
-	//console.log(" 2.  사용자 정보 가져오기 setUserData:::  "+JSON.stringify(func));
+		//console.log(" 2.  사용자 정보 가져오기 setUserData:::  "+JSON.stringify(func));
 		$.ajax({
 			type : "post",
 			dataType : "json",
@@ -1203,7 +1203,6 @@ var pToken = "<%= pToken%>";
 // END data 바인딩 ***************************************************************************
 	// 추천운동, 금연도움사이트
 	function goPage(type){	
-		
 		var gradeId = "";
 		
 		switch(type){
@@ -1215,7 +1214,7 @@ var pToken = "<%= pToken%>";
 		//console.log(gradeId);
 
 		if (deviceType != "1") {
-			parent.setUserData('GetVideoList', '{"masterGradeId":"' + gradeId + '", "user_id":"' + parent.selUserId + '"}', parent.getVideoList);
+			parent.setUserData('GetVideoList', '{"masterGradeId":"' + gradeId + '", "userId":"' + pUserId + '"}', parent.getVideoList);
 		} else {
 			alert(type+','+gradeId);
 		}

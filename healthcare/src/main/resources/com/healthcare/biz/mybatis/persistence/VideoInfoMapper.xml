@@ -76,7 +76,7 @@
 		    healthcare_contents,
 		    (
 				SELECT SCHOOL_INFO.address AS address FROM healthcare_gwangmyeong.SCHOOL_REGISTER, healthcare_gwangmyeong.SCHOOL_INFO
-		        WHERE SCHOOL_REGISTER.Student_ID = #{user_id}
+		        WHERE SCHOOL_REGISTER.Student_ID = #{userId}
 		        AND SCHOOL_REGISTER.School_ID = SCHOOL_INFO.School_ID
 		        ORDER BY SCHOOL_REGISTER.School_Year DESC LIMIT 1
 		    ) A

@@ -239,7 +239,7 @@ public class HomeController {
 		List<VideoInfo> list = null;
 		
 		if (videoListRequest.getMasterGradeId() != null && videoListRequest.getMasterGradeId().length() > 0) {
-			if(videoListRequest.getUser_id() != null && videoListRequest.getUser_id().length() > 0){
+			if(videoListRequest.getUserId() != null && videoListRequest.getUserId().length() > 0){
 				list = videoInfoService.getVideoInfoListByMasterGradeIdAndUserId(videoListRequest);
 			}else{
 				list = videoInfoService.getVideoInfoListByMasterGradeId(videoListRequest.getMasterGradeId());

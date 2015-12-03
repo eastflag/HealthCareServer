@@ -9,7 +9,7 @@ public class VideoListRequest {
 	String schoolGradeId;
 	
 	// 학생 ID
-	String user_id;
+	String userId;
 
 	public String getMasterGradeId() {
 		return masterGradeId;
@@ -26,19 +26,19 @@ public class VideoListRequest {
 	public void setSchoolGradeId(String schoolGradeId) {
 		this.schoolGradeId = schoolGradeId;
 	}
-
-	public String getUser_id() {
-		return user_id;
+	
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	@Override
 	public String toString() {
 		return "VideoListRequest [masterGradeId=" + masterGradeId
-				+ ", schoolGradeId=" + schoolGradeId + ", user_id=" + user_id + "]";
+				+ ", schoolGradeId=" + schoolGradeId + ", userId=" + userId + "]";
 	}
 
 }
