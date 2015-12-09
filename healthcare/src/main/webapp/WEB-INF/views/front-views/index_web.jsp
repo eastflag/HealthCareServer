@@ -26,6 +26,10 @@
 </script>
 </head>
 <body OnLoad="checkEventPopup()">
+<script type="text/javascript">
+	//alert("calling");
+	window.open('popup.html','알림','scrollbars=no,toolbar=yes,resizable=yes,width=420,height=420,left=0,top=0');
+</script>
     <div id="popup_layer">
     	<div id="popup_contents"></div>
     	<div id="popup_btn" onclick="popupHide('popup_layer');">닫기</div>
