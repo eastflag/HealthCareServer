@@ -122,7 +122,7 @@
 	<select id="getAveragePerClass" parameterType="StatisticsParma" resultType="AverageItem">
 		select 
 			DATE_FORMAT(body_measure_plan.Measure_Date, '%Y%m') AS measureDate,
-		    school_register.Class AS name,
+		    body_measure_plan.Class AS name,
 	    <choose>
 			<when test="section == 'Height'">
 			truncate(avg(inbody_info.HEIGHT), 1) AS value
@@ -135,22 +135,16 @@
 			</when>
 		</choose>
 			from
-			    student_info,
-				school_grade,
-				school_register,
-			    body_measure_plan,
-				inbody_info
+			    body_measure_plan inner join inbody_info on body_measure_plan.inbody_seq = inbody_info.inbody_seq
+				inner join student_info on body_measure_plan.student_id = student_info.student_id
+                inner join school_info on body_measure_plan.school_id = school_info.school_id
 			where
-				school_register.School_ID = #{schoolId}
-					and school_register.Grade_ID = #{schoolGradeId}
-					and school_register.Class = #{classNumber}
-					and student_info.STU_Sex =#{sex}
+				school_info.School_ID = #{schoolId}
+					and Grade_ID = #{schoolGradeId}
+					and student_info.STU_Sex = #{sex}
+                    and body_measure_plan.Class= #{classNumber}
 					and DATE_FORMAT(body_measure_plan.Measure_Date, '%Y%m') = DATE_FORMAT(#{measureDate}, '%Y%m')
-					and student_info.Student_ID = school_register.Student_ID
-					and school_register.Grade_ID = school_grade.Grade_ID
-			        and student_info.Student_ID = body_measure_plan.Student_ID
-					and body_measure_plan.Inbody_seq = inbody_info.Inbody_seq
-			group by body_measure_plan.Measure_Date, school_register.Class	
+			group by body_measure_plan.Measure_Date, body_measure_plan.Class	
 		<choose>
 			<when test="section == 'Height'">
 			order by value desc;
@@ -180,22 +174,14 @@
 			</when>
 		</choose>
 			from
-			    student_info,
-			    school_info,
-				school_grade,
-				school_register,
-			    body_measure_plan,
-				inbody_info
+			    body_measure_plan inner join inbody_info on body_measure_plan.inbody_seq = inbody_info.inbody_seq
+				inner join student_info on body_measure_plan.student_id = student_info.student_id
+                inner join school_info on body_measure_plan.school_id = school_info.school_id
 			where
-				school_register.School_ID = #{schoolId}
-					and school_register.Grade_ID = #{schoolGradeId}
-					and student_info.STU_Sex =#{sex}
+				school_info.School_ID = #{schoolId}
+					and Grade_ID = #{schoolGradeId}
+					and student_info.STU_Sex = #{sex}
 					and DATE_FORMAT(body_measure_plan.Measure_Date, '%Y%m') = DATE_FORMAT(#{measureDate}, '%Y%m')
-					and student_info.Student_ID = school_register.Student_ID
-					and school_register.Grade_ID = school_grade.Grade_ID
-					and school_register.School_ID = school_info.School_ID
-			        and student_info.Student_ID = body_measure_plan.Student_ID
-					and body_measure_plan.Inbody_seq = inbody_info.Inbody_seq
 			group by body_measure_plan.Measure_Date, school_info.School_Name	
 		<choose>
 			<when test="section == 'Height'">
