@@ -2,13 +2,14 @@ package com.healthcare.admin.menu;
 
 public class MenuMgr {
 
-	public Menus getMenus(Menu menu){
+	public Menus getMenus(Menu menu, int startIndex, int count){
 		Menus menus = null;
 		
 		try{
 			MenuDAO menuDAO = new MenuDAO();
-			
-			menus = new Menus(menuDAO.getMenus(menu), menuDAO.getMenuTotRowCnt(menu));
+
+			menus = new Menus(menuDAO.getMenus(menu, startIndex, count)
+					, menuDAO.getMenuTotRowCnt(menu));
 			
 		}catch(Exception se) {
 			System.out.println(se.getMessage());

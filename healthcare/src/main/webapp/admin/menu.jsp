@@ -12,23 +12,24 @@
 	MenuMgrHelper menuMgrHelper = new MenuMgrHelper();
 	String locale = JSPUtil.getLocaleLanguage(request);
 	
-	String nextNavURL = "coupon.jsp?";
+	String nextNavURL = "menu.jsp?";
 	
 	Menu menu = null;
 	Menus menus = menuMgrHelper.getMenus(request); 
-	/*
-	PageNavigator pageNavigator = new PageNavigator(SessionManager.getPageNo(request),
-													coupons.getTotRowCnt(), 
-										            Config.NUM_OF_LINE10, nextNavURL);
-	*/
-	Iterator it = menus.getMenus().iterator();
-	
-	/*
-	int rCnt  = coupons.getTotRowCnt();
-	int Pgs   = SessionManager.getPageNo(request);
-	int cNum  = rCnt-((Pgs-1)*Config.NUM_OF_LINE10);
-	*/
 
+
+	PageNavigator navigator = new PageNavigator(SessionManager.getPageNo(request),
+			menus.getTotRowCnt(), 
+			                                    Config.NUM_OF_LINE10, 
+			                                    Config.NUM_OF_LINE50, 
+			                                    nextNavURL);
+
+	Iterator it = menus.getMenus().iterator();
+
+	int rCnt  = menus.getTotRowCnt();
+	int Pgs   = SessionManager.getPageNo(request);
+	int cNum  = rCnt-((Pgs-1)*Config.NUM_OF_LINE50);
+	
 	SchoolMgrHelper schoolMgrHelper = new SchoolMgrHelper();
 	School school = null;
 	Schools schools = schoolMgrHelper.getListSchool(request);
@@ -193,16 +194,16 @@
 		%>
 	</table>
 	<!-- next /prev   page  : 시작-->
-	<%-- 
+
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
 		<tr>
 			<td height="8"><img src="./images/blank.gif"></td>
 		</tr>
 		<tr>
-			<td  height="2" align="center" ><%=pageNavigator.getHtml()%></td>
+			<td  height="2" align="center" ><%=navigator.getHtml()%></td>
 		</tr>
 	</table>
-	 --%>
+
  	<!-- next /prev   page  : 끝-->
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">     
 		<tr>

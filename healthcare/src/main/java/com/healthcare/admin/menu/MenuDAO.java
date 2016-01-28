@@ -31,10 +31,12 @@ public class MenuDAO {
 		}
 	}
 	
-	public Collection getMenus(Menu menu)throws SQLException, InvalidKeyException, UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException{
+	public Collection getMenus(Menu menu, int startIndex, int count)throws SQLException, InvalidKeyException, UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException{
 		Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
+        System.out.println("====================startIndex:"+startIndex);
+        System.out.println("====================count:"+count);
         String joinqu = "WHERE 1=1 AND MENU_INFO.SCHOOL_ID = SCHOOL_INFO.SCHOOL_ID \n";
         
         if (menu.getSchool_id() != null && !menu.getSchool_id().equals("")) {
@@ -86,6 +88,7 @@ public class MenuDAO {
 			.append(joinqu)
 			.append(" ORDER BY MENU_INFO.MENU_ID DESC ");
 		String queryStr = qr.toString();
+		System.out.println(queryStr);
 		
 	    ArrayList menus = new ArrayList();
 	    
@@ -95,10 +98,10 @@ public class MenuDAO {
 
         	rs = pstmt.executeQuery();
 
+        	//while (rs.next())
     		// startIndex 파라메타 수만큼 Skip한다.
-			//while (startIndex-- > 0 && rs.next());
-        	//while (count-- > 0 && rs.next())
-        	while (rs.next())
+			while (startIndex-- > 0 && rs.next());
+        	while (count-- > 0 && rs.next())
         	{
         		menu = new Menu();
 				

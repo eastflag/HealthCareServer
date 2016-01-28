@@ -41,6 +41,9 @@ public class MenuMgrHelper {
 		
 		Menus menus = null;
 		Menu menu = null;
+
+		int startIndex = (SessionManager.getPageNo(req)-1)*Config.NUM_OF_LINE50;
+		int count = Config.NUM_OF_LINE50;
 		
 		try{
 			menu = new Menu();
@@ -50,7 +53,7 @@ public class MenuMgrHelper {
 			menu.setSchool_month(Util.fulfillSize(school_month, 2));
 			
 			//menus = menuMgr.getCouponsM(startIndex, count);
-			menus = menuMgr.getMenus(menu);
+			menus = menuMgr.getMenus(menu, startIndex, count);
 		}catch(Exception e){
         	System.out.println("getMenus error"+e.getMessage());
         }

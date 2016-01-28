@@ -44,31 +44,35 @@ public class DBConnectionManager {
     }
 
     private void createPools() {
-        
-        	// REAL DB
-//	   	 String url = "jdbc:mysql://192.169.10.10:3306/healthcare_gwangmyeong?useUnicode=true&characterEncoding=utf-8";
-//	   	 String user = "healthcare";
-//	   	 String password = "!healthcare";
-   		
-		// TEST DB 
-//   	String url = "jdbc:mysql://192.169.10.10:3306/healthcare_test2?useUnicode=true&characterEncoding=utf-8";
-//       String user = "healthtest_user2";
-//       String password = "!healthtest2";
-	   	 
-			//Mtelo TEST DB  //Simli & Dinner ////////////////
-	   	String url = "jdbc:mysql://106.245.237.196:3306/healthcare_test2?useUnicode=true&characterEncoding=utf-8";
-	    String user = "healthtest_user2";
-	    String password = "!healthtest2";
 
-        //DB Conn Info Setting =======GoodSW 테스트DB==========================================================    	
-   	  //	Real DB Server Setting
-//       	   String url = "jdbc:mysql://210.96.71.161:3306/healthcare_gwangmyeong?useUnicode=true&characterEncoding=utf-8";
-//           String user = "health_user";
-//           String password = "!healthcare";
-    	
-			//String user = "scott";
-            //String password = "tiger";
-            pool =  new DBConnectionPool(url, user, password);
+		// REAL DB
+		// String url =
+		// "jdbc:mysql://192.169.10.10:3306/healthcare_gwangmyeong?useUnicode=true&characterEncoding=utf-8";
+		// String user = "healthcare";
+		// String password = "!healthcare";
+
+		// TEST DB
+		// String url =
+		// "jdbc:mysql://192.169.10.10:3306/healthcare_test2?useUnicode=true&characterEncoding=utf-8";
+		// String user = "healthtest_user2";
+		// String password = "!healthtest2";
+
+		// Mtelo TEST DB //Simli & Dinner ////////////////
+		String url = "jdbc:mysql://106.245.237.196:3306/healthcare_gwangmyeong?useUnicode=true&characterEncoding=utf-8";
+		String user = "healthcare";
+		String password = "!healthcare";
+
+		// DB Conn Info Setting =======GoodSW
+		// 테스트DB==========================================================
+		// Real DB Server Setting
+		// String url =
+		// "jdbc:mysql://210.96.71.161:3306/healthcare_gwangmyeong?useUnicode=true&characterEncoding=utf-8";
+		// String user = "health_user";
+		// String password = "!healthcare";
+
+		// String user = "scott";
+		// String password = "tiger";
+		pool = new DBConnectionPool(url, user, password);
     }
 
     private void loadDrivers() {
