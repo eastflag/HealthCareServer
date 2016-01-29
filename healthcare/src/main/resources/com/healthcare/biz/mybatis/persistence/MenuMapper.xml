@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.healthcare.biz.mybatis.persistence.MenuMapper">
+
+	<select id="getMenuData" parameterType="MenuData" resultType="java.lang.Integer">
+		SELECT 
+		    count(*)
+		FROM
+		    menu_info
+		WHERE
+		    school_id = #{schoolId} 
+		    	AND school_year = #{year}
+		        AND school_month = #{month}
+		        AND school_date = #{date}
+		        AND school_day = #{day}
+	</select>
+
+	<insert id="insertMenu" parameterType="MenuData">
+		INSERT INTO menu_info(
+		   school_id
+		  ,school_year
+		  ,school_month
+		  ,school_date
+		  ,school_day
+		  ,lunch_detl
+		  ,lunch_calorie
+		  ,reg_date
+		  ,reg_id
+		  ,upd_date
+		  ,upd_id
+		  ,use_yn
+		  ,carbohydrate
+		  ,protein
+		  ,fat
+		  ,calcium
+		  ,vitamin_A
+		  ,vitamin_C
+		  ,nutrient_etc
+		) VALUES (
+			#{schoolId}
+			,#{year}
+			,#{month}
+			,#{date}
+			,#{day}
+			,#{menuContent}
+			,#{calorie}
+			,NOW()
+			,'batch'
+			,NOW()
+			,'batch'
+			,'Y'
+			,#{carbohydrate}
+			,#{protein}
+			,#{fat}
+			,#{calcium}
+			,#{vitaminA}
+			,#{vitaminC}
+			,#{iron}
+		)
+	</insert>
+	
+</mapper>

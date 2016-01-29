@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.healthcare.biz.mybatis.persistence.SchoolMapper">
+
+	<select id="getSchoolList" resultType="SchoolInfo">
+		SELECT 
+		    school_id schoolId,
+		    school_name name,
+		    section section,
+		    sido,
+		    school_code code
+		FROM
+		    school_info
+		ORDER BY school_id
+	</select>
+
+	
+</mapper>
