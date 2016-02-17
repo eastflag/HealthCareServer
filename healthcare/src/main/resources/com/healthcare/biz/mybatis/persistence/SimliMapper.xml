@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.healthcare.biz.mybatis.persistence.SimliMapper">
+
+	<resultMap id="SimliType" type="SimliType">
+        <result property="simliId"    		column="simli_id" />
+        <result property="simliNm"    		column="simli_nm" />
+        <result property="intro"    		column="intro" />
+        <result property="outro"    		column="outro" />
+        <result property="useYN"    		column="use_yn" />
+    </resultMap> 
+
+	<resultMap id="SimliQuestion" type="SimliQuestion">
+        <result property="questId"    		column="quest_id" />
+        <result property="content"    		column="content" />
+        <result property="video"    		column="video" />
+        <result property="videoC"    		column="video_c" />
+        <result property="img"    			column="img" />
+    </resultMap> 
+
+	<resultMap id="SimliAnswer" type="SimliAnswer">
+        <result property="answerId"    		column="answer_id" />
+        <result property="content"    		column="content" />
+        <result property="score"    		column="score" />
+        <result property="video"    		column="video" />
+        <result property="img"    			column="img" />
+    </resultMap> 
+
+	<resultMap id="SimliResult" type="SimliResult">
+        <result property="resultStudent"    	column="result_student" />
+        <result property="resultParent"    		column="result_parent" />
+    </resultMap> 
+
+	<select id="getSimliTypeList" parameterType="java.lang.Integer" resultMap="SimliType">
+		SELECT 
+		    simli_id, simli_nm, intro, outro, use_yn
+		FROM
+		    simli_type
+		WHERE
+		    use_yn = 'Y' 
+		    <![CDATA[ 
+		    	AND grade_start <= #{grade}
+		        AND grade_end >= #{grade}
+		    ]]>
+		ORDER BY sort
+	</select>
+	
+	<select id="getSimliQuestionList" parameterType="java.lang.String" resultMap="SimliQuestion">
+		SELECT 
+		    quest_id, content, video, video_c, img
+		FROM
+		    simli_question
+		WHERE
+		    quest_id LIKE CONCAT(#{simliId}, '%')
+		ORDER BY quest_id
+	</select>
+	
+	<select id="getSimliQuestionListReview" parameterType="java.lang.String" resultType="SimliReview">
+		SELECT 
+		    quest_id questId, content
+		FROM
+		    simli_question
+		WHERE
+		    quest_id LIKE CONCAT(#{simliId}, '%')
+		ORDER BY quest_id
+	</select>
+	
+	<select id="getSimliAnswer" parameterType="java.lang.String" resultMap="SimliAnswer">
+		SELECT 
+		    answer_id, content, score, video, img
+		FROM
+		    simli_answer
+		WHERE
+		    answer_id LIKE CONCAT(#{questId}, '%')
+		ORDER BY answer_id
+	</select>
+	
+	<select id="getSimliAnswerReview" parameterType="java.util.Map" resultType="SimliReviewAnswer">
+		SELECT 
+		    A.answer_id answerId,
+		    A.content,
+		    IF(ISNULL(B.student_id), 'N', 'Y') selectYN
+		FROM
+		    simli_answer A
+		        LEFT OUTER JOIN
+		    simli_student_result B ON A.answer_id = B.answer_id
+		        AND B.student_id = #{userId}
+		WHERE
+		    A.answer_id LIKE CONCAT(#{questId}, '%')
+	</select>
+	
+	<select id="getSimliResultCnt" parameterType="java.util.Map" resultType="java.lang.Integer">
+		SELECT 
+		    COUNT(*)
+		FROM
+		    simli_student_result
+		WHERE
+		    student_id = #{userId} AND answer_id LIKE CONCAT(#{simliId}, '%')
+	</select>
+	
+	<select id="getSimliResultQuestCnt" parameterType="java.util.Map" resultType="java.lang.Integer">
+		SELECT 
+		    COUNT(*)
+		FROM
+		    simli_student_result
+		WHERE
+		    student_id = #{userId} AND answer_id LIKE CONCAT(#{questId}, '%')
+	</select>
+
+	<update id="insertSimliStudentResult" parameterType="java.util.Map" >
+		INSERT INTO simli_student_result(
+		   student_id
+		  ,answer_id
+		  ,reg_date
+		) VALUES (
+		   #{userId}
+		  ,#{answerId}
+		  ,SYSDATE()
+		)
+	</update>
+
+	<update id="updateSimliStudentResult" parameterType="java.util.Map" >
+		UPDATE simli_student_result 
+		SET 
+		    student_id = #{userId},
+		    answer_id = #{answerId},
+		    mod_date = SYSDATE()
+		WHERE
+		    student_id = #{userId} 
+		    AND answer_id CONCAT(#{questId}, '%')
+	</update>
+	
+	<delete id="deleteSimliStudentResult" parameterType="java.util.Map" >
+		DELETE FROM simli_student_result 
+		WHERE
+		    student_id = #{userId} 
+		    AND answer_id CONCAT(#{simliId}, '%')
+	</delete>
+	
+	<select id="getSimliResultScore" parameterType="java.util.Map" resultType="java.lang.Integer">
+		SELECT 
+		    SUM(B.score)
+		FROM
+		    simli_student_result A
+		        JOIN
+		    simli_answer B ON A.answer_id = B.answer_id
+		WHERE
+		    A.student_id = #{userId}
+		        AND A.answer_id LIKE CONCAT(#{simliId}, '%')
+	</select>
+	
+	<select id="getSimliResult" parameterType="java.util.Map" resultMap="SimliResult">
+		SELECT 
+		    result_student, result_parent
+		FROM
+		    simli_result
+		WHERE
+		    simli_id = #{simliId}
+		    <![CDATA[ 
+		    	AND score_start <= #{score}
+		        AND score_end >= #{score}
+		    ]]>
+	</select>
+	
+</mapper>
