@@ -7,8 +7,9 @@
 //	설명	    : 공통적인 자바스크립트 유틸리티
 //*****************************************************************
 
-var rootPath = "http://210.127.55.205/HealthCare/"; //REAL
-//var rootPath = "http://127.0.0.1:5050/HealthCare/";  //local
+//var rootPath = "http://210.127.55.205/HealthCare/"; //REAL
+//var rootPath = "http://210.127.55.205:82/HealthCare/";  //dev
+var rootPath = "http://192.168.0.48/HealthCare/";  //local jaeseon
 
 function fncObjectWrite(id) {
 		document.write(id.text);id.id='';
