@@ -54,6 +54,7 @@
 			cache: false
 		});
 
+		var isLoading = false;
 	  	var deviceType = getDevice();
 	</script>
 	
@@ -749,7 +750,7 @@ var pToken = "<%= pToken%>";
 			data : pars,
 			success : func,
 			beforeSend: function() {
-				console.log('before send');
+				isLoading = true;
 				$.mobile.loading( 'show', {
 					text: 'loading',
 					textVisible: false,
@@ -758,7 +759,7 @@ var pToken = "<%= pToken%>";
 				});
 			},
 			complete: function() {
-				console.log('complete');
+				isLoading = false;
 				$.mobile.loading('hide');
 			},
 			error : function() {
@@ -1087,6 +1088,9 @@ var pToken = "<%= pToken%>";
 		});
 	var vIdx ="";
 	function subRank(idx){
+		if(isLoading) {	
+			return;
+		}
 		setRankDataPage(idx);
 		vIdx = idx;
 	}
