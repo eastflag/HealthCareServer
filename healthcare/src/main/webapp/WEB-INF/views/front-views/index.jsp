@@ -406,17 +406,36 @@
 	function setRankDataPage(idx){
 		
 		if(rankDataPageScale == 'school'){
+			$('#rank_class').removeClass('on');
+			$('#rank_school').addClass('on');
 			switch(idx){
-				case 0: setUserData("GetRankingOfHeightPerSchool", setRank);		break;// 신장 행킹
-				case 1: setUserData("GetRankingOfWeightPerSchool", setRank);		break;// 체중 랭킹	
-				case 2: setUserData("GetRankingOfBmiPerSchool", setRank);		break;// BMI 랭킹	
+				case 0: setUserData("GetRankingOfHeightPerSchool", setRank);		
+					break;// 신장 행킹
+				case 1: setUserData("GetRankingOfWeightPerSchool", setRank);		
+					break;// 체중 랭킹	
+				case 2: setUserData("GetRankingOfBmiPerSchool", setRank);		
+					break;// BMI 랭킹	
 			}
 		}else{
 			reloadRankingIdx = idx;
+			$('#rank_class').addClass('on');
+			$('#rank_school').removeClass('on');
 			switch(idx){
-				case 0: setUserData("GetRankingOfHeightPerClass", setRank);		break;// 신장 행킹
-				case 1: setUserData("GetRankingOfWeightPerClass", setRank);		break;// 체중 랭킹	
-				case 2: setUserData("GetRankingOfBmiPerClass", setRank);		break;// BMI 랭킹	
+				case 0: setUserData("GetRankingOfHeightPerClass", setRank);		
+					$('#rank_height').addClass('on');
+					$('#rank_weight').removeClass('on');
+					$('#rank_bmi').removeClass('on');
+					break;// 신장 행킹
+				case 1: setUserData("GetRankingOfWeightPerClass", setRank);		
+					$('#rank_height').removeClass('on');
+					$('#rank_weight').addClass('on');
+					$('#rank_bmi').removeClass('on');
+					break;// 체중 랭킹	
+				case 2: setUserData("GetRankingOfBmiPerClass", setRank);		
+					$('#rank_height').removeClass('on');
+					$('#rank_weight').removeClass('on');
+					$('#rank_bmi').addClass('on');
+					break;// BMI 랭킹	
 			}
 		}
 		
@@ -729,6 +748,19 @@ var pToken = "<%= pToken%>";
 			cache : false,
 			data : pars,
 			success : func,
+			beforeSend: function() {
+				console.log('before send');
+				$.mobile.loading( 'show', {
+					text: 'loading',
+					textVisible: false,
+					theme: 'a',
+					html: ""
+				});
+			},
+			complete: function() {
+				console.log('complete');
+				$.mobile.loading('hide');
+			},
 			error : function() {
 				alert('Error while request..');
 			}

@@ -211,7 +211,7 @@
 	<div  class="main_view">
 		<table>
 			<tr>
-				<td><a href="#" onclick="subRank(0)" id="rank_height" >신장</a></td>
+				<td><a href="#" onclick="subRank(0)" id="rank_height" class="on">신장</a></td>
 				<td><a href="#" onclick="subRank(1)" id="rank_weight">체중</a></td>
 				<td><a href="#" onclick="subRank(2)" id="rank_bmi">BMI</a></td>
 			</tr>
@@ -220,8 +220,8 @@
 	<div>
 		<table class="class_ranking">
 			<tr>
-				<td onclick="rankDataPageScale = 'class';subRank(reloadRankingIdx);">반별 순위</td>
-				<td onclick="rankDataPageScale = 'school';subRank(reloadRankingIdx);">학교별 순위</td>
+				<td onclick="rankDataPageScale = 'class';subRank(reloadRankingIdx);" id="rank_class" class="on">반별 순위</td>
+				<td onclick="rankDataPageScale = 'school';subRank(reloadRankingIdx);" id="rank_school">학교별 순위</td>
 			</tr>
 		</table>
 	</div>

@@ -400,19 +400,20 @@ color: #3fc6f3;
 	cursor:pointer;
 	border:1px solid rgb(169,169,169);
 	width:50%;
+	background:#FFFFFF;
 }
-.class_ranking tr td:hover {
+.class_ranking tr td:hover, .class_ranking tr td.on {
 	border: 1px solid #bbbbbb /*{b-bhover-border}*/;
-	background: #e6e6e6 /*{b-bhover-background-color}*/;
+	background: #b9b9b9 /*{b-bhover-background-color}*/;
 	font-weight: bold;
 	color: #363636 /*{b-bhover-color}*/;
 	text-shadow: 0 /*{b-bhover-shadow-x}*/ 0 /*{b-bhover-shadow-y}*/ 0 /*{b-bhover-shadow-radius}*/ #ffffff /*{b-bhover-shadow-color}*/;
-	background-image: -webkit-gradient(linear, left top, left bottom, from( #ececec /*{b-bhover-background-start}*/), to( #dfdfdf /*{b-bhover-background-end}*/)); /* Saf4+, Chrome */
-	background-image: -webkit-linear-gradient( #ececec /*{b-bhover-background-start}*/, #dfdfdf /*{b-bhover-background-end}*/); /* Chrome 10+, Saf5.1+ */
-	background-image:    -moz-linear-gradient( #ececec /*{b-bhover-background-start}*/, #dfdfdf /*{b-bhover-background-end}*/); /* FF3.6 */
-	background-image:     -ms-linear-gradient( #ececec /*{b-bhover-background-start}*/, #dfdfdf /*{b-bhover-background-end}*/); /* IE10 */
-	background-image:      -o-linear-gradient( #ececec /*{b-bhover-background-start}*/, #dfdfdf /*{b-bhover-background-end}*/); /* Opera 11.10+ */
-	background-image:         linear-gradient( #ececec /*{b-bhover-background-start}*/, #dfdfdf /*{b-bhover-background-end}*/);
+/* 	background-image: -webkit-gradient(linear, left top, left bottom, from( #ececec {b-bhover-background-start}), to( #dfdfdf {b-bhover-background-end})); Saf4+, Chrome
+	background-image: -webkit-linear-gradient( #ececec {b-bhover-background-start}, #dfdfdf {b-bhover-background-end}); Chrome 10+, Saf5.1+
+	background-image:    -moz-linear-gradient( #ececec {b-bhover-background-start}, #dfdfdf {b-bhover-background-end}); FF3.6
+	background-image:     -ms-linear-gradient( #ececec {b-bhover-background-start}, #dfdfdf {b-bhover-background-end}); IE10
+	background-image:      -o-linear-gradient( #ececec {b-bhover-background-start}, #dfdfdf {b-bhover-background-end}); Opera 11.10+
+	background-image:         linear-gradient( #ececec {b-bhover-background-start}, #dfdfdf {b-bhover-background-end}); */
 }
 .class_ranking_title{
 	height:2.1em;

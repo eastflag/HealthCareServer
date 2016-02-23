@@ -1,0 +1,41 @@
+* 로컬 테스트
+127.0.0.1:8080/HealthCare/front-views/view?p=height&userId=21977&ver=1.1.8
+
+* 상용 테스트
+210.127.55.205/HealthCare/front-views/view?p=height&userId=21977&ver=1.1.8
+
+* 랭킹에서 반별/학교, 신장/체중/BMI 선택시 선택된 탭 표시하기
+- /WEB-INF/views/front-views/index.jsp
+JavaScript 코드 부분
+- /WEB-INF/views/front-views/subHtml.html
+html 부분
+- /WEB-INF/views/front-views/css/basic.css
+css 부분
+
+* ajax 요청시 로딩바 구현하기
+- /WEB-INF/views/front-views/index.jsp
+$.ajax({
+	type : "post",
+	dataType : "json",
+	url : rootPath + "/" + pUrl,
+	contentType : 'application/json',
+	cache : false,
+	data : pars,
+	success : func,
+	beforeSend: function() {
+		console.log('before send');
+		$.mobile.loading( 'show', {
+			text: 'loading',
+			textVisible: false,
+			theme: 'a',
+			html: ""
+		});
+	},
+	complete: function() {
+		console.log('complete');
+		$.mobile.loading('hide');
+	},
+	error : function() {
+		alert('Error while request..');
+	}
+});
