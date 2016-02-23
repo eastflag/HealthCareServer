@@ -750,8 +750,8 @@ var pToken = "<%= pToken%>";
 			data : pars,
 			success : func,
 			beforeSend: function() {
-				isLoading = true;
-				$.mobile.loading( 'show', {
+				isLoading = true; //클릭을 방지
+				$.mobile.loading( 'show', { //로딩바 show
 					text: 'loading',
 					textVisible: false,
 					theme: 'a',
@@ -1091,6 +1091,7 @@ var pToken = "<%= pToken%>";
 		if(isLoading) {	
 			return;
 		}
+		
 		setRankDataPage(idx);
 		vIdx = idx;
 	}
