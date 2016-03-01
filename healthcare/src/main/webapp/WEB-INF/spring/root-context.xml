@@ -16,7 +16,7 @@
 
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<!-- Annotation 설정 -->
-	<context:component-scan base-package="com.healthcare.biz" />
+	<context:component-scan base-package="com.healthcare.biz, com.sovate.activity" />
 	
 	<!-- AOP Aspect annotation 설정 -->
 	<aop:aspectj-autoproxy />

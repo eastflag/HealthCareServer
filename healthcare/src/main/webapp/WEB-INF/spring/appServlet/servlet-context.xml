@@ -30,7 +30,7 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 		
-	<context:component-scan base-package="com.healthcare.controller" />
+	<context:component-scan base-package="com.healthcare.controller, com.sovate.activity.controller" />
 	
 	
 	
