@@ -39,6 +39,8 @@ public class SimliController {
 	private SimliService simliService;
 	@Autowired
 	private StudentService studentService;
+	
+	String contentsURL = "http://210.127.55.205/psychology_contents/";
 
 	/*
 	 * 심리 목록 가져오기
@@ -61,8 +63,26 @@ public class SimliController {
 		
 		// 학년에 맞는 심리검사 목록 가져오기
 		List<SimliType> simliList = simliService.getSimliTypeList(grade);
-
-		response.setContentType("charset=UTF-8");
+		
+		// url 전체 입력
+		if(simliList!=null && simliList.size()>0) {
+			for(int i=0; i<simliList.size(); i++) {
+				if(simliList.get(i).getIntroVideo()!=null && !simliList.get(i).getIntroVideo().equals("")) {
+					simliList.get(i).setIntroVideo(contentsURL+simliList.get(i).getIntroVideo());
+				}
+				if(simliList.get(i).getOutroVideo()!=null && !simliList.get(i).getOutroVideo().equals("")) {
+					simliList.get(i).setOutroVideo(contentsURL+simliList.get(i).getOutroVideo());
+				}
+				if(simliList.get(i).getIntroImg()!=null && !simliList.get(i).getIntroImg().equals("")) {
+					simliList.get(i).setIntroImg(contentsURL+simliList.get(i).getIntroImg());
+				}
+				if(simliList.get(i).getOutroImg()!=null && !simliList.get(i).getOutroImg().equals("")) {
+					simliList.get(i).setOutroImg(contentsURL+simliList.get(i).getOutroImg());
+				}
+			}
+		}
+		
+		response.setContentType("text/html; charset=utf-8");
 		response.getWriter().write(JSONArray.fromObject(simliList).toString());
 	}
 
@@ -82,14 +102,40 @@ public class SimliController {
 			for(int i=0; i<questionList.size(); i++) {
 				// 문제 ID를 가져온다
 				String questId = questionList.get(i).getQuestId();
+				
 				// 해당 문제의 답변을 가져온다
 				List<SimliAnswer> answerList = simliService.getSimliAnswer(questId);
+				
+				// url 전체 입력
+				if(answerList!=null && answerList.size()>0) {
+					for(int j=0; j<answerList.size(); j++) {
+						if(answerList.get(j).getImg()!=null && !answerList.get(j).getImg().equals("")) {
+							answerList.get(j).setImg(contentsURL+answerList.get(j).getImg());
+						}
+						if(answerList.get(j).getVideo()!=null && !answerList.get(j).getVideo().equals("")) {
+							answerList.get(j).setVideo(contentsURL+answerList.get(j).getVideo());
+						}
+					}
+				}
+				
+				// url 전체 입력
+				if(questionList.get(i).getImg()!=null && !questionList.get(i).getImg().equals("")) {
+					questionList.get(i).setImg(contentsURL+questionList.get(i).getImg());
+				}
+				if(questionList.get(i).getVideo()!=null && !questionList.get(i).getVideo().equals("")) {
+					questionList.get(i).setVideo(contentsURL+questionList.get(i).getVideo());
+				}
+				if(questionList.get(i).getVideoC()!=null && !questionList.get(i).getVideoC().equals("")) {
+					questionList.get(i).setVideoC(contentsURL+questionList.get(i).getVideoC());
+				}
+					
+				
 				// 답변을 qna 리스트에 넣는다
 				questionList.get(i).setAnswer(answerList);
 			}
 		}
 
-		response.setContentType("charset=UTF-8");
+		response.setContentType("text/html; charset=utf-8");
 		response.getWriter().write(JSONArray.fromObject(questionList).toString());
 	}
 	
@@ -108,40 +154,13 @@ public class SimliController {
 		// 답변 등록하기
 		if(answer!=null && !answer.equals("")) {
 			String[] answerList = answer.split(",");
-			int sum=0;
-
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("userId", userId);
 			
-			for(int i=0; i<answerList.length; i++) {
-				String simliId = answerList[i].substring(0, 6);
-				String questId = answerList[i].substring(0, 9);
+			result = simliService.saveSimliResult(answerList,userId);
 
-				map.put("simliId", simliId);
-				map.put("questId", questId);
-				map.put("answerId", answerList[i]);
-				int cnt = simliService.getSimliResultQuestCnt(map);
-				
-				if(cnt==0) {
-					int insert = simliService.insertSimliStudentResult(map);
-					if(insert==0) {
-						sum++;
-					}
-				} else {
-					int update = simliService.updateSimliStudentResult(map);
-					if(update==0) {
-						sum++;
-					}
-				}
-			}
-			if(sum>0) {
-				simliService.deleteSimliStudentResult(map);
-				result = 1; // 실패
-			}
 		}
 		
 
-		response.setContentType("charset=UTF-8");
+		response.setContentType("text/html; charset=utf-8");
 		response.getWriter().write(Integer.toString(result));
 	}
 
@@ -168,7 +187,7 @@ public class SimliController {
 		}
 
 		// 결과 O:심리검사 완료, X:심리검사 안 함 
-		response.setContentType("charset=UTF-8");
+		response.setContentType("text/html; charset=utf-8");
 		response.getWriter().write(result);
 	}
 
@@ -194,7 +213,7 @@ public class SimliController {
 		SimliResult result = simliService.getSimliResult(map);
 
 		// 결과 O:심리검사 완료, X:심리검사 안 함 
-		response.setContentType("charset=UTF-8");
+		response.setContentType("text/html; charset=utf-8");
 		response.getWriter().write(JSONObject.fromObject(result).toString());
 	}
 
@@ -229,7 +248,7 @@ public class SimliController {
 		}		
 		
 		
-		response.setContentType("charset=UTF-8");
+		response.setContentType("text/html; charset=utf-8");
 		response.getWriter().write(JSONArray.fromObject(SimliReview).toString());
 	}
 	

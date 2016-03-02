@@ -9,8 +9,8 @@
 
 
 //var rootPath = "http://210.127.55.205/HealthCare/"; //REAL
-//var rootPath = "http://210.127.55.205:82/HealthCare/"; //dev
-var rootPath = "http://192.168.0.48/HealthCare/";  //local jaeseon
+var rootPath = "http://210.127.55.205:82/HealthCare/"; //dev
+//var rootPath = "http://192.168.0.48/HealthCare/";  //local jaeseon
 
 /**
  * 2014.02.10 DongQ 추가

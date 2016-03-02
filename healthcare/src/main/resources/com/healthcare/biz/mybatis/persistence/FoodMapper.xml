@@ -136,7 +136,6 @@
 		        AND B.STU_ALG_SET_IN_STATE='Y'
 		where
 		    alg_food_state = 'Y'
-		        and ALG_FOOD_MAIN_YN = 'Y'
 		order by alg_food_name
 	</select>
 	
@@ -164,7 +163,6 @@
 		    allergy_food_info
 		where
 		    ALG_FOOD_NAME like concat('%', #{search_alg}, '%')
-		    and alg_food_main_yn='N'
 		order by alg_food_name
 	</select>
 	
@@ -268,8 +266,7 @@
 				and (
 						STU_ALG_SET_IN_STATE_TEMP IS NULL OR STU_ALG_SET_IN_STATE_TEMP &lt;&gt; 'N'
 					)
-				or A.STU_ALG_SET_IN_STATE_TEMP = 'Y')
-			and B.alg_food_main_yn='N'
+				or A.STU_ALG_SET_IN_STATE_TEMP = 'Y')			
 		order by alg_food_name
 	</select>
 	
@@ -347,6 +344,65 @@
 		limit 2
 	</select>
 	
+	<select id="getDinnerMenuList2" parameterType="Food" resultType="java.util.Map">
+		<!-- SELECT 
+		    DINNER_MENU_ID as menu_id,
+		    DINNER_MENU_PHOTO as menu_photo,
+		    DINNER_MENU_CAL as menu_cal,
+		    ifnull(DINNER_MENU_MEAL,'') as menu_meal,
+		    ifnull(DINNER_MENU_SOUP,'') as menu_souop,
+		    ifnull(DINNER_MENU_SIDE1,'') as menu_side1,
+		    ifnull(DINNER_MENU_SIDE2,'') as menu_side2,
+		    ifnull(DINNER_MENU_SIDE3,'') as menu_side3,
+		    ifnull(DINNER_MENU_DESSERT,'') as menu_dessert,
+		    ifnull(DINNER_MENU_SAUCE,'') as menu_sauce,
+		    DINNER_MENU_CARBOHY as carbohy,
+		    DINNER_MENU_PROTEIN as protein,
+		    DINNER_MENU_FAT as fat,
+		    DINNER_MENU_VITAMIN_A as vitamin_a,
+		    DINNER_MENU_VITAMIN_C as vitamin_c,
+		    DINNER_MENU_CALCIUM as calcium
+		from
+		    dinner_menu_info
+		where
+		    DINNER_MENU_CAL between #{need_min_cal} AND #{need_max_cal} -->
+		select * from (
+		 SELECT 
+		    DINNER_MENU_ID as menu_id,
+		    DINNER_MENU_PHOTO as menu_photo,
+		    DINNER_MENU_CAL as menu_cal,
+		    ifnull(DINNER_MENU_MEAL,'') as menu_meal,
+		    ifnull(DINNER_MENU_SOUP,'') as menu_souop,
+		    ifnull(DINNER_MENU_SIDE1,'') as menu_side1,
+		    ifnull(DINNER_MENU_SIDE2,'') as menu_side2,
+		    ifnull(DINNER_MENU_SIDE3,'') as menu_side3,
+		    ifnull(DINNER_MENU_DESSERT,'') as menu_dessert,
+		    ifnull(DINNER_MENU_SAUCE,'') as menu_sauce,
+		    DINNER_MENU_CARBOHY as carbohy,
+		    DINNER_MENU_PROTEIN as protein,
+		    DINNER_MENU_FAT as fat,
+		    DINNER_MENU_VITAMIN_A as vitamin_a,
+		    DINNER_MENU_VITAMIN_C as vitamin_c,
+		    DINNER_MENU_CALCIUM as calcium
+		from
+		    dinner_menu_info
+		where
+		   DINNER_MENU_CAL between #{need_min_cal} and #{need_max_cal}
+           AND DINNER_MENU_STATE = 'Y'
+		        AND DINNER_MENU_ID NOT IN (SELECT 
+		            B.DINNER_MENU_ID
+		        FROM
+		            student_allergy_set_input A
+		                JOIN
+		            dinner_allergy_mapping B ON A.ALG_FOOD_ID = B.ALG_FOOD_ID
+		        WHERE
+		            STUDENT_ID = #{userId}
+		                AND A.STU_ALG_SET_IN_STATE = 'Y')
+		                order by rand() limit 60) z
+                        order by menu_meal DESC;    
+		        
+	</select>
+	
 	<select id="getDinnerInfo" parameterType="java.lang.String" resultType="Food">
 		SELECT 
 		    DINNER_MENU_ID as menu_id,
@@ -382,6 +438,18 @@
 		    DINNER_MENU_STATE = 'Y'
 	</select>
 	
+	<select id="getCalMinMax2" parameterType="java.lang.Integer" resultType="Food">
+		select 
+		    NEED_CAL_MIN as need_min_cal,
+		    NEED_CAL_MAX as need_max_cal
+		from
+		    age_need_calory
+		where
+		    AGE_MIN &lt;= #{age} and AGE_MAX &gt;= #{age}
+	</select>
+	
+	
+	
 	<select id="getAgeMinMax" resultType="Food">
 		select 
 		    min(age_group_cate_from * 1) as min_age,
@@ -391,4 +459,20 @@
 		where
 		    AGE_GROUP_CATE_STATE = 'Y'
 	</select>
+	
+	<select id="getDinnerListAll" resultType="Food">
+		select dinner_menu_id as menu_id, al1, al2, al3, al4, al5, al6, al7, al8, al9, al10, al11, al12, al13
+		from dinner_menu_info
+		where DINNER_MENU_STATE = 'Y'
+	</select>
+	
+	<insert id="getAlgMapping" parameterType="java.util.Map">
+		INSERT INTO dinner_allergy_mapping(
+		  dinner_menu_id
+		  ,ALG_FOOD_ID
+		) VALUES (
+		  #{menuId}  
+		  ,#{algId}  
+		 )
+	</insert>
 </mapper>

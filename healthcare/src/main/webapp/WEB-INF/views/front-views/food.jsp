@@ -236,7 +236,7 @@ $(document).ready(function() {
 						}
 						//저녁 추천 식단 제외할때  주석처리 
 					
-					//pasteTxt += '<div class="btnDiv" onclick="chkSetInfo();"><%= pUserName + pUserSexStr%> 저녁추천식단</div>';    
+					pasteTxt += '<div class="btnDiv" onclick="chkSetInfo();"><%= pUserName + pUserSexStr%> 저녁추천식단</div>';    
 				
 						if (remain > 0) { 
 							pasteTxt += '</div>';
@@ -327,78 +327,99 @@ function showStuInfo() {
 			$("#dinnerVitaminA").html(val.vitamin_a);
 			$("#dinnerVitaminC").html(val.vitamin_c);
 			$("#dinnerCalcium").html(val.calcium);*/
+			var menuList = JSON.stringify(val.menu_list);
+			var menuObj = {"value":escape(menuList)};
 			
 			var stuInfo = '';
 			stuInfo += '<div class="title">신체정보</div>';
 			stuInfo += '<table class="menuInfoTb">';
 			stuInfo += '<colgroup>';
-			stuInfo += '<col style="width:25%"/>';
-			stuInfo += '<col style="width:25%"/>';
-			stuInfo += '<col style="width:25%"/>';
-			stuInfo += '<col style="width:25%"/>';
 			stuInfo += '</colgroup>	';
 			stuInfo += '<tr>';
 			stuInfo += '<th>신장</th>';
 			stuInfo += '<th>체중</th>';
 			stuInfo += '<th>BMI</th>';
-			stuInfo += '<th>필요칼로리</th>';
 			stuInfo += '</tr>';
 			stuInfo += '<tr>';
 			stuInfo += '<td><span id="stuHeight">'+val.height+'</span></td>';
 			stuInfo += '<td><span id="stuWeight">'+val.weight+'</span></td>';
 			stuInfo += '<td><span id="stuBMI">'+val.bmi+'</span></td>';
-			stuInfo += '<td><span id="stuKcal">'+(Math.round(val.cal*3))+'</span></td>';
 			stuInfo += '</tr>';
 			stuInfo += '</table>';
 			stuInfo += '';
 			stuInfo += '<div class="title">저녁 추천식단 영양량</div>';
-			stuInfo += '<table class="menuInfoTb">';
-			stuInfo += '<colgroup>';
-			stuInfo += '<col style="width:25%"/>';
-			stuInfo += '<col style="width:25%"/>';
-			stuInfo += '<col style="width:25%"/>';
-			stuInfo += '<col style="width:25%"/>';
-			stuInfo += '</colgroup>';
-			stuInfo += '<tr>';
-			stuInfo += '<th>칼로리</th>';
-			stuInfo += '<td><span id="dinnerCal">'+val.cal+'</span>kal</td>';
-			stuInfo += '<th>칼슘</th>';
-			stuInfo += '<td><span id="dinnerCalcium">'+val.calcium+'</span>mg</td>';
-			stuInfo += '</tr>';
-			stuInfo += '<tr>';
-			stuInfo += '<th>탄수화물</th>';
-			stuInfo += '<td><span id="dinnerCarbohy">'+val.carbohy+'</span>g</td>';
-			stuInfo += '<th>비타민A</th>';
-			stuInfo += '<td><span id="dinnerVitaminA">'+val.vitamin_a+'</span>R.E</td>';
-			stuInfo += '</tr>';
-			stuInfo += '<tr>';
-			stuInfo += '<th>단백질</th>';
-			stuInfo += '<td><span id="dinnerProtein">'+val.protein+'</span>g</td>';
-			stuInfo += '<th>비타민C</th>';
-			stuInfo += '<td><span id="dinnerVitaminC">'+val.vitamin_c+'</span>mg</td>';
-			stuInfo += '</tr>';
-			stuInfo += '<tr>';
-			stuInfo += '<th>지방</th>';
-			stuInfo += '<td><span id="dinnerFat">'+val.fat+'</span>g</td>';
-			stuInfo += '<th>기타</th>';
-			stuInfo += '<td>-</td>';
-			stuInfo += '</tr>';
-			stuInfo += '</table>';
-			stuInfo += '<table class="btnTable">';
-			stuInfo += '<colgroup>';
-			stuInfo += '<col style="width:75%"/>';
-			stuInfo += '<col style="width:5%"/>';
-			stuInfo += '<col style="width:20%"/>';
-			stuInfo += '</colgroup>	';
-			stuInfo += '<tr>';
-			stuInfo += '<th><div onclick="showSelectMenu(\'NEW\');">저녁 식단 메뉴</div></th>';
-			stuInfo += '<td></td>';
-			stuInfo += '<td><div onclick="showMenuSetting();">설정</div></td>';
-			stuInfo += '</tr>';
-			stuInfo += '</table>';
-			stuInfo += '';
+	console.log(val);
+			if(val.menu_list[0].menu_cal!=null) {
+				stuInfo += '<table class="menuInfoTb">';
+				stuInfo += '<colgroup>';
+				stuInfo += '<col style="width:25%"/>';
+				stuInfo += '<col style="width:25%"/>';
+				stuInfo += '<col style="width:25%"/>';
+				stuInfo += '<col style="width:25%"/>';
+				stuInfo += '</colgroup>';
+				stuInfo += '<tr>';
+				stuInfo += '<th>칼로리</th>';
+				stuInfo += '<td><span id="dinnerCal">'+val.menu_list[0].menu_cal+'</span>kal</td>';
+				stuInfo += '<th>칼슘</th>';
+				stuInfo += '<td><span id="dinnerCalcium">'+val.menu_list[0].calcium+'</span>mg</td>';
+				stuInfo += '</tr>';
+				stuInfo += '<tr>';
+				stuInfo += '<th>탄수화물</th>';
+				stuInfo += '<td><span id="dinnerCarbohy">'+val.menu_list[0].carbohy+'</span>g</td>';
+				stuInfo += '<th>비타민A</th>';
+				stuInfo += '<td><span id="dinnerVitaminA">'+val.menu_list[0].vitamin_a+'</span>R.E</td>';
+				stuInfo += '</tr>';
+				stuInfo += '<tr>';
+				stuInfo += '<th>단백질</th>';
+				stuInfo += '<td><span id="dinnerProtein">'+val.menu_list[0].protein+'</span>g</td>';
+				stuInfo += '<th>비타민C</th>';
+				stuInfo += '<td><span id="dinnerVitaminC">'+val.menu_list[0].vitamin_c+'</span>mg</td>';
+				stuInfo += '</tr>';
+				stuInfo += '<tr>';
+				stuInfo += '<th>지방</th>';
+				stuInfo += '<td><span id="dinnerFat">'+val.menu_list[0].fat+'</span>g</td>';
+				stuInfo += '<th>기타</th>';
+				stuInfo += '<td>-</td>';
+				stuInfo += '</tr>';
+				stuInfo += '</table>';
+				stuInfo += '<table class="btnTable">';
+				stuInfo += '<colgroup>';
+				stuInfo += '<col style="width:75%"/>';
+				stuInfo += '<col style="width:5%"/>';
+				stuInfo += '<col style="width:20%"/>';
+				stuInfo += '</colgroup>	';
+				stuInfo += '<tr>';
+				stuInfo += '<th><div id="showNewMenu">저녁 식단 메뉴</div></th>';
+				stuInfo += '<td></td>';
+				stuInfo += '<td><div onclick="showMenuSetting();">설정</div></td>';
+				stuInfo += '</tr>';
+				stuInfo += '</table>';
+				stuInfo += '';
+			} else {
+				stuInfo += '<table class="menuInfoTb">';
+				stuInfo += '<colgroup>';
+				stuInfo += '<col style="width:100%"/>';
+				stuInfo += '</colgroup>';
+				stuInfo += '<tr>';
+				stuInfo += '<td>추천 식단이 없습니다.</td>';
+				stuInfo += '</table>';
+				stuInfo += '<table class="btnTable">';
+				stuInfo += '<colgroup>';
+				stuInfo += '<col style="width:100%"/>';
+				stuInfo += '</colgroup>	';
+				stuInfo += '<tr>';
+				stuInfo += '<td><div onclick="showMenuSetting();">설정</div></td>';
+				stuInfo += '</tr>';
+				stuInfo += '</table>';
+				stuInfo += '';
+			}
 
 			$(".stuInfo").html(stuInfo);	
+			
+			$("#showNewMenu").on("click",function() {
+				//onclick="showSelectMenu(\'NEW\','+menuObj+');"
+				showSelectMenu("NEW",val.menu_list);
+			});
 	    },
 		error : function () {
 			alert('error');
@@ -683,49 +704,34 @@ function saveSetting() {
 	});	
 }
 // 저녁식단메뉴
-function showSelectMenu(mode) {
+function showSelectMenu(mode,val) {
 	$(".menuInfo").hide();
 	$(".stuInfo").hide();
 	$(".selectMenu").show();
 
 	if(mode=="NEW") {
-	var selectMenu = "";
-	selectMenu += '<div class="title" style="background-color:#bbb58e;">식단 선택</div>';
-	selectMenu += '<div id="dinnerMenuListWrap">';
-	selectMenu += '</div>';
-	selectMenu += '';
-	selectMenu += '<table class="btnTable">';
-	selectMenu += '<colgroup>';
-	selectMenu += '<col style="width:100%"/>';
-	selectMenu += '</colgroup>';
-	selectMenu += '<tr>';
-	selectMenu += '<th><div onclick="showLunchMenu();">점심 식단</div></th>';
-	selectMenu += '</tr>';
-	selectMenu += '</table>';
-	selectMenu += '';
-	selectMenu += '';
-	
-	$(".selectMenu").html(selectMenu);
-
+		var selectMenu = "";
+		selectMenu += '<div class="title" style="background-color:#bbb58e;">식단 선택</div>';
+		selectMenu += '<div id="dinnerMenuListWrap">';
+		selectMenu += '</div>';
+		selectMenu += '';
+		selectMenu += '<table class="btnTable">';
+		selectMenu += '<colgroup>';
+		selectMenu += '<col style="width:100%"/>';
+		selectMenu += '</colgroup>';
+		selectMenu += '<tr>';
+		selectMenu += '<th><div onclick="showLunchMenu();">점심 식단</div></th>';
+		selectMenu += '</tr>';
+		selectMenu += '</table>';
+		selectMenu += '';
+		selectMenu += '';
 		
-	var dinnerCal = $("#dinnerCal").html();
-	var pars = "{\"cal\":\"" + dinnerCal + "\"" 
-	+",\"userId\":\"" + pUserId + "\"" 
-	+ " }";
-	var searchResult = '';
-	$.ajax({ 
-		type : "post",
-		dataType : "json",
-		url : rootPath+"food/getDinnerMenuList", // 나의 알러지 가져오기
-		contentType : 'application/json',
-		cache : false,
-		data : pars,
-		success : function(jo){
-			var val = jo.value;                                                                                                                
-			var valLen = val.length;       
-			var dinnerMenuList = '';                                                                                                                                   
-			if(0 < valLen){     
-				for(var i=0; i < valLen; i++ ){   
+		$(".selectMenu").html(selectMenu);
+	    var valLen = val.length;
+		if(valLen>0){     
+			var dinnerMenuList = "";
+			for(var i=0; i < valLen; i++ ){   
+				if(val[i].menu_id!=null) {
 					dinnerMenuList += '<table onclick="showMenuInfo(\''+val[i].menu_id+'\')">';
 					dinnerMenuList += '<colgroup>';
 					dinnerMenuList += '<col style="width:50%"/>';
@@ -747,15 +753,10 @@ function showSelectMenu(mode) {
 					dinnerMenuList += '</ul></td>';
 					dinnerMenuList += '</tr>';
 					dinnerMenuList += '<table>';
-				}
+				} 
 			}
-			$("#dinnerMenuListWrap").html(dinnerMenuList);
-	    },
-		error : function () {
-			console.log('error');
-			return false;
 		}
-	});	
+		$("#dinnerMenuListWrap").html(dinnerMenuList);
 	}
 }
 // 저녁식단 상세 정보

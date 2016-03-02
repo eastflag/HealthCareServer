@@ -42,8 +42,117 @@ public class Food {
 	String min_age = "";
 	String max_age = "";
 	
+	int need_min_cal;
+	int need_max_cal;
+	
+	
+	String al1     = "";
+	String al2     = "";
+	String al3     = "";
+	String al4     = "";
+	String al5     = "";
+	String al6     = "";
+	String al7     = "";
+	String al8     = "";
+	String al9     = "";
+	String al10    = "";
+	String al11    = "";
+	String al12    = "";
+	String al13    = "";
+
+	
 
 
+	public String getAl1() {
+		return al1;
+	}
+	public void setAl1(String al1) {
+		this.al1 = al1;
+	}
+	public String getAl2() {
+		return al2;
+	}
+	public void setAl2(String al2) {
+		this.al2 = al2;
+	}
+	public String getAl3() {
+		return al3;
+	}
+	public void setAl3(String al3) {
+		this.al3 = al3;
+	}
+	public String getAl4() {
+		return al4;
+	}
+	public void setAl4(String al4) {
+		this.al4 = al4;
+	}
+	public String getAl5() {
+		return al5;
+	}
+	public void setAl5(String al5) {
+		this.al5 = al5;
+	}
+	public String getAl6() {
+		return al6;
+	}
+	public void setAl6(String al6) {
+		this.al6 = al6;
+	}
+	public String getAl7() {
+		return al7;
+	}
+	public void setAl7(String al7) {
+		this.al7 = al7;
+	}
+	public String getAl8() {
+		return al8;
+	}
+	public void setAl8(String al8) {
+		this.al8 = al8;
+	}
+	public String getAl9() {
+		return al9;
+	}
+	public void setAl9(String al9) {
+		this.al9 = al9;
+	}
+	public String getAl10() {
+		return al10;
+	}
+	public void setAl10(String al10) {
+		this.al10 = al10;
+	}
+	public String getAl11() {
+		return al11;
+	}
+	public void setAl11(String al11) {
+		this.al11 = al11;
+	}
+	public String getAl12() {
+		return al12;
+	}
+	public void setAl12(String al12) {
+		this.al12 = al12;
+	}
+	public String getAl13() {
+		return al13;
+	}
+	public void setAl13(String al13) {
+		this.al13 = al13;
+	}
+	public int getNeed_min_cal() {
+		return need_min_cal;
+	}
+	public void setNeed_min_cal(int need_min_cal) {
+		this.need_min_cal = need_min_cal;
+	}
+	public int getNeed_max_cal() {
+		return need_max_cal;
+	}
+	public void setNeed_max_cal(int need_max_cal) {
+		this.need_max_cal = need_max_cal;
+	}
 	public String getMin_age() {
 		return min_age;
 	}

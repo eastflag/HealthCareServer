@@ -1,6 +1,8 @@
 package com.healthcare.controller;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,18 +58,23 @@ public class FoodController {
 		return result;
 	}
 	
-	@RequestMapping(value = {"/food/getDinnerMenuList"}, method = {RequestMethod.GET, RequestMethod.POST})
+	/*@RequestMapping(value = {"/food/getDinnerMenuList"}, method = {RequestMethod.GET, RequestMethod.POST})
 	public @ResponseBody Result<?> getDinnerMenuList(@RequestBody Food reqFood)  {
 		logger.info("/food/getDinnerMenuList");
 
-		String cal = reqFood.getCal();
-		System.out.println(">>> getDinnerMenuList cal:"+cal+" userid:"+reqFood.getUserId());
-		Result<List<Map<String, Object>>> result = new Result<>();
-		List<Map<String, Object>> list = foodService.getDinnerMenuList(reqFood);
-		result.setValue(list);
+		//String cal = reqFood.getCal();
+		//System.out.println(">>> getDinnerMenuList cal:"+cal+" userid:"+reqFood.getUserId());
+		//Result<List<Map<String, Object>>> result = new Result<>();
+		//List<Map<String, Object>> list = foodService.getDinnerMenuList(reqFood);
+		//result.setValue(list);
+		
+
+		List<Map<String, Object>> list = foodService.getDinnerMenuList2(reqFood.getMenu_id());
+		
+		result.setValue(list3);
 		
 		return result;
-	}
+	}*/
 	
 	@RequestMapping(value = {"/food/getDinnerInfo"}, method = {RequestMethod.GET, RequestMethod.POST})
 	public @ResponseBody Result<?> getDinnerInfo(@RequestBody Map<String, Object> reqMap)  {
@@ -86,7 +93,7 @@ public class FoodController {
 	public @ResponseBody Result<?> getStudentDinnerInfo(@RequestBody Food reqFood){
 		logger.info("/food/getStudentDinnerInfo: RequestVo" + reqFood);
 
-		Result<Food> result = new Result<>();
+		/*Result<Food> result = new Result<>();
 		
 		BodyMeasureSummary vo = bodyMeasureService.getSummary(reqFood.getUserId());
 
@@ -190,8 +197,99 @@ public class FoodController {
 		} else {
 			result.setResult(ReturnCode.notExistMeasureInfo);
 			
+		}*/
+		
+		BodyMeasureSummary vo = bodyMeasureService.getSummary(reqFood.getUserId());
+		
+		int age = Integer.parseInt(vo.getAge());
+		
+		Food calInfo = foodService.getCalMinMax2(age);//나이별 필요 칼로리 가져오기
+		calInfo.setUserId(reqFood.getUserId());
+		
+		Result<Map<String, Object>> result = new Result<>();
+		
+		List<Map<String, Object>> list = foodService.getDinnerMenuList2(calInfo); //랜덤식단 제공 및 알러지 필터링
+		List<Map<String, Object>> list2 = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> list3 = new ArrayList<Map<String, Object>>();
+		
+
+		Map<String, Object> temp = new HashMap<String, Object>();
+		int size = list.size();
+
+		logger.debug("====================size:"+size);
+		if(size<60) {
+			for(int i=0; i<60-size; i++) {
+				list.add(temp);
+			}
+		}
+
+		String grade ="";
+		if(vo.getBmiStatus().length()==4) {
+			grade = vo.getBmiStatus().substring(0, 2);
+		}else if (vo.getBmiStatus().length()==5) {
+			grade = vo.getBmiStatus().substring(0, 3);
+		}else if (vo.getBmiStatus().length()==6) {
+			grade = vo.getBmiStatus().substring(0, 4);
+		}
+
+		logger.debug("====================체형:"+grade);
+		if("저체중".equals(grade)) {
+			for (int i = 0; i<=9; i++)
+				list2.add(list.get(i)); //등급에 따라 추출된 식단
+			
+		}else if ("정상".equals(grade)) {
+			for (int i = 10; i<=19; i++)	
+				list2.add(list.get(i));
+		
+		}else if ("과체중".equals(grade)) {
+			for (int i = 20; i<=29; i++)
+				list2.add(list.get(i));
+			
+		}else if ("비만".equals(grade)) {
+			for (int i = 30; i<=39; i++)
+				list2.add(list.get(i));
+			
+		}else if ("중도비만".equals(grade)) {
+			for (int i = 40; i<=49; i++)
+				list2.add(list.get(i));
+			
+		}else if ("고도비만".equals(grade)) {
+			for (int i = 50; i<=59; i++)
+				list2.add(list.get(i));
 		}
 		
+		System.out.println("두번쨰:" +list2);
+		
+		Food stuBkstInfo = foodService.getStuBkstInfo((String)reqFood.getUserId());
+
+		logger.debug("====================아침:"+stuBkstInfo.getBkst_id());
+		//아침식사 여부에 따른 식단 추리기
+		if ("5".equals(stuBkstInfo.getBkst_id())) { // 안먹는다 
+			for(int i =0; i<=1; i++)
+				list3.add(list2.get(i));
+		}else if ("2".equals(stuBkstInfo.getBkst_id())) { // 간단A
+			for(int i =2; i<=3; i++)
+				list3.add(list2.get(i));
+		}else if ("3".equals(stuBkstInfo.getBkst_id())) { // 간단B
+			for(int i =4; i<=5; i++)
+				list3.add(list2.get(i));
+		}else if ("4".equals(stuBkstInfo.getBkst_id())) { // 간단C
+			for(int i =6; i<=7; i++)
+				list3.add(list2.get(i));
+		}else if ("1".equals(stuBkstInfo.getBkst_id())) { // 정상
+			for(int i =8; i<=9; i++)
+				list3.add(list2.get(i));
+		}	
+		
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("height", vo.getHeight());
+		map.put("weight", vo.getWeight());
+		map.put("bmi", vo.getBmi());
+		map.put("menu_id", "");
+		map.put("menu_list", list3);
+		
+		result.setValue(map);
 		return result;
 	}
 	
@@ -317,5 +415,78 @@ public class FoodController {
 		
 		return result;
 	}
+	
+	/*@RequestMapping(value = {"/food/algSetting"}, method = {RequestMethod.GET, RequestMethod.POST})
+	public @ResponseBody Result<?> setAlg()  {
+		logger.info("/food/saveStuAlg");
+		  
+		Result<String> result = new Result<>();
+		
+		List<Food> dinnerlist = foodService.getDinnerListAll();
 
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		if(dinnerlist!=null && dinnerlist.size()>0) {
+			for(int i=0; i<dinnerlist.size(); i++) {
+				String menuId = dinnerlist.get(i).getMenu_id();
+				map.put("menuId", menuId);
+
+				if(dinnerlist.get(i).getAl1()!=null && dinnerlist.get(i).getAl1().equals("o")) {
+					map.put("algId", "1");
+					foodService.getAlgMapping(map);
+				}
+				if(dinnerlist.get(i).getAl2()!=null && dinnerlist.get(i).getAl2().equals("o")) {
+					map.put("algId", "2");
+					foodService.getAlgMapping(map);
+				}
+				if(dinnerlist.get(i).getAl3()!=null && dinnerlist.get(i).getAl3().equals("o")) {
+					map.put("algId", "3");
+					foodService.getAlgMapping(map);
+				}
+				if(dinnerlist.get(i).getAl4()!=null && dinnerlist.get(i).getAl4().equals("o")) {
+					map.put("algId", "4");
+					foodService.getAlgMapping(map);
+				}
+				if(dinnerlist.get(i).getAl5()!=null && dinnerlist.get(i).getAl5().equals("o")) {
+					map.put("algId", "5");
+					foodService.getAlgMapping(map);
+				}
+				if(dinnerlist.get(i).getAl6()!=null && dinnerlist.get(i).getAl6().equals("o")) {
+					map.put("algId", "6");
+					foodService.getAlgMapping(map);
+				}
+				if(dinnerlist.get(i).getAl7()!=null && dinnerlist.get(i).getAl7().equals("o")) {
+					map.put("algId", "7");
+					foodService.getAlgMapping(map);
+				}
+				if(dinnerlist.get(i).getAl8()!=null && dinnerlist.get(i).getAl8().equals("o")) {
+					map.put("algId", "8");
+					foodService.getAlgMapping(map);
+				}
+				if(dinnerlist.get(i).getAl9()!=null && dinnerlist.get(i).getAl9().equals("o")) {
+					map.put("algId", "9");
+					foodService.getAlgMapping(map);
+				}
+				if(dinnerlist.get(i).getAl10()!=null && dinnerlist.get(i).getAl10().equals("o")) {
+					map.put("algId", "10");
+					foodService.getAlgMapping(map);
+				}
+				if(dinnerlist.get(i).getAl11()!=null && dinnerlist.get(i).getAl11().equals("o")) {
+					map.put("algId", "11");
+					foodService.getAlgMapping(map);
+				}
+				if(dinnerlist.get(i).getAl12()!=null && dinnerlist.get(i).getAl12().equals("o")) {
+					map.put("algId", "12");
+					foodService.getAlgMapping(map);
+				}
+				if(dinnerlist.get(i).getAl13()!=null && dinnerlist.get(i).getAl13().equals("o")) {
+					map.put("algId", "13");
+					foodService.getAlgMapping(map);
+				}
+			}
+		}
+		
+		return result;
+	}
+*/
 }

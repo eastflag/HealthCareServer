@@ -1,6 +1,7 @@
 package com.healthcare.biz.service.impl;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,23 +39,19 @@ public class SimliServiceImpl  implements SimliService{
 		return simliMapper.getSimliAnswer(questId);
 	}
 
-	@Override
-	public int insertSimliStudentResult(Map<String, Object> map) throws SQLException {
+	int insertSimliStudentResult(Map<String, Object> map) throws SQLException {
 		return simliMapper.insertSimliStudentResult(map);
 	}
 
-	@Override
-	public int updateSimliStudentResult(Map<String, Object> map) throws SQLException {
+	int updateSimliStudentResult(Map<String, Object> map) throws SQLException {
 		return simliMapper.updateSimliStudentResult(map);
 	}
 
-	@Override
-	public void deleteSimliStudentResult(Map<String, Object> map) throws SQLException {
+	void deleteSimliStudentResult(Map<String, Object> map) throws SQLException {
 		simliMapper.deleteSimliStudentResult(map);
 	}
 
-	@Override
-	public int getSimliResultQuestCnt(Map<String, Object> map) throws SQLException {
+	int getSimliResultQuestCnt(Map<String, Object> map) throws SQLException {
 		return simliMapper.getSimliResultQuestCnt(map);
 	}
 
@@ -82,6 +79,52 @@ public class SimliServiceImpl  implements SimliService{
 	public List<SimliReviewAnswer> getSimliAnswerReview(Map<String, Object> map) throws SQLException {
 		return simliMapper.getSimliAnswerReview(map);
 	}
+
+	@Override
+	public int saveSimliResult(String[] answerList, String userId) {
+		int result = 0;
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userId", userId);
+
+		int sum=0;
+
+		try {
+			for(int i=0; i<answerList.length; i++) {
+				String simliId = answerList[i].substring(0, 6);
+				String questId = answerList[i].substring(0, 9);
+	
+				map.put("simliId", simliId);
+				map.put("questId", questId);
+				map.put("answerId", answerList[i]);
+				int cnt;
+					cnt = getSimliResultQuestCnt(map);
+				
+				if(cnt==0) {
+					int insert = insertSimliStudentResult(map);
+					if(insert==0) {
+						sum++;
+					}
+				} else {
+					int update = updateSimliStudentResult(map);
+					if(update==0) {
+						sum++;
+					}
+				}
+			}
+			
+			if(sum>0) {
+				deleteSimliStudentResult(map);
+				result = 1; // 실패
+			}
+		} catch (SQLException e) {
+			result = 1;
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
 
 
 

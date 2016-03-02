@@ -1,6 +1,7 @@
 package com.healthcare.biz.service;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,14 +21,6 @@ public interface SimliService {
 
 	List<SimliAnswer> getSimliAnswer(String questId) throws SQLException;
 
-	int insertSimliStudentResult(Map<String, Object> map) throws SQLException;
-
-	int updateSimliStudentResult(Map<String, Object> map) throws SQLException;
-
-	void deleteSimliStudentResult(Map<String, Object> map) throws SQLException;
-
-	int getSimliResultQuestCnt(Map<String, Object> map) throws SQLException;
-
 	int getSimliResultCnt(Map<String, Object> map) throws SQLException;
 
 	int getSimliResultScore(Map<String, Object> map) throws SQLException;
@@ -37,5 +30,7 @@ public interface SimliService {
 	List<SimliReview> getSimliQuestionListReview(String simliId) throws SQLException;
 
 	List<SimliReviewAnswer> getSimliAnswerReview(Map<String, Object> map) throws SQLException;
+
+	int saveSimliResult(String[] answerList, String userId);
 
 }

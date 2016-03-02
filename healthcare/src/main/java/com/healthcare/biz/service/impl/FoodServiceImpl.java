@@ -146,6 +146,11 @@ public class FoodServiceImpl implements FoodService{
 	public List<Map<String, Object>> getDinnerMenuList(Food reqFood) {
 		return foodMapper.getDinnerMenuList(reqFood);
 	}
+	
+	@Override
+	public List<Map<String, Object>> getDinnerMenuList2(Food calInfo) {
+		return foodMapper.getDinnerMenuList2(calInfo);
+	}
 
 	@Override
 	public Food getDinnerInfo(String menu_id) {
@@ -156,6 +161,11 @@ public class FoodServiceImpl implements FoodService{
 	public Food getCalMinMax() {
 		return foodMapper.getCalMinMax();
 	}
+	
+	@Override
+	public Food getCalMinMax2(int age) {
+		return foodMapper.getCalMinMax2(age);
+	}
 
 	@Override
 	public Food getAgeMinMax() {
@@ -165,5 +175,15 @@ public class FoodServiceImpl implements FoodService{
 	@Override
 	public int cntSetInfo(Food reqFood) {
 		return foodMapper.cntSetInfo(reqFood);
+	}
+
+	@Override
+	public List<Food> getDinnerListAll() {
+		return foodMapper.getDinnerListAll();
+	}
+
+	@Override
+	public void getAlgMapping(Map<String, Object> map) {
+		foodMapper.getAlgMapping(map);
 	}
 }

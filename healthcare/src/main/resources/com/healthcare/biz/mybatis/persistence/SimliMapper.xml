@@ -7,8 +7,10 @@
 	<resultMap id="SimliType" type="SimliType">
         <result property="simliId"    		column="simli_id" />
         <result property="simliNm"    		column="simli_nm" />
-        <result property="intro"    		column="intro" />
-        <result property="outro"    		column="outro" />
+        <result property="introVideo"    	column="intro_video" />
+        <result property="outroVideo"    	column="outro_video" />
+        <result property="introImg"    		column="intro_img" />
+        <result property="outroImg"    		column="outro_img" />
         <result property="useYN"    		column="use_yn" />
     </resultMap> 
 
@@ -35,7 +37,7 @@
 
 	<select id="getSimliTypeList" parameterType="java.lang.Integer" resultMap="SimliType">
 		SELECT 
-		    simli_id, simli_nm, intro, outro, use_yn
+		    simli_id, simli_nm, intro_video, outro_video, intro_img, outro_img, use_yn
 		FROM
 		    simli_type
 		WHERE

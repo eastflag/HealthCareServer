@@ -42,8 +42,16 @@ public interface FoodService {
 	List<Map<String, Object>> getDinnerMenuList(Food reqFood);
 
 	Food getCalMinMax();
+	
+	Food getCalMinMax2(int age);
 
 	Food getAgeMinMax();
 
 	int cntSetInfo(Food reqFood);
+
+	List<Map<String, Object>> getDinnerMenuList2(Food calInfo);
+
+	List<Food> getDinnerListAll();
+
+	void getAlgMapping(Map<String, Object> map);
 }

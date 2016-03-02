@@ -25,7 +25,11 @@ public interface FoodMapper {
 	String getBmiStandAmt(String bmi_status);
 	Food getDinnerInfo(String menu_id);
 	List<Map<String, Object>> getDinnerMenuList(Food reqFood);
+	List<Map<String, Object>> getDinnerMenuList2(Food calInfo);
 	Food getCalMinMax();
+	Food getCalMinMax2(int age);
 	Food getAgeMinMax();
 	int cntSetInfo(Food reqFood);
+	List<Food> getDinnerListAll();
+	void getAlgMapping(Map<String, Object> map);
 }
