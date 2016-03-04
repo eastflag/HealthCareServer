@@ -118,5 +118,35 @@
 				and school_register.School_ID = school_info.School_ID
 				and school_register.School_Year = DATE_FORMAT(now(), '%Y');
 	</select -->
+	
+	
+	<select id="getStudentListByYearSchoolGradClass" parameterType="string" resultType="Student">
+		SELECT 
+		    student_info.Student_ID AS userId,
+		    student_info.STU_Name AS name,
+		    student_info.STU_Sex AS sex,
+		    CONVERT( CONVERT( DATE_FORMAT(NOW(), '%Y') , UNSIGNED) - CONVERT( SUBSTRING(student_info.STU_Birth, 1, 4) , UNSIGNED) + 1 , CHAR) AS age,
+		    DATE_FORMAT(student_info.STU_Birth, '%Y-%m-%d') AS birthDate,
+		    
+		    school_register.school_year as schoolYear,
+		    school_register.school_id as schoolId,
+		    school_register.grade_id as schoolGradeId,
+		    school_register.class as classNumber,
+		    
+		    school_info.address
+		FROM
+		    student_info,
+		    school_register,
+		    school_info
+		WHERE
+		    1 = 1
+		        and school_register.school_year = #{year}
+		        AND school_register.school_id = #{school_id}
+		        AND school_register.grade_id = #{grade_id}
+		        AND school_register.class = #{class_id}
+		        AND student_info.Student_ID = school_register.Student_ID
+		        AND school_register.school_id = school_info.school_id
+		;
+	</select>
 
 </mapper>

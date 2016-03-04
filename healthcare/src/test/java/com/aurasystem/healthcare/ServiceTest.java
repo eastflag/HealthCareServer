@@ -12,14 +12,18 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.healthcare.bean.Growth;
 import com.healthcare.bean.MeasureHistory;
+import com.healthcare.biz.mybatis.domain.ActivityDeviceStudentInfo;
 import com.healthcare.biz.mybatis.domain.AverageItem;
 import com.healthcare.biz.mybatis.domain.BodyMeasureGrade;
 import com.healthcare.biz.mybatis.domain.BodyMeasureSummary;
 import com.healthcare.biz.mybatis.domain.SignUp;
 import com.healthcare.biz.mybatis.domain.Student;
 import com.healthcare.biz.service.BodyMeasureService;
+import com.healthcare.biz.service.SchoolService;
 import com.healthcare.biz.service.SignUpService;
 import com.healthcare.biz.service.StudentService;
+import com.healthcare.common.AES256Util;
+import com.sovate.activity.service.ActivityDeviceService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:./src/main/webapp/WEB-INF/spring/root-context.xml"})
@@ -33,7 +37,34 @@ public class ServiceTest {
 	@Autowired
 	BodyMeasureService bodyMeasureService;
 	
+	@Autowired
+	SchoolService schoolService;
+	
+	@Autowired
+	ActivityDeviceService activityDeviceService;
+	
+	private AES256Util aes = new AES256Util();
+	
 
+	@Test
+	public void schoolList() throws IOException {
+			
+		//ArrayList<SchoolInfo> schoolList = schoolService.getSchoolList();
+			
+		//System.out.println(schoolList);
+		
+		//Student student = studentService.getStudentByUserId("16770");
+		
+		//System.out.println(student);
+		
+		//List<Student> list = studentService.getStudentList("2016", "1", "7", "1");
+		List<ActivityDeviceStudentInfo> list = activityDeviceService.getDevicesStudentMap("2016", "1", "7", "1");
+		
+		System.out.println(list);
+		
+	}
+	
+	
 	//@Test
 	public void testSignUp() throws IOException {
 		
@@ -49,7 +80,7 @@ public class ServiceTest {
 		System.out.println("testSignUp");
 	}
 	
-	@Test
+	//@Test
 	public void testStudent() throws IOException {
 		
 		
@@ -59,7 +90,7 @@ public class ServiceTest {
 		System.out.println("testStudent");
 	}
 
-	@Test
+	//@Test
 	public void testgetSummary() throws IOException {
 		
 		BodyMeasureSummary vo =  bodyMeasureService.getSummary("589");
@@ -76,7 +107,7 @@ public class ServiceTest {
 		System.out.println( new Timestamp(startTime));
 	}
 
-	@Test
+	//@Test
 	public void testgetMeasureGrade() throws IOException {
 		
 		BodyMeasureGrade height =  bodyMeasureService.getHeightMeasureGrade("589");
@@ -88,7 +119,7 @@ public class ServiceTest {
 		System.out.println("weight : " + weight);
 	}
 	
-	@Test
+	//@Test
 	public void testgetHeight() throws IOException {
 		
 		List<AverageItem> list = bodyMeasureService.getHeightAveragePerClass("589");
@@ -98,7 +129,7 @@ public class ServiceTest {
 		
 	}
 	
-	@Test
+	//@Test
 	public void testgetMeasureHistory() throws IOException {
 		
 		MeasureHistory vo = bodyMeasureService.getHeightMeasureHistory("589", "4");

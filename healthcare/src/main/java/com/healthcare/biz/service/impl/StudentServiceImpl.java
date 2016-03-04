@@ -80,5 +80,27 @@ public class StudentServiceImpl implements StudentService {
 
 		return student_org;
 	}
+	
+	public List<Student> getStudentList(String year, String school_id, String grade_id, String class_id){
+		
+		AES256Util aes = new AES256Util();
+		List<Student> list = null;
+		try {
+
+			list = studentMapper.getStudentListByYearSchoolGradClass(year, school_id, grade_id, class_id);
+			
+			for(Student item : list) {
+				item.setName(aes.decode(item.getName()));
+			}
+		} catch (InvalidKeyException | UnsupportedEncodingException
+				| NoSuchAlgorithmException | NoSuchPaddingException
+				| InvalidAlgorithmParameterException
+				| IllegalBlockSizeException | BadPaddingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		return list;
+	}
 
 }

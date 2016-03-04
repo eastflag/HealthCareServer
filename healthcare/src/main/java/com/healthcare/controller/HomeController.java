@@ -106,16 +106,17 @@ public class HomeController {
 		Student student = null;
 		String isUpdate = "N";
 		
-		if(Util.doFindMobileDevice("android", request) && !(serviceInfo.getServiceVer().equals(ver))){
-			isUpdate = "Y";
-		} else {
+		// TODO 버전 설정을 하지 않으면서 왜.... 체크를 하는지 확인불가 코드를 제거한다.
+		//if(Util.doFindMobileDevice("android", request) && !(serviceInfo.getServiceVer().equals(ver))){
+		//	isUpdate = "Y";
+		//} else {
 			student = studentService.getStudentByUserId(userId);
 			
 			if (student != null) {
 				request.setAttribute("userName", student.getName());
 				request.setAttribute("userSex", student.getSex());
 			}
-		}
+		//}
 		
 		request.setAttribute("isUpdate", isUpdate);
 		response.addCookie(new Cookie("isUpdate", isUpdate));

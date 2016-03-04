@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.net.*" %> 
 <%
 
 	//String pType = request.getParameter("p") == null ? "height" : request.getParameter("p");
@@ -17,7 +18,27 @@
 		pUserSexStr = "양의";
 	} else {
 		pUserSexStr = "님의";
-	}		
+	}
+	
+	String hostname, serverAddress;
+    hostname = "error";
+    serverAddress = "error";
+    try {
+        InetAddress inetAddress;
+        inetAddress = InetAddress.getLocalHost();
+        hostname = inetAddress.getHostName();
+        //serverAddress = inetAddress.toString();
+        serverAddress = inetAddress.getHostAddress();
+    } catch (UnknownHostException e) {
+
+        e.printStackTrace();
+    }
+    
+	String ip = request.getLocalName();
+	int port = request.getLocalPort();
+	
+	String rootPath = String.format("%s:%d", serverAddress, port);
+	
 %>
 <!DOCTYPE html>
 <html lang="kr">
@@ -40,7 +61,8 @@
 </head>
 <style>
 </style>
-<body>      
+<body>
+
 <div class="divWrap">
 	<div class="lunchMenu">                                                                                                                                                                                                                                       
 		<div class="slide_box"></div>
@@ -90,6 +112,15 @@
 $(document).ready(function() {
 
 });
+
+	// TODO : 서버의 외부 IP가 틀림으로 도메인을 사용하는 방식으로 변경을 하던가?
+	// Cross-Origin Resource Sharing 을 처리할 수 있도록 AJAX의 내용을 변경을 하던가 결정을 해야
+	// Test시 해당 값을 설정 요망.
+	// "http://210.127.55.205:82/HealthCare/"
+	// rootPath = "http://<%=rootPath%>/HealthCare/";
+	
+	//alert(rootPath);
+	
 	var pUserId = "<%= pUserId%>";
 
 	var device_width = 0;	//접속 디바이스 width값을 저장하는 변수
@@ -185,16 +216,22 @@ $(document).ready(function() {
 						}                                                                                                                          
 						                                                                                                                           
 						if(val[i].use_yn == null || val[i].use_yn == 'N'){                                                                         
-							pasteTxt += '<h1>'+val[i].school_name+'<h2>'+getFullDateString(val[i].qw)+'</h2></h1>';                                                                         
-							pasteTxt += '<div class="image_box"><img class="image" src="../upload/noimage.gif" alt="식단사진"></div>';
+							pasteTxt += '<h1>'+val[i].school_name+'<h2>'+getFullDateString(val[i].qw)+'</h2></h1>';
+							
+							pasteTxt += '<div class="image_box"><img class="image" src="./images/noimage.gif" alt="식단사진"></div>';
 							pasteTxt += '<table border="1" style="position:relative;margin:auto; margin-top:15px;width:91%;">';
 							pasteTxt += '<tr>';
 							pasteTxt += '<td style="border:1px gray solid;padding:15px;text-align:center;font-weight:bold;">급식 정보가 없습니다.</td>';
 							pasteTxt += '</tr>';
 							pasteTxt += '</table>';
 						}else{                                                                                                                     
-							pasteTxt += '<h1>'+val[i].school_name+'<h2>'+getFullDateString(val[i].qw)+'</h2></h1>';                                                                         
-							pasteTxt += '<div class="image_box"><img class="image" src="../'+val[i].img_url+'" alt="식단사진"></div>';                  
+							pasteTxt += '<h1>'+val[i].school_name+'<h2>'+getFullDateString(val[i].qw)+'</h2></h1>';
+							if(typeof val[i].img_url != 'undefined'){
+								pasteTxt += '<div class="image_box"><img class="image" src="../' + val[i].img_url + '" alt="식단사진"></div>';
+							}
+							else {
+								pasteTxt += '<div class="image_box"><img class="image" src="./images/noimage.gif" alt="식단사진"></div>';   	
+							}
 							pasteTxt += '<table border="1" style="position:relative; margin:auto; margin-top:15px; width:91%;">';
 							pasteTxt += '<tr>';
 							pasteTxt += '<td rowspan="2" style="width:25%;border:1px gray solid;vertical-align:middle;text-align:center;padding:3px;font-weight:bold;color:#fff;background:#444444;">중식</td>';

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.healthcare.biz.mybatis.domain.ActivityDevice;
+import com.healthcare.biz.mybatis.domain.ActivityDeviceStudentInfo;
 import com.healthcare.biz.mybatis.persistence.ActivityDeviceMapper;
 import com.sovate.activity.service.ActivityDeviceService;
 
@@ -21,6 +22,15 @@ public class ActivityDeviceServiceImpl implements ActivityDeviceService {
 		
 		List<ActivityDevice> list =  activityDeviceInfoMapper.getDevices();
 		
+		return list;
+	}
+
+	@Override
+	public List<ActivityDeviceStudentInfo> getDevicesStudentMap(String year, String school_id, String grade_id, String class_id) {
+		// TODO Auto-generated method stub
+		
+		List<ActivityDeviceStudentInfo> list = 
+				activityDeviceInfoMapper.getDevicesStudentMap(year, school_id, grade_id, class_id);
 		return list;
 	}
 

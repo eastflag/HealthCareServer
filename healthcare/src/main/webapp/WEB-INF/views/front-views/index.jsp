@@ -5,6 +5,8 @@
 	String pUserId = request.getParameter("userId");
 	String pToken = request.getParameter("token");
 	String isUpdate = (String)request.getAttribute("isUpdate");
+	
+	isUpdate = "N";
 
 	String pUserName = (String)request.getAttribute("userName");
 	String pUserSex = (String)request.getAttribute("userSex");

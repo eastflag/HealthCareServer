@@ -41,6 +41,10 @@ public class SchoolInfo {
 		this.schoolId = schoolId;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "SchoolInfo [schoolId=" + schoolId + ", name=" + name + ", section=" + section + ", sido=" + sido
+				+ ", code=" + code + "]";
+	}
 	
 }

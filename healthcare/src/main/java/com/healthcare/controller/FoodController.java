@@ -1,10 +1,12 @@
 package com.healthcare.controller;
 
-import java.text.DecimalFormat;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,12 +18,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.healthcare.bean.Food;
-import com.healthcare.bean.RequestVo;
 import com.healthcare.bean.Result;
-import com.healthcare.biz.common.ReturnCode;
 import com.healthcare.biz.mybatis.domain.BodyMeasureSummary;
 import com.healthcare.biz.service.BodyMeasureService;
 import com.healthcare.biz.service.FoodService;
+import com.sovate.common.util.HttptUtil;
 
 @Controller
 public class FoodController {
@@ -32,6 +33,7 @@ public class FoodController {
 	private FoodService foodService;
 	@Autowired
 	private BodyMeasureService bodyMeasureService;
+	
 	
 	@RequestMapping(value = {"/food/GetList"}, method = {RequestMethod.GET, RequestMethod.POST})
 	public @ResponseBody Result<?> GetList(@RequestBody Map<String, Object> reqMap)  {
