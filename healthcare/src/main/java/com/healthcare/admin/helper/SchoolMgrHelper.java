@@ -50,12 +50,16 @@ public class SchoolMgrHelper {
 			String school_name     = HttpParameter.getString(req, "school_name");
 			String section         = HttpParameter.getString(req, "section");
 			String address         = HttpParameter.getString(req, "address");
+			String sido         = HttpParameter.getString(req, "sido");
+			String school_code         = HttpParameter.getString(req, "school_code");
 			
 			school = new School();
 			//school.setSchool_id       (school_id      );
 			school.setSchool_name     (school_name    );
 			school.setSection         (section        );
 			school.setAddress		  (address);
+			school.setSido(sido);
+			school.setSchool_code(school_code);
 			
 			schoolMgr.addSchool(school);
 		}catch(Exception e){
@@ -123,12 +127,16 @@ public class SchoolMgrHelper {
 			String school_name     = HttpParameter.getString(req, "school_name");
 			String section         = HttpParameter.getString(req, "section");
 			String address         = HttpParameter.getString(req, "address");
+			String sido         = HttpParameter.getString(req, "sido");
+			String school_code	= HttpParameter.getString(req, "school_code");
 			
 			school = new School();
 			school.setSchool_id       (school_id      );
 			school.setSchool_name     (school_name    );
 			school.setSection         (section        );
 			school.setAddress		  (address		  );
+			school.setSido		  (sido);
+			school.setSchool_code (school_code);
 			
 			schoolMgr.setSchool(school);
 			

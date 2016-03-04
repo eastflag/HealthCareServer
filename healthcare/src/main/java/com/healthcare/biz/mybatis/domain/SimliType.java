@@ -10,7 +10,21 @@ public class SimliType {
 	private String introImg;
 	private String outroImg;
 	private String useYN;
+	private String introType;
+	private String outroType;
 	
+	public String getIntroType() {
+		return introType;
+	}
+	public void setIntroType(String introType) {
+		this.introType = introType;
+	}
+	public String getOutroType() {
+		return outroType;
+	}
+	public void setOutroType(String outroType) {
+		this.outroType = outroType;
+	}
 	public String getSimliId() {
 		return simliId;
 	}

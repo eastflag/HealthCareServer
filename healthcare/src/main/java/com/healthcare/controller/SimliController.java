@@ -64,9 +64,10 @@ public class SimliController {
 		// 학년에 맞는 심리검사 목록 가져오기
 		List<SimliType> simliList = simliService.getSimliTypeList(grade);
 		
-		// url 전체 입력
 		if(simliList!=null && simliList.size()>0) {
 			for(int i=0; i<simliList.size(); i++) {
+
+				// url 전체 입력
 				if(simliList.get(i).getIntroVideo()!=null && !simliList.get(i).getIntroVideo().equals("")) {
 					simliList.get(i).setIntroVideo(contentsURL+simliList.get(i).getIntroVideo());
 				}
@@ -78,6 +79,16 @@ public class SimliController {
 				}
 				if(simliList.get(i).getOutroImg()!=null && !simliList.get(i).getOutroImg().equals("")) {
 					simliList.get(i).setOutroImg(contentsURL+simliList.get(i).getOutroImg());
+				}
+				
+				// 인트로 아웃트로 이미지 비디오 타입 추가
+				// 인터넷 중독 저학년만 이미지 파일 나머진 동영상 재생
+				if(simliList.get(i).getSimliId().equals("IN_E13")) {
+					simliList.get(i).setIntroType("img");
+					simliList.get(i).setOutroType("img");
+				} else {
+					simliList.get(i).setIntroType("video");
+					simliList.get(i).setOutroType("video");
 				}
 			}
 		}

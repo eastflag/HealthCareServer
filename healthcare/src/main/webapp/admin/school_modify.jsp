@@ -136,6 +136,28 @@
 	          <td height="1" bgcolor="#67AEB8"></td>
 	          <td bgcolor="cccccc"></td>
 	        </tr>
+	        <tr> 
+	          <td align="right" bgcolor="F8F6F6" style="padding-right:10">시도</td>
+	          <td style="padding-left:10">
+	          	<input name="sido" type="text" value="<%= school.getSido() %>" class="darkgray12" maxlength="40" style="WIDTH: 130px; HEIGHT: 19px; border:solid 1 #cccccc" >
+	          	나이스 식단 연동을 위해 주소 앞 두자리를 서주세요(ex. 서울, 경기 등)
+			  </td>
+	        </tr>
+	        <tr>
+	          <td height="1" bgcolor="#67AEB8"></td>
+	          <td bgcolor="cccccc"></td>
+	        </tr>
+	        <tr> 
+	          <td align="right" bgcolor="F8F6F6" style="padding-right:10">코드</td>
+	          <td style="padding-left:10">
+	          	<input name="school_code" type="text" value="<%= school.getSchool_code() %>" class="darkgray12" maxlength="40" style="WIDTH: 130px; HEIGHT: 19px; border:solid 1 #cccccc" >
+	          	나이스 식단 연동을 위해 학교코드를 작성해 주세요.
+			  </td>
+	        </tr>
+	        <tr>
+	          <td height="1" bgcolor="#67AEB8"></td>
+	          <td bgcolor="cccccc"></td>
+	        </tr>
 	      </table>    	
 	</form>
 <!-- 끝 : 테이블 -->		

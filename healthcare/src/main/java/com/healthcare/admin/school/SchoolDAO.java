@@ -142,8 +142,8 @@ public class SchoolDAO {
 		
 		StringBuffer qr =new StringBuffer()
 		.append(" INSERT INTO SCHOOL_INFO \n")
-		.append(" 	(SCHOOL_ID, SCHOOL_NAME, SECTION, ADDRESS) \n")
-		.append(" VALUES (?,?,?,?)");
+		.append(" 	(SCHOOL_ID, SCHOOL_NAME, SECTION, ADDRESS,SIDO, SCHOOL_CODE) \n")
+		.append(" VALUES (?,?,?,?,?,?)");
 		
 		String queryStr = qr.toString();
 		
@@ -164,6 +164,8 @@ public class SchoolDAO {
 			pstmt.setString(++j, aes.encode(school.getSchool_name()));
 			pstmt.setString(++j, school.getSection());
 			pstmt.setString(++j, school.getAddress());
+			pstmt.setString(++j, school.getSido());
+			pstmt.setString(++j, school.getSchool_code());
 			
 			int result = pstmt.executeUpdate(); 
 			
@@ -365,7 +367,7 @@ public class SchoolDAO {
         School school = new School();
                 
         StringBuffer qr =new StringBuffer()
-			.append(" SELECT * ")
+			.append(" SELECT SCHOOL_ID, SCHOOL_NAME, SECTION, ADDRESS, IFNULL(SIDO,'') SIDO, IFNULL(SCHOOL_CODE,'') SCHOOL_CODE ")
 			.append("   FROM SCHOOL_INFO \n")
 			.append("WHERE SCHOOL_ID = '"+school_id+"'");
 		String queryStr = qr.toString();
@@ -381,6 +383,8 @@ public class SchoolDAO {
     			school.setSchool_name     (aes.decode(rs.getString("SCHOOL_NAME")));
     			school.setSection         (rs.getString("SECTION"));
     			school.setAddress         (rs.getString("ADDRESS"));
+    			school.setSido         (rs.getString("SIDO"));
+    			school.setSchool_code         (rs.getString("SCHOOL_CODE"));
             }
         }catch(SQLException se) {
 			System.out.println(se);
@@ -413,7 +417,9 @@ public class SchoolDAO {
 			.append(" UPDATE SCHOOL_INFO SET \n")
 			.append(   " SCHOOL_NAME     = ?, \n")
 			.append(   " SECTION         = ?,  \n")
-			.append(   " ADDRESS         = ?  \n")
+			.append(   " ADDRESS         = ?,  \n")
+			.append(   " SIDO         	= ?,  \n")
+			.append(   " SCHOOL_CODE	= ?  \n")
 			.append(" WHERE SCHOOL_ID = ? ");
 		String queryStr = qr0.toString();
 
@@ -426,6 +432,8 @@ public class SchoolDAO {
 			pstmt.setString (++i, aes.encode(school.getSchool_name    ()));
 			pstmt.setString (++i, school.getSection        ());
 			pstmt.setString (++i, school.getAddress()  );
+			pstmt.setString (++i, school.getSido());
+			pstmt.setString (++i, school.getSchool_code());
 			pstmt.setString (++i, school.getSchool_id  ());
 
 			int resultCount = pstmt.executeUpdate();

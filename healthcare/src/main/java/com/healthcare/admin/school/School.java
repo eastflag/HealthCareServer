@@ -10,6 +10,8 @@ public class School implements Serializable{
 	private String school_name;
 	private String section;
 	private String address;
+	private String sido;
+	private String school_code;
 	
 	public School(){}
 
@@ -43,5 +45,21 @@ public class School implements Serializable{
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public String getSido() {
+		return sido;
+	}
+
+	public void setSido(String sido) {
+		this.sido = sido;
+	}
+
+	public String getSchool_code() {
+		return school_code;
+	}
+
+	public void setSchool_code(String school_code) {
+		this.school_code = school_code;
 	}
 }
