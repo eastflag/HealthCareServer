@@ -15,7 +15,7 @@
 		    b.mac,
 		    b.description,
 		    a.userId,
-		    a.name,
+		    a.name as userName,
 		    a.SCHOOL_YEAR AS schoolYear,
 		    a.School_ID AS schoolId,
 		    a.Grade_ID AS schoolGradeId,

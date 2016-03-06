@@ -43,7 +43,7 @@ public class ServiceTest {
 	@Autowired
 	ActivityDeviceService activityDeviceService;
 	
-	private AES256Util aes = new AES256Util();
+	//private AES256Util aes = new AES256Util();
 	
 
 	@Test
@@ -58,7 +58,9 @@ public class ServiceTest {
 		//System.out.println(student);
 		
 		//List<Student> list = studentService.getStudentList("2016", "1", "7", "1");
-		List<ActivityDeviceStudentInfo> list = activityDeviceService.getDevicesStudentMap("2016", "1", "7", "1");
+		
+		// 2015 학년 기준으로 처리
+		List<ActivityDeviceStudentInfo> list = activityDeviceService.getDevicesStudentMap("2015", "16", "7", "1");
 		
 		System.out.println(list);
 		

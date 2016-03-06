@@ -9,10 +9,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.healthcare.biz.mybatis.domain.ActivityDevice;
+import com.healthcare.biz.mybatis.domain.ActivityDeviceStudentInfo;
 import com.sovate.activity.service.ActivityDeviceService;
 import com.sovate.common.util.HttptUtil;
 
@@ -34,6 +36,22 @@ public class ActivityController {
 		logger.debug("/activity/devices");
 		
 		List<ActivityDevice> list = activityDeviceService.getDevices();
+
+		response.setContentType("application/json; charset=utf-8");
+		response.getWriter().write(JSONArray.fromObject(list).toString());
+	}
+	
+	@RequestMapping(method=RequestMethod.GET, value="/activity/devices/{schoolID}/{gradeID}/{classID}")
+	public void getDevicesStudentMap(HttpServletResponse response, 
+			@PathVariable("schoolID") String schoolID, 
+			@PathVariable("gradeID") String gradeID,
+			@PathVariable("classID") String classID
+			) throws Exception {
+		
+		logger.debug("/activity/devices");
+		
+		List<ActivityDeviceStudentInfo> list = 
+				activityDeviceService.getDevicesStudentMap("2015", schoolID, gradeID, classID);
 
 		response.setContentType("application/json; charset=utf-8");
 		response.getWriter().write(JSONArray.fromObject(list).toString());

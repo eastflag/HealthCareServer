@@ -4,14 +4,14 @@ public class ActivityDeviceStudentInfo extends ActivityDevice{
 	
 	// 사용자 구별 ID
 	
-	String userId;
-	String name;
+	String userId = "";
+	String userName = "";
 	
-	String schoolYear; //학기년도
-	String schoolId;
-	String schoolGradeId;
+	String schoolYear = ""; //학기년도
+	String schoolId = "";
+	String schoolGradeId = "";
 	
-	String classNumber;
+	String classNumber = "";
 
 	public String getUserId() {
 		return userId;
@@ -21,12 +21,12 @@ public class ActivityDeviceStudentInfo extends ActivityDevice{
 		this.userId = userId;
 	}
 
-	public String getName() {
-		return name;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public String getSchoolYear() {
@@ -63,9 +63,11 @@ public class ActivityDeviceStudentInfo extends ActivityDevice{
 
 	@Override
 	public String toString() {
-		return "ActivityDeviceStudentInfo [userId=" + userId + ", name=" + name + ", schoolYear=" + schoolYear
+		return "ActivityDeviceStudentInfo [userId=" + userId + ", userName=" + userName + ", schoolYear=" + schoolYear
 				+ ", schoolId=" + schoolId + ", schoolGradeId=" + schoolGradeId + ", classNumber=" + classNumber
-				+ ", mac=" + mac + ", alias=" + alias + ", description=" + description + "]";
+				+ ", name=" + name + ", mac=" + mac + ", alias=" + alias + ", description=" + description + "]";
 	}
+
+	
 	
 }
