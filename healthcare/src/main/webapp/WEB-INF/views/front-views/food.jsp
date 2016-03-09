@@ -961,7 +961,7 @@ function showRecipe(menu_id) {
 }
 function searchRecipe(str){
 	str += " 레시피";
-	location.href = "http://search.naver.com/search.naver?where=nexearch&query="+str+"&sm=top_hty&fbm=1&ie=utf8";
+	window.open("http://search.naver.com/search.naver?where=nexearch&query="+str+"&sm=top_hty&fbm=1&ie=utf8", '_blank');
 }
 
 function preventSwipe(){

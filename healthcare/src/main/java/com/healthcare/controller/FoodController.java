@@ -204,6 +204,13 @@ public class FoodController {
 		BodyMeasureSummary vo = bodyMeasureService.getSummary(reqFood.getUserId());
 		
 		int age = Integer.parseInt(vo.getAge());
+		logger.debug("나이:"+age);
+		
+		if(age<6) {
+			age = 6;
+		} else if(age>18) {
+			age = 18;
+		}
 		
 		Food calInfo = foodService.getCalMinMax2(age);//나이별 필요 칼로리 가져오기
 		calInfo.setUserId(reqFood.getUserId());
@@ -238,10 +245,6 @@ public class FoodController {
 		if("저체중".equals(grade)) {
 			for (int i = 0; i<=9; i++)
 				list2.add(list.get(i)); //등급에 따라 추출된 식단
-			
-		}else if ("정상".equals(grade)) {
-			for (int i = 10; i<=19; i++)	
-				list2.add(list.get(i));
 		
 		}else if ("과체중".equals(grade)) {
 			for (int i = 20; i<=29; i++)
@@ -257,6 +260,9 @@ public class FoodController {
 			
 		}else if ("고도비만".equals(grade)) {
 			for (int i = 50; i<=59; i++)
+				list2.add(list.get(i));
+		} else { // 정상 if("정상".equals(grade))
+			for (int i = 10; i<=19; i++)	
 				list2.add(list.get(i));
 		}
 		
@@ -278,10 +284,10 @@ public class FoodController {
 		}else if ("4".equals(stuBkstInfo.getBkst_id())) { // 간단C
 			for(int i =6; i<=7; i++)
 				list3.add(list2.get(i));
-		}else if ("1".equals(stuBkstInfo.getBkst_id())) { // 정상
+		}else { // 정상 if("1".equals(stuBkstInfo.getBkst_id()))
 			for(int i =8; i<=9; i++)
 				list3.add(list2.get(i));
-		}	
+		}
 		
 
 		Map<String, Object> map = new HashMap<String, Object>();
