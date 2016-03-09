@@ -9,13 +9,22 @@ public class Exercise {
 	private String exerciseId;
 	private String name;
 	private String img;
-	private int time;
-	private int calorie;
-	private int step;
-	private float distance;
-	
-	
-	
+	private String time;
+	private String calorie;
+	private String step;
+	private String distance;
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
+	public String getExercise() {
+		return exercise;
+	}
+	public void setExercise(String exercise) {
+		this.exercise = exercise;
+	}
 	public String getExerciseId() {
 		return exerciseId;
 	}
@@ -34,42 +43,32 @@ public class Exercise {
 	public void setImg(String img) {
 		this.img = img;
 	}
-	public int getTime() {
+	public String getTime() {
 		return time;
 	}
-	public void setTime(int time) {
+	public void setTime(String time) {
 		this.time = time;
 	}
-	public String getDate() {
-		return date;
-	}
-	public void setDate(String date) {
-		this.date = date;
-	}
-	public String getExercise() {
-		return exercise;
-	}
-	public void setExercise(String exercise) {
-		this.exercise = exercise;
-	}
-	public int getCalorie() {
+	public String getCalorie() {
 		return calorie;
 	}
-	public void setCalorie(int calorie) {
+	public void setCalorie(String calorie) {
 		this.calorie = calorie;
 	}
-	public int getStep() {
+	public String getStep() {
 		return step;
 	}
-	public void setStep(int step) {
+	public void setStep(String step) {
 		this.step = step;
 	}
-	public float getDistance() {
+	public String getDistance() {
 		return distance;
 	}
-	public void setDistance(float distance) {
+	public void setDistance(String distance) {
 		this.distance = distance;
 	}
+	
+	
 	
 	
 }

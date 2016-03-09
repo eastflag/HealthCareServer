@@ -5,70 +5,43 @@ import java.util.List;
 public class ExerciseView {
 
 	private List<Exercise> cart;
-	private int calorie;
-	private int step;
-	private float distance;
-	private int speed;
+	private String calorie;
+	private String step;
+	private String distance;
+	private String speed;
 	private String bodyType;
-	private int calorieMax;
-	private int stepMax;
-	private float distanceMax;
-	private int speedMax;
-	
-	
-	
-	public int getCalorieMax() {
-		return calorieMax;
-	}
-	public void setCalorieMax(int calorieMax) {
-		this.calorieMax = calorieMax;
-	}
-	public int getStepMax() {
-		return stepMax;
-	}
-	public void setStepMax(int stepMax) {
-		this.stepMax = stepMax;
-	}
-	public float getDistanceMax() {
-		return distanceMax;
-	}
-	public void setDistanceMax(float distanceMax) {
-		this.distanceMax = distanceMax;
-	}
-	public int getSpeedMax() {
-		return speedMax;
-	}
-	public void setSpeedMax(int speedMax) {
-		this.speedMax = speedMax;
-	}
+	private String calorieMax;
+	private String stepMax;
+	private String distanceMax;
+	private String speedMax;
 	public List<Exercise> getCart() {
 		return cart;
 	}
 	public void setCart(List<Exercise> cart) {
 		this.cart = cart;
 	}
-	public int getCalorie() {
+	public String getCalorie() {
 		return calorie;
 	}
-	public void setCalorie(int calorie) {
+	public void setCalorie(String calorie) {
 		this.calorie = calorie;
 	}
-	public int getStep() {
+	public String getStep() {
 		return step;
 	}
-	public void setStep(int step) {
+	public void setStep(String step) {
 		this.step = step;
 	}
-	public float getDistance() {
+	public String getDistance() {
 		return distance;
 	}
-	public void setDistance(float distance) {
+	public void setDistance(String distance) {
 		this.distance = distance;
 	}
-	public int getSpeed() {
+	public String getSpeed() {
 		return speed;
 	}
-	public void setSpeed(int speed) {
+	public void setSpeed(String speed) {
 		this.speed = speed;
 	}
 	public String getBodyType() {
@@ -77,6 +50,29 @@ public class ExerciseView {
 	public void setBodyType(String bodyType) {
 		this.bodyType = bodyType;
 	}
-
+	public String getCalorieMax() {
+		return calorieMax;
+	}
+	public void setCalorieMax(String calorieMax) {
+		this.calorieMax = calorieMax;
+	}
+	public String getStepMax() {
+		return stepMax;
+	}
+	public void setStepMax(String stepMax) {
+		this.stepMax = stepMax;
+	}
+	public String getDistanceMax() {
+		return distanceMax;
+	}
+	public void setDistanceMax(String distanceMax) {
+		this.distanceMax = distanceMax;
+	}
+	public String getSpeedMax() {
+		return speedMax;
+	}
+	public void setSpeedMax(String speedMax) {
+		this.speedMax = speedMax;
+	}
 	
 }

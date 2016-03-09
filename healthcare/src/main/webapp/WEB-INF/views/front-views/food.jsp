@@ -198,8 +198,7 @@ $(document).ready(function() {
 				var idxDateSet = 1;                                                                                                                
 				                                                                                                                                   
 				if(0 < valLen){                                                                                                                    
-					for(var i=0; i < valLen; i++ ){                                                                                                
-						                                                                                                                           
+					for(var i=0; i < valLen; i++ ){                                                                                                                               
 						remain = i % 5;                                                                                                            
 						                                                                                                                           
 						if (remain == 0) {
@@ -233,12 +232,10 @@ $(document).ready(function() {
 								pasteTxt += '<div class="image_box"><img class="image" src="./images/noimage.gif" alt="식단사진"></div>';   	
 							}
 							pasteTxt += '<table border="1" style="position:relative; margin:auto; margin-top:15px; width:91%;">';
+							
 							pasteTxt += '<tr>';
-							pasteTxt += '<td rowspan="2" style="width:25%;border:1px gray solid;vertical-align:middle;text-align:center;padding:3px;font-weight:bold;color:#fff;background:#444444;">중식</td>';
-							pasteTxt += '<td style="width:75%;border:1px gray solid;padding:3px;line-height:18px;">'+val[i].lunch_main+'</td>';
-							pasteTxt += '</tr>';
-							pasteTxt += '<tr>';
-							pasteTxt += '<td style="border:1px gray solid;padding:3px;line-height:18px;">'+val[i].lunch_detl+'</td>';
+							pasteTxt += '<td style="width:25%;border:1px gray solid;vertical-align:middle;text-align:center;padding:3px;font-weight:bold;color:#fff;background:#444444;">중식</td>';
+							pasteTxt += '<td style="width:75%;border:1px gray solid;padding:3px;line-height:18px;">'+val[i].lunch_detl+'</td>';
 							pasteTxt += '</tr>';
 							pasteTxt += '</table>';
 							
@@ -385,7 +382,6 @@ function showStuInfo() {
 			stuInfo += '</table>';
 			stuInfo += '';
 			stuInfo += '<div class="title">저녁 추천식단 영양량</div>';
-	console.log(val);
 			if(val.menu_list[0].menu_cal!=null) {
 				stuInfo += '<table class="menuInfoTb">';
 				stuInfo += '<colgroup>';
@@ -609,7 +605,6 @@ function selectAlg(alg_id,alg_state,alg_main_yn){
 		+",\"userId\":\"" + pUserId + "\""
 		+",\"alg_state\":\"" + alg_state + "\""
 		+ " }";
-		
 	var searchResult = '';
 	$.ajax({ 
 		type : "post",

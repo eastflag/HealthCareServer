@@ -6,21 +6,21 @@ public class ExerciseTab {
 
 	private String averageType;
 	private String groupType;
-	private int averageCnt;
-	private int user;
-	private int all;
-	private float bodyType1;
-	private float bodyType2;
-	private float bodyType3;
-	private float bodyType4;
-	private float bodyType5;
-	private float bodyType6;
-	private float bodyType1Max;
-	private float bodyType2Max;
-	private float bodyType3Max;
-	private float bodyType4Max;
-	private float bodyType5Max;
-	private float bodyType6Max;
+	private String averageCnt;
+	private String user;
+	private String all;
+	private String bodyType1;
+	private String bodyType2;
+	private String bodyType3;
+	private String bodyType4;
+	private String bodyType5;
+	private String bodyType6;
+	private String bodyType1Max;
+	private String bodyType2Max;
+	private String bodyType3Max;
+	private String bodyType4Max;
+	private String bodyType5Max;
+	private String bodyType6Max;
 	public String getAverageType() {
 		return averageType;
 	}
@@ -33,98 +33,96 @@ public class ExerciseTab {
 	public void setGroupType(String groupType) {
 		this.groupType = groupType;
 	}
-	public int getAverageCnt() {
+	public String getAverageCnt() {
 		return averageCnt;
 	}
-	public void setAverageCnt(int averageCnt) {
+	public void setAverageCnt(String averageCnt) {
 		this.averageCnt = averageCnt;
 	}
-	public int getUser() {
+	public String getUser() {
 		return user;
 	}
-	public void setUser(int user) {
+	public void setUser(String user) {
 		this.user = user;
 	}
-	public int getAll() {
+	public String getAll() {
 		return all;
 	}
-	public void setAll(int all) {
+	public void setAll(String all) {
 		this.all = all;
 	}
-	public float getBodyType1() {
+	public String getBodyType1() {
 		return bodyType1;
 	}
-	public void setBodyType1(float bodyType1) {
+	public void setBodyType1(String bodyType1) {
 		this.bodyType1 = bodyType1;
 	}
-	public float getBodyType2() {
+	public String getBodyType2() {
 		return bodyType2;
 	}
-	public void setBodyType2(float bodyType2) {
+	public void setBodyType2(String bodyType2) {
 		this.bodyType2 = bodyType2;
 	}
-	public float getBodyType3() {
+	public String getBodyType3() {
 		return bodyType3;
 	}
-	public void setBodyType3(float bodyType3) {
+	public void setBodyType3(String bodyType3) {
 		this.bodyType3 = bodyType3;
 	}
-	public float getBodyType4() {
+	public String getBodyType4() {
 		return bodyType4;
 	}
-	public void setBodyType4(float bodyType4) {
+	public void setBodyType4(String bodyType4) {
 		this.bodyType4 = bodyType4;
 	}
-	public float getBodyType5() {
+	public String getBodyType5() {
 		return bodyType5;
 	}
-	public void setBodyType5(float bodyType5) {
+	public void setBodyType5(String bodyType5) {
 		this.bodyType5 = bodyType5;
 	}
-	public float getBodyType6() {
+	public String getBodyType6() {
 		return bodyType6;
 	}
-	public void setBodyType6(float bodyType6) {
+	public void setBodyType6(String bodyType6) {
 		this.bodyType6 = bodyType6;
 	}
-	public float getBodyType1Max() {
+	public String getBodyType1Max() {
 		return bodyType1Max;
 	}
-	public void setBodyType1Max(float bodyType1Max) {
+	public void setBodyType1Max(String bodyType1Max) {
 		this.bodyType1Max = bodyType1Max;
 	}
-	public float getBodyType2Max() {
+	public String getBodyType2Max() {
 		return bodyType2Max;
 	}
-	public void setBodyType2Max(float bodyType2Max) {
+	public void setBodyType2Max(String bodyType2Max) {
 		this.bodyType2Max = bodyType2Max;
 	}
-	public float getBodyType3Max() {
+	public String getBodyType3Max() {
 		return bodyType3Max;
 	}
-	public void setBodyType3Max(float bodyType3Max) {
+	public void setBodyType3Max(String bodyType3Max) {
 		this.bodyType3Max = bodyType3Max;
 	}
-	public float getBodyType4Max() {
+	public String getBodyType4Max() {
 		return bodyType4Max;
 	}
-	public void setBodyType4Max(float bodyType4Max) {
+	public void setBodyType4Max(String bodyType4Max) {
 		this.bodyType4Max = bodyType4Max;
 	}
-	public float getBodyType5Max() {
+	public String getBodyType5Max() {
 		return bodyType5Max;
 	}
-	public void setBodyType5Max(float bodyType5Max) {
+	public void setBodyType5Max(String bodyType5Max) {
 		this.bodyType5Max = bodyType5Max;
 	}
-	public float getBodyType6Max() {
+	public String getBodyType6Max() {
 		return bodyType6Max;
 	}
-	public void setBodyType6Max(float bodyType6Max) {
+	public void setBodyType6Max(String bodyType6Max) {
 		this.bodyType6Max = bodyType6Max;
 	}
-	
-	
 	
 	
 }

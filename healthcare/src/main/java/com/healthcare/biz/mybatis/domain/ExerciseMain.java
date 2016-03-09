@@ -10,18 +10,21 @@ public class ExerciseMain {
 	private String exerciseDate;
 	private String exerciseName;
 	private String exerciseImg;
-	private int calorie;
-	private int step;
-	private float distance;
+	private String calorie;
+	private String step;
+	private String distance;
 	private String bodyType;
-	private int rangkingClass;
-	private int rangkingGrade;
-	private int rangkingExercise;
-	private int calorieAverage;
-	private int calorieMax;
-	
-	
-	
+	private String rangkingClass;
+	private String rangkingGrade;
+	private String rangkingExercise;
+	private String calorieAverage;
+	private String calorieMax;
+	public String getExerciseId() {
+		return exerciseId;
+	}
+	public void setExerciseId(String exerciseId) {
+		this.exerciseId = exerciseId;
+	}
 	public String getExerciseIdPrev() {
 		return exerciseIdPrev;
 	}
@@ -33,12 +36,6 @@ public class ExerciseMain {
 	}
 	public void setExerciseIdNext(String exerciseIdNext) {
 		this.exerciseIdNext = exerciseIdNext;
-	}
-	public String getExerciseId() {
-		return exerciseId;
-	}
-	public void setExerciseId(String exerciseId) {
-		this.exerciseId = exerciseId;
 	}
 	public String getExerciseDate() {
 		return exerciseDate;
@@ -58,22 +55,22 @@ public class ExerciseMain {
 	public void setExerciseImg(String exerciseImg) {
 		this.exerciseImg = exerciseImg;
 	}
-	public int getCalorie() {
+	public String getCalorie() {
 		return calorie;
 	}
-	public void setCalorie(int calorie) {
+	public void setCalorie(String calorie) {
 		this.calorie = calorie;
 	}
-	public int getStep() {
+	public String getStep() {
 		return step;
 	}
-	public void setStep(int step) {
+	public void setStep(String step) {
 		this.step = step;
 	}
-	public float getDistance() {
+	public String getDistance() {
 		return distance;
 	}
-	public void setDistance(float distance) {
+	public void setDistance(String distance) {
 		this.distance = distance;
 	}
 	public String getBodyType() {
@@ -82,38 +79,40 @@ public class ExerciseMain {
 	public void setBodyType(String bodyType) {
 		this.bodyType = bodyType;
 	}
-	public int getRangkingClass() {
+	public String getRangkingClass() {
 		return rangkingClass;
 	}
-	public void setRangkingClass(int rangkingClass) {
+	public void setRangkingClass(String rangkingClass) {
 		this.rangkingClass = rangkingClass;
 	}
-	public int getRangkingGrade() {
+	public String getRangkingGrade() {
 		return rangkingGrade;
 	}
-	public void setRangkingGrade(int rangkingGrade) {
+	public void setRangkingGrade(String rangkingGrade) {
 		this.rangkingGrade = rangkingGrade;
 	}
-	public int getRangkingExercise() {
+	public String getRangkingExercise() {
 		return rangkingExercise;
 	}
-	public void setRangkingExercise(int rangkingExercise) {
+	public void setRangkingExercise(String rangkingExercise) {
 		this.rangkingExercise = rangkingExercise;
 	}
-	public int getCalorieAverage() {
+	public String getCalorieAverage() {
 		return calorieAverage;
 	}
-	public void setCalorieAverage(int calorieAverage) {
+	public void setCalorieAverage(String calorieAverage) {
 		this.calorieAverage = calorieAverage;
 	}
-	public int getCalorieMax() {
+	public String getCalorieMax() {
 		return calorieMax;
 	}
-	public void setCalorieMax(int calorieMax) {
+	public void setCalorieMax(String calorieMax) {
 		this.calorieMax = calorieMax;
 	}
-
 	
+	
+	
+
 
 
 	
