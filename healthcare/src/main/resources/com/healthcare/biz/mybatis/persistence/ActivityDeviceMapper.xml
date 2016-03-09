@@ -40,6 +40,10 @@
 		;
 	</select>
 	
+	<insert id="insertWorkrate" parameterType="ActivityWorkRate" >
+		insert into activity_registration (student_id, mac, reg_datetime, sports_id, collect_datetime, steps, calorie, distance) 
+		values(#{userId}, #{mac}, now(), #{sportId}, #{collectDt}, #{steps}, #{calorie}, #{distance});
+	</insert>
 	
 	
 </mapper>

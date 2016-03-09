@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.healthcare.biz.mybatis.domain.ActivityDevice;
 import com.healthcare.biz.mybatis.domain.ActivityDeviceStudentInfo;
+import com.healthcare.biz.mybatis.domain.ActivityWorkRate;
 import com.healthcare.biz.mybatis.persistence.ActivityDeviceMapper;
 import com.healthcare.common.AES256Util;
 import com.sovate.activity.service.ActivityDeviceService;
@@ -63,6 +64,14 @@ public class ActivityDeviceServiceImpl implements ActivityDeviceService {
 		}
 		
 		return list;
+	}
+
+
+	@Override
+	public int insertWorkrate(ActivityWorkRate workrate) {
+		// TODO Auto-generated method stub
+		
+		return activityDeviceInfoMapper.insertWorkrate(workrate);
 	}
 
 }

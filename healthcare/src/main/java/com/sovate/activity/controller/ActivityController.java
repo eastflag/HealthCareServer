@@ -1,10 +1,16 @@
 package com.sovate.activity.controller;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.healthcare.biz.mybatis.domain.ActivityDevice;
 import com.healthcare.biz.mybatis.domain.ActivityDeviceStudentInfo;
+import com.healthcare.biz.mybatis.domain.ActivityWorkRate;
 import com.sovate.activity.service.ActivityDeviceService;
 import com.sovate.common.util.HttptUtil;
 
@@ -69,12 +76,46 @@ public class ActivityController {
 		String body = HttptUtil.getBody(request);
 		
 		logger.debug(body);
+		
+		JSONParser parser = new JSONParser();
+		
+		
+		JSONObject jsonObj = (JSONObject) parser.parse(body);
 
 		
+		DateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH");
+		Date collectDt = null;
+		try {
+			
+			collectDt = sdFormat.parse((String)jsonObj.get("collect_datetime"));
+			
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		ActivityWorkRate workrate = new ActivityWorkRate();
+		
+		workrate.setUserId((String)jsonObj.get("user_id"));
+		workrate.setMac((String)jsonObj.get("mac"));
+		workrate.setSportId((String)jsonObj.get("sports_id"));
+		workrate.setSteps((String)jsonObj.get("steps"));
+		workrate.setCalorie((String)jsonObj.get("calorie"));
+		workrate.setDistance((String)jsonObj.get("distance"));
+		workrate.setCollectDt(collectDt);
+		
+		int recordCnt = activityDeviceService.insertWorkrate(workrate);
+		System.out.println(recordCnt);
+
 		// 생성 완료 코드
 		response.setContentType("application/json; charset=utf-8");
 		response.getWriter().write("");
-		response.setStatus(HttpServletResponse.SC_CREATED);
+		if(recordCnt == 1){
+			response.setStatus(HttpServletResponse.SC_CREATED);
+		} else {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		}
+		
 	}
 	
 }

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.healthcare.biz.mybatis.domain.ActivityDevice;
 import com.healthcare.biz.mybatis.domain.ActivityDeviceStudentInfo;
+import com.healthcare.biz.mybatis.domain.ActivityWorkRate;
 
 public interface ActivityDeviceMapper {
 	List<ActivityDevice> getDevices();
@@ -15,4 +16,6 @@ public interface ActivityDeviceMapper {
 			@Param("school_id") String school_id, 
 			@Param("grade_id") String grade_id, 
 			@Param("class_id") String class_id);
+	
+	int insertWorkrate(ActivityWorkRate workrate);
 }
