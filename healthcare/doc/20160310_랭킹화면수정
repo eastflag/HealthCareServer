@@ -1,0 +1,15 @@
+* 랭킹화면 학교, 반을 빨리 번갈아 클릭시 화면에 뷰가 섞여서 보임
+
+/WEB-INF/views/front-views/subHtml.html 에서
+
+반, 학교 클릭시 
+
+subRank()
+
+setRankDataPage()
+
+setUserData()
+=>ajax
+=>성공시 setRank() 실행
+
+subHtml.html에서 변수를 바꿔주는 부분을 자바스크립트 안쪽으로 집어넣음.
