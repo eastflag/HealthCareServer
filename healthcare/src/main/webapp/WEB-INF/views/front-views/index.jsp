@@ -407,7 +407,6 @@
 	function setRankDataPage(idx){
 		
 		if(rankDataPageScale == 'school'){
-			console.log('setRankDataPage school');
 			$('#rank_class').removeClass('on');
 			$('#rank_school').addClass('on');
 			switch(idx){
@@ -419,7 +418,6 @@
 					break;// BMI 랭킹	
 			}
 		}else{
-			console.log('setRankDataPage class');
 			reloadRankingIdx = idx;
 			$('#rank_class').addClass('on');
 			$('#rank_school').removeClass('on');
@@ -1094,7 +1092,7 @@ var pToken = "<%= pToken%>";
 			return;
 		}
 		rankDataPageScale = gubun;
-		console.log('subRank is clicked');
+
 		setRankDataPage(idx);
 		vIdx = idx;
 	}
