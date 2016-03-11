@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.healthcare.biz.mybatis.persistence.ExerciseMapper">
+
+	<select id="getStudentActivity" parameterType="java.util.Map" resultType="Activity">
+		SELECT 
+		    A.regist_id,
+		    A.student_id,
+		    A.reg_datetime,
+		    A.sports_id,
+		    A.steps,
+		    A.calorie,
+		    A.distance,
+		    B.alias sports_name,
+		    B.small_image_path,
+		    B.large_image_path,
+		    (SELECT 
+		            regist_id
+		        FROM
+		            activity_registration
+		        WHERE
+		            student_id = #{userId} <![CDATA[ 
+		                AND reg_datetime < A.reg_datetime ]]>
+		        ORDER BY reg_datetime DESC
+		        LIMIT 1) regist_id_prev,
+		    (SELECT 
+		            regist_id
+		        FROM
+		            activity_registration
+		        WHERE 
+		            student_id = #{userId} <![CDATA[ 
+		                AND reg_datetime > A.reg_datetime ]]>
+		        ORDER BY reg_datetime ASC
+		        LIMIT 1) regist_id_next
+		FROM
+		    activity_registration A
+		        JOIN
+		    activity_stports B ON A.sports_id = B.sports_id
+		WHERE
+		    student_id = #{userId}
+		    <if test="exerciseId != null and exerciseId !='' ">
+		    	and A.regist_id = #{exerciseId}
+		    </if>
+		ORDER BY reg_datetime DESC
+		LIMIT 1
+	</select>
+	
+	<select id="getStudentActivityChart" parameterType="java.util.Map" resultType="Activity">
+		SELECT 
+		    DATE_FORMAT(reg_datetime, '%c/%d') reg_datetime,
+		    B.alias sports_name,
+		    A.calorie,
+		    A.steps,
+		    A.distance
+		FROM
+		    activity_registration A
+		        JOIN
+		    activity_stports B ON A.sports_id = B.sports_id
+		WHERE
+		    A.student_id = #{userId}
+		    <if test="exerciseId != null and exerciseId !='' "> <![CDATA[ 
+		        AND A.reg_datetime <= (SELECT ]]>
+		            reg_datetime
+		        FROM
+		            activity_registration
+		        WHERE
+		            regist_id = #{exerciseId})
+		    </if>
+		ORDER BY A.reg_datetime DESC
+		LIMIT 4
+	</select>
+	
+</mapper>
