@@ -45,5 +45,37 @@
 		values(#{userId}, #{mac}, now(), #{sportId}, #{collectDt}, #{steps}, #{calorie}, #{distance});
 	</insert>
 	
+	<select id="getSchoolInfo" resultType="com.healthcare.biz.mybatis.domain.ActivitySchoolInfo">
+		SELECT 
+		    a.school_year schoolYear,
+		    a.school_id schoolId,
+		    a.grade_id gradeId,
+		    a.classCnt classCnt,
+		    b.school_name schoolName,
+		    b.section section
+		FROM
+		    (SELECT 
+		        school_year, school_id, grade_id, MAX(class) AS classCnt
+		    FROM
+		        school_register
+		    WHERE
+		        1 = 1 AND school_year = '2015'
+		    GROUP BY school_year , school_id , grade_id
+		    ORDER BY school_id , grade_id) a,
+		    school_info b
+		WHERE
+		    a.school_id = b.school_id;
+	</select>
+	
+	<select id="getSportInfo" resultType="com.healthcare.biz.mybatis.domain.ActivitySport">
+		SELECT 
+		    sports_id AS id,
+		    alias AS name,
+		    small_image_path as smallImagePath,
+		    large_image_path as largeImagePath
+		FROM
+		    activity_stports;
+	</select>
+	
 	
 </mapper>

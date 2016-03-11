@@ -19,13 +19,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.google.gson.Gson;
 import com.healthcare.biz.mybatis.domain.ActivityDevice;
 import com.healthcare.biz.mybatis.domain.ActivityDeviceStudentInfo;
 import com.healthcare.biz.mybatis.domain.ActivityWorkRate;
+import com.sovate.activity.bean.ActivityBaseInfo;
 import com.sovate.activity.service.ActivityDeviceService;
 import com.sovate.common.util.HttptUtil;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONSerializer;
 
 @Controller
 public class ActivityController {
@@ -116,6 +119,19 @@ public class ActivityController {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 		
+	}
+	
+	@RequestMapping(method=RequestMethod.GET, value="/activity/baseInfo")
+	public void getBaseInfo(HttpServletResponse response) throws Exception {
+		
+		logger.debug("/activity/baseInfo");
+		
+		ActivityBaseInfo info = activityDeviceService.getActivityBaseInfo();
+		
+		Gson gson = new Gson();
+				
+		response.setContentType("application/json; charset=utf-8");
+		response.getWriter().write(gson.toJson(info));
 	}
 	
 }
