@@ -297,6 +297,6 @@ public class ExerciseController {
 		history.setNextYN(nextYN);
 		
 		response.setContentType("text/html; charset=utf-8");
-		response.getWriter().write(JSONArray.fromObject(history).toString());
+		response.getWriter().write(JSONObject.fromObject(history).toString());
 	}
 }
