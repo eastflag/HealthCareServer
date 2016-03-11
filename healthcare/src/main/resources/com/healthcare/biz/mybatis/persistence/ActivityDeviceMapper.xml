@@ -64,7 +64,8 @@
 		    ORDER BY school_id , grade_id) a,
 		    school_info b
 		WHERE
-		    a.school_id = b.school_id;
+		    a.school_id = b.school_id
+		order by schoolId, gradeId;
 	</select>
 	
 	<select id="getSportInfo" resultType="com.healthcare.biz.mybatis.domain.ActivitySport">
