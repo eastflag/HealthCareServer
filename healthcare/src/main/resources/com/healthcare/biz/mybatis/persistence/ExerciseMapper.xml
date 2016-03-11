@@ -8,7 +8,7 @@
 		SELECT 
 		    A.regist_id,
 		    A.student_id,
-		    A.reg_datetime,
+		    DATE_FORMAT(A.reg_datetime, '%Y-%m-%d') reg_datetime,
 		    A.sports_id,
 		    A.steps,
 		    A.calorie,
@@ -49,7 +49,7 @@
 	
 	<select id="getStudentActivityChart" parameterType="java.util.Map" resultType="Activity">
 		SELECT 
-		    DATE_FORMAT(reg_datetime, '%c/%d') reg_datetime,
+		    DATE_FORMAT(reg_datetime, '%m/%d') reg_datetime,
 		    B.alias sports_name,
 		    A.calorie,
 		    A.steps,
@@ -70,6 +70,52 @@
 		    </if>
 		ORDER BY A.reg_datetime DESC
 		LIMIT 4
+	</select>
+	
+	<select id="getStudentActivityHistory" parameterType="java.util.Map" resultType="Activity">
+		SELECT 
+			A.regist_id,
+		    DATE_FORMAT(reg_datetime, '%Y.%m.%d') reg_datetime,
+		    B.alias sports_name,
+		    A.calorie,
+		    A.steps,
+		    A.distance,
+		    B.small_image_path
+		FROM
+		    activity_registration A
+		        JOIN
+		    activity_stports B ON A.sports_id = B.sports_id
+		WHERE
+		    A.student_id = #{userId}
+		    <if test="exerciseId != null and exerciseId !='' "> <![CDATA[ 
+		        AND A.reg_datetime < (SELECT ]]>
+		            reg_datetime
+		        FROM
+		            activity_registration
+		        WHERE
+		            regist_id = #{exerciseId})
+		    </if>
+		ORDER BY A.reg_datetime DESC
+		LIMIT 10
+	</select>
+	
+	<select id="getStudentActivityRestCnt" parameterType="java.util.Map" resultType="java.lang.Integer">
+		SELECT 
+			count(*)
+		FROM
+		    activity_registration A
+		        JOIN
+		    activity_stports B ON A.sports_id = B.sports_id
+		WHERE
+		    A.student_id = #{userId} <![CDATA[ 
+		        AND A.reg_datetime < (SELECT ]]>
+		            reg_datetime
+		        FROM
+		            activity_registration
+		        WHERE
+		            regist_id = #{exerciseId})
+		ORDER BY A.reg_datetime DESC
+		LIMIT 10
 	</select>
 	
 </mapper>

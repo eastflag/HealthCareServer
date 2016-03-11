@@ -83,9 +83,6 @@ public class ExerciseController {
 		if(activity!=null) {
 			//요일 가져오기
 			acitivityDate = activity.getReg_datetime();
-			if(acitivityDate!=null && !acitivityDate.equals("")) {
-				acitivityDate = acitivityDate.substring(0,10);
-			}
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			Date date = dateFormat.parse(acitivityDate);
 			Calendar cal = Calendar.getInstance();
@@ -112,7 +109,7 @@ public class ExerciseController {
 		    if(!dayofweek.equals("")) {
 			    acitivityDate += "("+dayofweek+")";
 		    }
-		    acitivityDate.replaceAll("-", ".");
+		    acitivityDate = acitivityDate.replaceAll("-", ".");
 		    
 		    // 값 넣기
 		    exerciseId = activity.getRegist_id();
@@ -180,13 +177,10 @@ public class ExerciseController {
 		map.put("exerciseId", exerciseId);
 		List<Activity> activityChart = exerciseService.getStudentActivityChart(map);
 		if(activityChart!=null && activityChart.size()>0) {
-			logger.debug("-------------activityChart not null!!!!");
-			logger.debug("----------size:"+activityChart.size());
 			for(int i=activityChart.size()-1; i>=0; i--) {
-				logger.debug("-------------------i:"+i);
 				exercise = new Exercise();
 				exercise.setDate(activityChart.get(i).getReg_datetime());
-				exercise.setExerciseIdName(activityChart.get(i).getSports_name());
+				exercise.setExerciseName(activityChart.get(i).getSports_name());
 				exercise.setCalorie(activityChart.get(i).getCalorie());
 				exercise.setStep(activityChart.get(i).getSteps());
 				exercise.setDistance(activityChart.get(i).getDistance());
@@ -196,8 +190,8 @@ public class ExerciseController {
 		exerciseView.setChart(chart);
 		
 		
-		
-		
+
+		// ****************** 추후작업
 		exerciseView.setCalorie("240");
 		exerciseView.setStep("600");
 		exerciseView.setDistance("5.05");
@@ -256,65 +250,51 @@ public class ExerciseController {
 	 * */
 	@RequestMapping("/exercise/history")
 	public void exerciseHistory(HttpServletResponse response,
-			@RequestParam(value="userId") String userId) throws Exception {//, required=false
+			@RequestParam(value="userId") String userId,
+			@RequestParam(value="exerciseId") String exerciseId) throws Exception {//, required=false
 		logger.debug("/exercise/history:"+userId);
 
 		ExerciseHistory history = new ExerciseHistory();
 		List<Exercise> list = new ArrayList<Exercise>();
 		Exercise exercise = new Exercise();
 
-		exercise.setExerciseId("20160310123");
-		exercise.setDate("2016.03.10");
-		exercise.setExercise("축구");
-		exercise.setImg(contentsURL+"soccer.png");
-		exercise.setTime("50");
-		exercise.setCalorie("450");
-		exercise.setStep("650");
-		exercise.setDistance("5.05");
-		list.add(exercise);
-
-		exercise.setExerciseId("20160310123");
-		exercise.setDate("2016.03.03");
-		exercise.setExercise("농구");
-		exercise.setImg(contentsURL+"soccer.png");
-		exercise.setTime("50");
-		exercise.setCalorie("550");
-		exercise.setStep("650");
-		exercise.setDistance("5.05");
-		list.add(exercise);
-
-		exercise.setExerciseId("20160310123");
-		exercise.setDate("2016.03.02");
-		exercise.setExercise("배구");
-		exercise.setImg(contentsURL+"soccer.png");
-		exercise.setTime("50");
-		exercise.setCalorie("650");
-		exercise.setStep("650");
-		exercise.setDistance("5.05");
-		list.add(exercise);
-
-		exercise.setExerciseId("20160310123");
-		exercise.setDate("2016.02.26");
-		exercise.setExercise("축구");
-		exercise.setImg(contentsURL+"soccer.png");
-		exercise.setTime("50");
-		exercise.setCalorie("250");
-		exercise.setStep("650");
-		exercise.setDistance("5.05");
-		list.add(exercise);
-
-		exercise.setExerciseId("20160310123");
-		exercise.setDate("2016.02.23");
-		exercise.setExercise("축구");
-		exercise.setImg(contentsURL+"soccer.png");
-		exercise.setTime("50");
-		exercise.setCalorie("350");
-		exercise.setStep("650");
-		exercise.setDistance("5.05");
-		list.add(exercise);
-
+		// 운동 차트 가져오기
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userId", userId);
+		map.put("exerciseId", exerciseId);
+		String regist_id_last = "";
+		List<Activity> activityHistory = exerciseService.getStudentActivityHistory(map);
+		if(activityHistory!=null && activityHistory.size()>0) {
+			for(int i=0; i<activityHistory.size(); i++) {
+				exercise = new Exercise();
+				exercise.setExerciseId(activityHistory.get(i).getRegist_id());
+				exercise.setDate(activityHistory.get(i).getReg_datetime());
+				exercise.setExerciseName(activityHistory.get(i).getSports_name());
+				exercise.setImg(contentsURL+activityHistory.get(i).getSmall_image_path());
+				exercise.setCalorie(activityHistory.get(i).getCalorie());
+				exercise.setStep(activityHistory.get(i).getSteps());
+				exercise.setDistance(activityHistory.get(i).getDistance());
+				list.add(exercise);
+				
+				if(i==activityHistory.size()-1) {
+					regist_id_last = activityHistory.get(i).getRegist_id();
+				}
+			}
+		}
 		history.setHistory(list);
-		history.setNextYN("Y");
+		
+		// 다음 차트 있나 가져오기
+		String nextYN = "N";
+		if(!regist_id_last.equals("")) {
+			map.put("exerciseId", regist_id_last);
+			int cnt = exerciseService.getStudentActivityRestCnt(map);
+			if(cnt>0) {
+				nextYN = "Y";
+			}
+		}
+		
+		
+		history.setNextYN(nextYN);
 		
 		response.setContentType("text/html; charset=utf-8");
 		response.getWriter().write(JSONArray.fromObject(history).toString());

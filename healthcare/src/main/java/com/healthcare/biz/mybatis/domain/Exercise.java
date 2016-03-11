@@ -5,11 +5,9 @@ import java.util.List;
 public class Exercise {
 
 	private String date;
-	private String exercise;
 	private String exerciseId;
-	private String exerciseIdName;
+	private String exerciseName;
 	private String img;
-	private String time;
 	private String calorie;
 	private String step;
 	private String distance;
@@ -20,23 +18,11 @@ public class Exercise {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	public String getExercise() {
-		return exercise;
-	}
-	public void setExercise(String exercise) {
-		this.exercise = exercise;
-	}
 	public String getExerciseId() {
 		return exerciseId;
 	}
 	public void setExerciseId(String exerciseId) {
 		this.exerciseId = exerciseId;
-	}
-	public String getExerciseIdName() {
-		return exerciseIdName;
-	}
-	public void setExerciseIdName(String exerciseIdName) {
-		this.exerciseIdName = exerciseIdName;
 	}
 	public String getImg() {
 		return img;
@@ -44,11 +30,11 @@ public class Exercise {
 	public void setImg(String img) {
 		this.img = img;
 	}
-	public String getTime() {
-		return time;
+	public String getExerciseName() {
+		return exerciseName;
 	}
-	public void setTime(String time) {
-		this.time = time;
+	public void setExerciseName(String exerciseName) {
+		this.exerciseName = exerciseName;
 	}
 	public String getCalorie() {
 		return calorie;

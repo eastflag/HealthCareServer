@@ -27,6 +27,16 @@ public class ExerciseServiceImpl  implements ExerciseService{
 		return exerciseMapper.getStudentActivityChart(map);
 	}
 
+	@Override
+	public List<Activity> getStudentActivityHistory(Map<String, Object> map) {
+		return exerciseMapper.getStudentActivityHistory(map);
+	}
+
+	@Override
+	public int getStudentActivityRestCnt(Map<String, Object> map) {
+		return exerciseMapper.getStudentActivityRestCnt(map);
+	}
+
 
 
 

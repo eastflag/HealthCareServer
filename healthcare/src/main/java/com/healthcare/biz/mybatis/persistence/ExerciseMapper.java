@@ -10,4 +10,8 @@ public interface ExerciseMapper {
 	Activity getStudentActivity(Map<String, Object> map);
 
 	List<Activity> getStudentActivityChart(Map<String, Object> map);
+
+	List<Activity> getStudentActivityHistory(Map<String, Object> map);
+
+	int getStudentActivityRestCnt(Map<String, Object> map);
 }
