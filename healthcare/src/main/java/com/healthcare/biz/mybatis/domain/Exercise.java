@@ -7,12 +7,13 @@ public class Exercise {
 	private String date;
 	private String exercise;
 	private String exerciseId;
-	private String name;
+	private String exerciseIdName;
 	private String img;
 	private String time;
 	private String calorie;
 	private String step;
 	private String distance;
+	
 	public String getDate() {
 		return date;
 	}
@@ -31,11 +32,11 @@ public class Exercise {
 	public void setExerciseId(String exerciseId) {
 		this.exerciseId = exerciseId;
 	}
-	public String getName() {
-		return name;
+	public String getExerciseIdName() {
+		return exerciseIdName;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setExerciseIdName(String exerciseIdName) {
+		this.exerciseIdName = exerciseIdName;
 	}
 	public String getImg() {
 		return img;

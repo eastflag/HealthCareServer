@@ -4,7 +4,7 @@ import java.util.List;
 
 public class ExerciseView {
 
-	private List<Exercise> cart;
+	private List<Exercise> chart;
 	private String calorie;
 	private String step;
 	private String distance;
@@ -14,11 +14,14 @@ public class ExerciseView {
 	private String stepMax;
 	private String distanceMax;
 	private String speedMax;
-	public List<Exercise> getCart() {
-		return cart;
+
+	
+	
+	public List<Exercise> getChart() {
+		return chart;
 	}
-	public void setCart(List<Exercise> cart) {
-		this.cart = cart;
+	public void setChart(List<Exercise> chart) {
+		this.chart = chart;
 	}
 	public String getCalorie() {
 		return calorie;

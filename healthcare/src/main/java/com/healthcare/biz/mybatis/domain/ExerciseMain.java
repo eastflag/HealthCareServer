@@ -1,7 +1,5 @@
 package com.healthcare.biz.mybatis.domain;
 
-import java.util.List;
-
 public class ExerciseMain {
 
 	private String exerciseId;
