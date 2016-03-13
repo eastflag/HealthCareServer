@@ -80,6 +80,9 @@ public class ActivityController {
 		
 		logger.debug(body);
 		
+		//System.out.println(body);
+		
+		
 		JSONParser parser = new JSONParser();
 		
 		
@@ -90,7 +93,7 @@ public class ActivityController {
 		Date collectDt = null;
 		try {
 			
-			collectDt = sdFormat.parse((String)jsonObj.get("collect_datetime"));
+			collectDt = sdFormat.parse((String)jsonObj.get("collectDt"));
 			
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
@@ -99,9 +102,9 @@ public class ActivityController {
 		
 		ActivityWorkRate workrate = new ActivityWorkRate();
 		
-		workrate.setUserId((String)jsonObj.get("user_id"));
+		workrate.setUserId((String)jsonObj.get("userId"));
 		workrate.setMac((String)jsonObj.get("mac"));
-		workrate.setSportId((String)jsonObj.get("sports_id"));
+		workrate.setSportId((String)jsonObj.get("sportId"));
 		workrate.setSteps((String)jsonObj.get("steps"));
 		workrate.setCalorie((String)jsonObj.get("calorie"));
 		workrate.setDistance((String)jsonObj.get("distance"));
