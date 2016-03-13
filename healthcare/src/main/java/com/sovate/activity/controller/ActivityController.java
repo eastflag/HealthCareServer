@@ -115,7 +115,7 @@ public class ActivityController {
 
 		// 생성 완료 코드
 		response.setContentType("application/json; charset=utf-8");
-		response.getWriter().write("");
+		//response.getWriter().write("");
 		if(recordCnt == 1){
 			response.setStatus(HttpServletResponse.SC_CREATED);
 		} else {
