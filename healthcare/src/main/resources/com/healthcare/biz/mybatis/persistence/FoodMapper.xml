@@ -135,7 +135,7 @@
 		        and B.STUDENT_ID = #{userId}
 		        AND B.STU_ALG_SET_IN_STATE='Y'
 		where
-		    alg_food_state = 'Y'
+		    alg_food_state = 'Y' AND a.alg_food_main_yn='Y'
 		order by alg_food_name
 	</select>
 	

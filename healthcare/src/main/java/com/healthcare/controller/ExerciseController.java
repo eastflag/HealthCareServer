@@ -80,6 +80,9 @@ public class ExerciseController {
 		String calorie = "";
 		String step = "";
 		String distance = "";
+		String rangkingClass = "";
+		String rangkingGrade = "";
+		String rangkingExercise = "";
 		if(activity!=null) {
 			//요일 가져오기
 			acitivityDate = activity.getReg_datetime();
@@ -120,6 +123,39 @@ public class ExerciseController {
 		    calorie = activity.getCalorie();
 		    step = activity.getSteps();
 		    distance = activity.getDistance();
+		    
+		    
+		    // 반평균 가져오기
+			Map<String, Object> mapClass = new HashMap<String, Object>();
+
+			int year =  cal.get(Calendar.YEAR);
+			int month = cal.get(Calendar.MONTH)+1;
+			if(month<3) { // 개학전
+				year--;
+			}
+			year = 2015; // 테스트테스트
+			mapClass.put("userId", userId);
+			mapClass.put("school_year", year);
+			mapClass.put("school_id", vo.getSchoolId());
+			mapClass.put("grade_id", vo.getSchoolGradeId());
+			mapClass.put("class", vo.getClassNumber());
+			mapClass.put("reg_datetime", activity.getReg_datetime());
+			mapClass.put("sports_id", activity.getSports_id());
+			mapClass.put("type", "class");
+			
+			rangkingClass = exerciseService.getMainRangking(mapClass);
+			
+			// 학년평균 가져오기
+			mapClass.put("reg_datetime", activity.getReg_datetime().substring(0, 7));
+			mapClass.put("type", "grade");
+			rangkingGrade = exerciseService.getMainRangking(mapClass);
+			
+			// 종목평균 가져오기
+			mapClass.put("reg_datetime", activity.getReg_datetime().substring(0, 4));
+			mapClass.put("type", "exercise");
+			rangkingExercise = exerciseService.getMainRangking(mapClass);
+			
+		    
 		}
 		
 	    // 결과 값 넣기
@@ -133,14 +169,14 @@ public class ExerciseController {
 		exercise.setStep(step);
 		exercise.setDistance(distance);
 		exercise.setBodyType(bodytype);
+		exercise.setRangkingClass(rangkingClass);
+		exercise.setRangkingGrade(rangkingGrade);
+		exercise.setRangkingExercise(rangkingExercise);
+		exercise.setCalorieMax("600"); // 고정
 		
 		
 		// ****************** 추후작업
-		exercise.setRangkingClass("3");
-		exercise.setRangkingGrade("50");
-		exercise.setRangkingExercise("250");
 		exercise.setCalorieAverage("260");
-		exercise.setCalorieMax("300");
 
 		response.setContentType("text/html; charset=utf-8");
 		response.getWriter().write(JSONObject.fromObject(exercise).toString());
@@ -171,6 +207,11 @@ public class ExerciseController {
 			bodytype = vo.getBmiStatus().substring(0, 4);
 		}
 		
+		int calorie = 0;
+		int step = 0;
+		float distance = 0;
+		int cnt = 0;
+		
 		// 운동 차트 가져오기
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("userId", userId);
@@ -185,22 +226,30 @@ public class ExerciseController {
 				exercise.setStep(activityChart.get(i).getSteps());
 				exercise.setDistance(activityChart.get(i).getDistance());
 				chart.add(exercise);
+
+				calorie += Integer.parseInt(activityChart.get(i).getCalorie());
+				step += Integer.parseInt(activityChart.get(i).getSteps());
+				distance += Integer.parseInt(activityChart.get(i).getDistance());
+				cnt++;
 			}
 		}
 		exerciseView.setChart(chart);
 		
+		exerciseView.setBodyType(bodytype);
 		
 
-		// ****************** 추후작업
-		exerciseView.setCalorie("240");
-		exerciseView.setStep("600");
-		exerciseView.setDistance("5.05");
-		exerciseView.setSpeed("66");
-		exerciseView.setBodyType(bodytype);
-		exerciseView.setCalorieMax("500");
-		exerciseView.setStepMax("900");
-		exerciseView.setSpeedMax("60");
-		exerciseView.setDistanceMax("70.05");
+		exerciseView.setCalorieMax("600"); // 고정
+		exerciseView.setStepMax("5000"); // 고정
+		exerciseView.setDistanceMax("20.0"); //고정
+
+		logger.debug("------------------"+calorie);
+		logger.debug("------------------"+step);
+		logger.debug("------------------"+distance);
+
+		exerciseView.setCalorie(Integer.toString(calorie/cnt));
+		exerciseView.setStep(Integer.toString(step/cnt));
+		exerciseView.setDistance(String.format("%.1f", distance/cnt));
+		
 
 		
 		response.setContentType("text/html; charset=utf-8");

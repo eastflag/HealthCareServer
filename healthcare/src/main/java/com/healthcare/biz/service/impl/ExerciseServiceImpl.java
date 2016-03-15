@@ -37,6 +37,11 @@ public class ExerciseServiceImpl  implements ExerciseService{
 		return exerciseMapper.getStudentActivityRestCnt(map);
 	}
 
+	@Override
+	public String getMainRangking(Map<String, Object> mapClass) {
+		return exerciseMapper.getMainRangking(mapClass);
+	}
+
 
 
 

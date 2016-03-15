@@ -118,4 +118,43 @@
 		LIMIT 10
 	</select>
 	
+	<select id="getMainRangking" parameterType="java.util.Map" resultType="java.lang.String">
+		SELECT 
+		    ROWNUM
+		FROM
+		    (SELECT 
+		        @RNUM:=@RNUM + 1 AS ROWNUM, O.*
+		    FROM
+		        (SELECT @RNUM:=0) R, (SELECT 
+		        *
+		    FROM
+		        (SELECT 
+		        A.regist_id,
+		            A.reg_datetime,
+		            A.student_id,
+		            A.sports_id,
+		            MAX(A.calorie) calorie,
+		            B.School_ID,
+		            B.Grade_ID,
+		            B.Class
+		    FROM
+		        activity_registration A
+		    JOIN school_register B ON A.student_id = B.Student_ID
+		        AND B.school_year = #{school_year}
+		        AND B.school_id = #{school_id}
+		        <if test="type=='grade' or type=='class' ">
+		        AND B.grade_id = #{grade_id}
+		        </if>
+		        <if test="type =='class' ">
+		        AND B.class = #{class}
+		        </if>
+		    WHERE
+		        A.reg_datetime LIKE CONCAT(#{reg_datetime},'%')
+		            AND A.sports_id = #{sports_id}
+		    GROUP BY A.student_id) D
+		    ORDER BY D.calorie DESC) O) Z
+		WHERE
+		    student_id = #{userId}
+	</select>
+	
 </mapper>

@@ -14,4 +14,6 @@ public interface ExerciseMapper {
 	List<Activity> getStudentActivityHistory(Map<String, Object> map);
 
 	int getStudentActivityRestCnt(Map<String, Object> map);
+
+	String getMainRangking(Map<String, Object> mapClass);
 }

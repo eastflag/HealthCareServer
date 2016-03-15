@@ -8,12 +8,10 @@ public class ExerciseView {
 	private String calorie;
 	private String step;
 	private String distance;
-	private String speed;
 	private String bodyType;
 	private String calorieMax;
 	private String stepMax;
 	private String distanceMax;
-	private String speedMax;
 
 	
 	
@@ -41,12 +39,6 @@ public class ExerciseView {
 	public void setDistance(String distance) {
 		this.distance = distance;
 	}
-	public String getSpeed() {
-		return speed;
-	}
-	public void setSpeed(String speed) {
-		this.speed = speed;
-	}
 	public String getBodyType() {
 		return bodyType;
 	}
@@ -71,11 +63,4 @@ public class ExerciseView {
 	public void setDistanceMax(String distanceMax) {
 		this.distanceMax = distanceMax;
 	}
-	public String getSpeedMax() {
-		return speedMax;
-	}
-	public void setSpeedMax(String speedMax) {
-		this.speedMax = speedMax;
-	}
-	
 }

@@ -585,7 +585,7 @@ function searchAlg(){
 					searchResult += '<ul>';
 					for(var i=0; i < valLen; i++ ){   
 
-						searchResult += '<li>'+val[i].alg_name+'<span onclick="selectAlg(\''+val[i].alg_id+'\',\'Y\',\'N\');">선택</span></li>';
+						searchResult += '<li>'+val[i].alg_name+'<span onclick="selectAlg(\''+val[i].alg_id+'\',\'Y\');">선택</span></li>';
 						
 					}    
 					searchResult += '</ul>';
@@ -600,7 +600,7 @@ function searchAlg(){
 	}
 }
 // 알레르기 선택
-function selectAlg(alg_id,alg_state,alg_main_yn){
+function selectAlg(alg_id,alg_state){
 	var pars = "{\"alg_id\":\"" + alg_id + "\"" 
 		+",\"userId\":\"" + pUserId + "\""
 		+",\"alg_state\":\"" + alg_state + "\""
@@ -614,7 +614,7 @@ function selectAlg(alg_id,alg_state,alg_main_yn){
 		cache : false,
 		data : pars,
 		success : function(data){
-			if(alg_main_yn=="N" && data.value=="1") {
+			if(data.value=="1") {
 				$("#searchAlg").val("");
 				stuSelectedAlg();
 			}
@@ -645,7 +645,7 @@ function stuSelectedAlg() {
 				searchResult += '<ul>';
 				for(var i=0; i < valLen; i++ ){   
 
-					searchResult += '<li>'+val[i].alg_name+'<span onclick="selectAlg(\''+val[i].alg_id+'\',\'N\',\'N\');">삭제</span></li>';
+					searchResult += '<li>'+val[i].alg_name+'<span onclick="selectAlg(\''+val[i].alg_id+'\',\'N\');">삭제</span></li>';
 					
 				}    
 				searchResult += '</ul>';
@@ -703,9 +703,9 @@ function stuSelctedMainAlg() {
 // 주요 알러지 체크박스 체크
 function chgMainAlg(alg_id) {
 	if($("input:checkbox[name='alg_main_id']:checkbox[value='"+alg_id+"']").is(":checked")) { // 체크 했으면
-		selectAlg(alg_id,"Y","Y");
+		selectAlg(alg_id,"Y");
 	} else {
-		selectAlg(alg_id,"N","Y");
+		selectAlg(alg_id,"N");
 	}
 }
 /* 저장저장 */
