@@ -1,0 +1,10 @@
+* 식단관리 메뉴 개선
+모든 학교의 모든 급식메뉴를 가져오느라 속도가 저하됨
+=> 현재년과 현재월의 모든 학교 급식 데이터를 가져오도록 수정
+
+/admin/menu.jsp
+Menus menus = menuMgrHelper.getMenus(request); 
+
+MenuMgrHelp.java
+getMenus() 수정
+연도와 월을 선택안할시 현재년과 현재월을 세팅하도록 수정함

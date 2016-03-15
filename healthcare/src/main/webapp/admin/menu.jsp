@@ -87,7 +87,7 @@
 					</select> |&nbsp;
 					연도&nbsp;
 					<select  class="darkgray12" id="school_year" name="school_year" onChange="JavaScript:searchList();">
-						<option value = "">전체</option>
+						<option value = "">현재년</option>
 		          		<%
 	          				for(int i=2013;i<2021;i++){
 		          		%>
@@ -98,7 +98,7 @@
 					</select> |&nbsp;
 					월&nbsp;
 					<select  class="darkgray12" id="school_month" name="school_month" onChange="JavaScript:searchList();">
-						<option value = "">전체</option>
+						<option value = "">현재월</option>
 						<%
 	          				for(int i=1;i<13;i++){
 		          		%>

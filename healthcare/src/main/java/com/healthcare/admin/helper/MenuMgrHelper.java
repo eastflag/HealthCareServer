@@ -1,6 +1,7 @@
 package com.healthcare.admin.helper;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +39,14 @@ public class MenuMgrHelper {
 		String school_id  = ((String)searchKeys.get("school_id")).trim();
 		String school_year  = ((String)searchKeys.get("school_year")).trim();
 		String school_month  = ((String)searchKeys.get("school_month")).trim();
+		
+		//2016-03-15 school_id가 없을 경우 많은 부하를 초래하므로 현재년과 현재월을 지정한다
+		if("".equals(school_year)) {
+			school_year = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+		}
+		if("".equals(school_month)) {
+			school_month = String.format("%02d", Calendar.getInstance().get(Calendar.MONTH) + 1);
+		}
 		
 		Menus menus = null;
 		Menu menu = null;
