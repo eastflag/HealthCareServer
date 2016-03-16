@@ -85,8 +85,8 @@
 			<div></div><div></div>
 		</div>
  		<div class="rollingCircle" id="circleLocation">
-			<a href="javascript:pSwipe.slide(0)" class="arrowLeft on"><span></span></a>
-			<a href="javascript:pSwipe.slide(1)" class="arrowRight"><span></span></a>
+			<a class="arrowLeft on"><span></span></a>
+			<a class="arrowRight"><span></span></a>
 		</div>
 		<img id="rightInfoBtn" style="border:0; display:none;" src="./images/inbody/ArrowRight.png" alt="right">
 	</div>
@@ -464,6 +464,7 @@ function showStuInfo() {
 }
 
 function showMenuSetting() {
+	$("#circleLocation a").removeClass('on').eq(0).addClass('on');
 	$('.slide_box').html("");
 	$(".lunchMenu").hide();
 	$(".stuInfo").hide();
@@ -489,7 +490,7 @@ function showMenuSetting() {
 	settingDiv += '<table id="mainAlgList" class="allergyList">';
 	settingDiv += '</table>';
 	settingDiv += '';
-	settingDiv += '<table class="search">';
+	/*settingDiv += '<table class="search">';
 	settingDiv += '<colgroup>';
 	settingDiv += '<col style="width:90%"/>';
 	settingDiv += '<col style="width:10%"/>';
@@ -504,14 +505,14 @@ function showMenuSetting() {
 	settingDiv += '</div>';
 	settingDiv += '</th>';
 	settingDiv += '</tr>';
-	settingDiv += '</table>';
+	settingDiv += '</table>';*/
 	settingDiv += '<div class="btnDiv" onclick="saveSetting();">저장</div>';
 	settingDiv += '</div>';
 	$('.slide_box2').html(settingDiv);
 	
 	getBreakfastCate();
 	stuSelctedMainAlg();
-	stuSelectedAlg();
+	//stuSelectedAlg();
 }
 // 아침식사 분류 가젹오기
 function getBreakfastCate() {
@@ -585,7 +586,7 @@ function searchAlg(){
 					searchResult += '<ul>';
 					for(var i=0; i < valLen; i++ ){   
 
-						searchResult += '<li>'+val[i].alg_name+'<span onclick="selectAlg(\''+val[i].alg_id+'\',\'Y\');">선택</span></li>';
+						searchResult += '<li>'+val[i].alg_name+'<span onclick="selectAlg(\''+val[i].alg_id+'\',\'Y\',\'N\');">선택</span></li>';
 						
 					}    
 					searchResult += '</ul>';
@@ -600,7 +601,7 @@ function searchAlg(){
 	}
 }
 // 알레르기 선택
-function selectAlg(alg_id,alg_state){
+function selectAlg(alg_id,alg_state,alg_main_yn){
 	var pars = "{\"alg_id\":\"" + alg_id + "\"" 
 		+",\"userId\":\"" + pUserId + "\""
 		+",\"alg_state\":\"" + alg_state + "\""
@@ -614,7 +615,7 @@ function selectAlg(alg_id,alg_state){
 		cache : false,
 		data : pars,
 		success : function(data){
-			if(data.value=="1") {
+			if(alg_main_yn=="N" && data.value=="1") {
 				$("#searchAlg").val("");
 				stuSelectedAlg();
 			}
@@ -645,7 +646,7 @@ function stuSelectedAlg() {
 				searchResult += '<ul>';
 				for(var i=0; i < valLen; i++ ){   
 
-					searchResult += '<li>'+val[i].alg_name+'<span onclick="selectAlg(\''+val[i].alg_id+'\',\'N\');">삭제</span></li>';
+					searchResult += '<li>'+val[i].alg_name+'<span onclick="selectAlg(\''+val[i].alg_id+'\',\'N\',\'N\');">삭제</span></li>';
 					
 				}    
 				searchResult += '</ul>';
@@ -674,8 +675,7 @@ function stuSelctedMainAlg() {
 			var valLen = val.length;       
 			                                                                                                                                   
 			if(0 < valLen){                                                                                                                    
-				for(var i=0; i < valLen; i++ ){   
-					main_alg_info += 'aaa'+i;
+				for(var i=0; i < valLen; i++ ){  
 					if(i==0){
 						main_alg_info += '<tr>';
 					}
@@ -687,7 +687,7 @@ function stuSelctedMainAlg() {
 					
 					if(i==valLen-1) {
 						main_alg_info += '</tr>';
-					}else if(i>0 && i%3==0){
+					}else if(i>0 && (i+1)%2==0){
 						main_alg_info += '</tr><tr>';
 					}
 				}
@@ -703,9 +703,9 @@ function stuSelctedMainAlg() {
 // 주요 알러지 체크박스 체크
 function chgMainAlg(alg_id) {
 	if($("input:checkbox[name='alg_main_id']:checkbox[value='"+alg_id+"']").is(":checked")) { // 체크 했으면
-		selectAlg(alg_id,"Y");
+		selectAlg(alg_id,"Y","Y");
 	} else {
-		selectAlg(alg_id,"N");
+		selectAlg(alg_id,"N","Y");
 	}
 }
 /* 저장저장 */
@@ -770,10 +770,10 @@ function showSelectMenu(mode,val) {
 					dinnerMenuList += '<col style="width:50%"/>';
 					dinnerMenuList += '</colgroup>';
 					dinnerMenuList += '<tr>';
-					dinnerMenuList += '<th colspan="2">'+(i+1)+'</th>';
+					dinnerMenuList += '<th>'+(i+1)+'</th>'; // colspan="2"
 					dinnerMenuList += '</tr>'
 					dinnerMenuList += '<tr>';
-					dinnerMenuList += '<td><img src="http://210.127.55.205/contents/dinner_food_img/'+val[i].menu_photo+'.jpg"/></td>';
+					//dinnerMenuList += '<td><img src="http://210.127.55.205/contents/dinner_food_img/'+val[i].menu_photo+'.jpg"/></td>';
 					dinnerMenuList += '<td><ul>';
 					if(val[i].menu_meal!=""){dinnerMenuList += '<li>'+val[i].menu_meal+'</li>';}
 					if(val[i].menu_souop!=""){dinnerMenuList += '<li>'+val[i].menu_souop+'</li>';}
@@ -810,7 +810,7 @@ function showMenuInfo(menu_id) {
 			var val = jo.value; 
 			var menuInfo = '';
 			menuInfo += '<div class="title"><%= pUserName + pUserSexStr%> 저녁추천식단</div>';
-			menuInfo += '<div class="image_box"><img class="image" src="http://210.127.55.205/contents/dinner_food_img/'+val.menu_photo+'.jpg"/></div>';
+			//menuInfo += '<div class="image_box"><img class="image" src="http://210.127.55.205/contents/dinner_food_img/'+val.menu_photo+'.jpg"/></div>';
 			menuInfo += '<table class="menuInfoTb">';
 			menuInfo += '<colgroup>';
 			menuInfo += '<col style="width:25%"/>';
