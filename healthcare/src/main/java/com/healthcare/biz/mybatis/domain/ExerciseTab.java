@@ -9,6 +9,7 @@ public class ExerciseTab {
 	private String averageCnt;
 	private String user;
 	private String all;
+	private String bodyType;
 	private String bodyType1;
 	private String bodyType2;
 	private String bodyType3;
@@ -21,6 +22,14 @@ public class ExerciseTab {
 	private String bodyType4Max;
 	private String bodyType5Max;
 	private String bodyType6Max;
+	
+	
+	public String getBodyType() {
+		return bodyType;
+	}
+	public void setBodyType(String bodyType) {
+		this.bodyType = bodyType;
+	}
 	public String getAverageType() {
 		return averageType;
 	}

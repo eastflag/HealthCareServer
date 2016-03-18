@@ -56,7 +56,6 @@ public class ExerciseController {
 
 	    // 체형 가져오기
 		BodyMeasureSummary vo = bodyMeasureService.getSummary(userId);
-		logger.debug(vo.toString());
 		String bodytype = "";
 		if(vo.getBmiStatus().length()==4) {
 			bodytype = vo.getBmiStatus().substring(0, 2);
@@ -83,6 +82,7 @@ public class ExerciseController {
 		String rangkingClass = "";
 		String rangkingGrade = "";
 		String rangkingExercise = "";
+		String calorieAverage = "";
 		if(activity!=null) {
 			//요일 가져오기
 			acitivityDate = activity.getReg_datetime();
@@ -122,11 +122,10 @@ public class ExerciseController {
 		    exerciseImg = contentsURL+activity.getLarge_image_path();
 		    calorie = activity.getCalorie();
 		    step = activity.getSteps();
-		    distance = activity.getDistance();
+		    distance = String.format("%.1f", Float.parseFloat(activity.getDistance())/1000);
 		    
-		    
-		    // 반평균 가져오기
-			Map<String, Object> mapClass = new HashMap<String, Object>();
+		    // 반랭킹 가져오기
+			Map<String, Object> map2 = new HashMap<String, Object>();
 
 			int year =  cal.get(Calendar.YEAR);
 			int month = cal.get(Calendar.MONTH)+1;
@@ -134,26 +133,32 @@ public class ExerciseController {
 				year--;
 			}
 			year = 2015; // 테스트테스트
-			mapClass.put("userId", userId);
-			mapClass.put("school_year", year);
-			mapClass.put("school_id", vo.getSchoolId());
-			mapClass.put("grade_id", vo.getSchoolGradeId());
-			mapClass.put("class", vo.getClassNumber());
-			mapClass.put("reg_datetime", activity.getReg_datetime());
-			mapClass.put("sports_id", activity.getSports_id());
-			mapClass.put("type", "class");
+			map2.put("userId", userId);
+			map2.put("school_year", year);
+			map2.put("school_id", vo.getSchoolId());
+			map2.put("grade_id", vo.getSchoolGradeId());
+			map2.put("class", vo.getClassNumber());
+			map2.put("reg_datetime", activity.getReg_datetime());
+			map2.put("sports_id", activity.getSports_id());
+			map2.put("type", "class");
 			
-			rangkingClass = exerciseService.getMainRangking(mapClass);
+			rangkingClass = exerciseService.getMainRangking(map2);
 			
-			// 학년평균 가져오기
-			mapClass.put("reg_datetime", activity.getReg_datetime().substring(0, 7));
-			mapClass.put("type", "grade");
-			rangkingGrade = exerciseService.getMainRangking(mapClass);
+			// 반평균 가져오기
+			map2.put("bmi_status", bodytype);
+			Activity avg = exerciseService.getAverage(map2);
+			calorieAverage = avg.getCalorie();
 			
-			// 종목평균 가져오기
-			mapClass.put("reg_datetime", activity.getReg_datetime().substring(0, 4));
-			mapClass.put("type", "exercise");
-			rangkingExercise = exerciseService.getMainRangking(mapClass);
+			// 학년랭킹 가져오기
+			map2.put("reg_datetime", activity.getReg_datetime().substring(0, 7));
+			map2.put("type", "grade");
+			rangkingGrade = exerciseService.getMainRangking(map2);
+			
+			// 종목랭킹 가져오기
+			map2.put("reg_datetime", activity.getReg_datetime().substring(0, 4));
+			map2.put("type", "exercise");
+			rangkingExercise = exerciseService.getMainRangking(map2);
+			
 			
 		    
 		}
@@ -176,7 +181,7 @@ public class ExerciseController {
 		
 		
 		// ****************** 추후작업
-		exercise.setCalorieAverage("260");
+		exercise.setCalorieAverage(calorieAverage);
 
 		response.setContentType("text/html; charset=utf-8");
 		response.getWriter().write(JSONObject.fromObject(exercise).toString());
@@ -209,7 +214,7 @@ public class ExerciseController {
 		
 		int calorie = 0;
 		int step = 0;
-		float distance = 0;
+		int distance = 0;
 		int cnt = 0;
 		
 		// 운동 차트 가져오기
@@ -224,7 +229,7 @@ public class ExerciseController {
 				exercise.setExerciseName(activityChart.get(i).getSports_name());
 				exercise.setCalorie(activityChart.get(i).getCalorie());
 				exercise.setStep(activityChart.get(i).getSteps());
-				exercise.setDistance(activityChart.get(i).getDistance());
+				exercise.setDistance(String.format("%.1f",Float.parseFloat(activityChart.get(i).getDistance())/1000));
 				chart.add(exercise);
 
 				calorie += Integer.parseInt(activityChart.get(i).getCalorie());
@@ -242,13 +247,10 @@ public class ExerciseController {
 		exerciseView.setStepMax("5000"); // 고정
 		exerciseView.setDistanceMax("20.0"); //고정
 
-		logger.debug("------------------"+calorie);
-		logger.debug("------------------"+step);
-		logger.debug("------------------"+distance);
 
 		exerciseView.setCalorie(Integer.toString(calorie/cnt));
 		exerciseView.setStep(Integer.toString(step/cnt));
-		exerciseView.setDistance(String.format("%.1f", distance/cnt));
+		exerciseView.setDistance(String.format("%.1f", (float)(distance/cnt)/1000));
 		
 
 		
@@ -268,12 +270,89 @@ public class ExerciseController {
 		logger.debug("/exercise/tab:"+userId);
 
 		ExerciseTab exerciseTab= new ExerciseTab();
+
+	    // 체형 가져오기
+		BodyMeasureSummary vo = bodyMeasureService.getSummary(userId);
+		String bodytype = "";
+		if(vo.getBmiStatus().length()==4) {
+			bodytype = vo.getBmiStatus().substring(0, 2);
+		}else if (vo.getBmiStatus().length()==5) {
+			bodytype = vo.getBmiStatus().substring(0, 3);
+		}else if (vo.getBmiStatus().length()==6) {
+			bodytype = vo.getBmiStatus().substring(0, 4);
+		}
+
+		// 운동 가져오기
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userId", userId);
+		map.put("exerciseId", exerciseId);
+		Activity activity = exerciseService.getStudentActivity(map);
+
+		String acitivityDate = "";
+		String averageCnt = "";
+		String user = "";
+		if(activity!=null) {
+			acitivityDate = activity.getReg_datetime();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			Date date = dateFormat.parse(acitivityDate);
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(date);
+			
+		    // 평균 가져오기
+			Map<String, Object> map2 = new HashMap<String, Object>();
+
+			int year =  cal.get(Calendar.YEAR);
+			int month = cal.get(Calendar.MONTH)+1;
+			if(month<3) { // 개학전
+				year--;
+			}
+			year = 2015; // 테스트테스트
+			map2.put("userId", userId);
+			map2.put("school_year", year);
+			map2.put("school_id", vo.getSchoolId());
+			map2.put("grade_id", vo.getSchoolGradeId());
+			map2.put("class", vo.getClassNumber());
+			map2.put("reg_datetime", activity.getReg_datetime());
+			map2.put("sports_id", activity.getSports_id());
+			map2.put("type", groupType);
+			map2.put("bmi_status", bodytype);
+
+			// 저체중
+			
+			// 정상
+			
+			// 과체중
+			
+			// 비만
+			
+			// 중도비만
+			
+			// 고도비만
+			
+			
+			Activity avg = exerciseService.getAverage(map2);
+			
+			
+			
+			if(averageType.equals("calorie")) {
+				user = activity.getCalorie();
+				
+			} else if(averageType.equals("step")) {
+				user = activity.getSteps();
+				
+			} else if(averageType.equals("distance")) {
+				user = activity.getDistance();
+				
+			}
+			
+			averageCnt = avg.getCnt();
+		}
 		
-		exerciseTab.setAverageType("calorie");
-		exerciseTab.setGroupType("class");
-		exerciseTab.setAverageCnt("30");
 		
-		exerciseTab.setUser("240");
+		exerciseTab.setBodyType(bodytype);
+		exerciseTab.setAverageCnt(averageCnt);
+		
+		exerciseTab.setUser(user);
 		exerciseTab.setAll("238");
 		exerciseTab.setBodyType1("215");
 		exerciseTab.setBodyType2("265");
@@ -322,7 +401,7 @@ public class ExerciseController {
 				exercise.setImg(contentsURL+activityHistory.get(i).getSmall_image_path());
 				exercise.setCalorie(activityHistory.get(i).getCalorie());
 				exercise.setStep(activityHistory.get(i).getSteps());
-				exercise.setDistance(activityHistory.get(i).getDistance());
+				exercise.setDistance(String.format("%.1f", Float.parseFloat(activityHistory.get(i).getDistance())/1000));
 				list.add(exercise);
 				
 				if(i==activityHistory.size()-1) {

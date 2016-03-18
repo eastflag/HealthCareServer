@@ -157,4 +157,31 @@
 		    student_id = #{userId}
 	</select>
 	
+	<select id="getAverage" parameterType="java.util.Map" resultType="Activity">
+		SELECT 
+			count(*) cnt,
+		    A.student_id,
+		    ROUND(AVG(A.calorie)) calorie,
+		    ROUND(AVG(A.steps)) steps,
+		    ROUND(AVG(A.distance), 1) distance
+		FROM
+		    activity_registration A
+		        JOIN
+		    school_register B ON A.student_id = B.Student_ID
+		        AND B.School_Year = #{school_year}
+		        <if test="type=='grade' or type=='class' or type=='school' ">
+		        AND B.School_ID = #{school_id}
+		        </if>
+		        <if test="type=='grade' or type=='class' ">
+		        AND B.grade_id = #{grade_id}
+		        </if>
+		        <if test="type =='class' ">
+		        AND B.class = #{class}
+		        </if>
+		WHERE
+		    A.reg_datetime LIKE CONCAT(#{reg_datetime},'%')
+		        AND A.sports_id = #{sports_id}
+		        AND A.bmi_status = #{bmi_status}
+	</select>
+	
 </mapper>

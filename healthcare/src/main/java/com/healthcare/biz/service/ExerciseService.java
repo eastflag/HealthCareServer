@@ -16,6 +16,8 @@ public interface ExerciseService {
 
 	int getStudentActivityRestCnt(Map<String, Object> map);
 
-	String getMainRangking(Map<String, Object> mapClass);
+	String getMainRangking(Map<String, Object> rankingMap);
+
+	Activity getAverage(Map<String, Object> map);
 	
 }

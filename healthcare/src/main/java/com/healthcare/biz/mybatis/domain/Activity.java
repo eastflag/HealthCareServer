@@ -14,6 +14,16 @@ public class Activity {
 	String large_image_path = "";
 	String regist_id_prev = "";
 	String regist_id_next = "";
+	String cnt = "";
+	
+	
+	
+	public String getCnt() {
+		return cnt;
+	}
+	public void setCnt(String cnt) {
+		this.cnt = cnt;
+	}
 	public String getRegist_id() {
 		return regist_id;
 	}

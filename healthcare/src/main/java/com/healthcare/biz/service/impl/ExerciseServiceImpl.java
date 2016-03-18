@@ -38,8 +38,13 @@ public class ExerciseServiceImpl  implements ExerciseService{
 	}
 
 	@Override
-	public String getMainRangking(Map<String, Object> mapClass) {
-		return exerciseMapper.getMainRangking(mapClass);
+	public String getMainRangking(Map<String, Object> rankingMap) {
+		return exerciseMapper.getMainRangking(rankingMap);
+	}
+
+	@Override
+	public Activity getAverage(Map<String, Object> map) {
+		return exerciseMapper.getAverage(map);
 	}
 
 
