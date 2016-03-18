@@ -18,7 +18,9 @@ import com.healthcare.biz.mybatis.domain.ActivityDeviceStudentInfo;
 import com.healthcare.biz.mybatis.domain.ActivitySchoolInfo;
 import com.healthcare.biz.mybatis.domain.ActivitySport;
 import com.healthcare.biz.mybatis.domain.ActivityWorkRate;
+import com.healthcare.biz.mybatis.domain.BodyMeasureSummary;
 import com.healthcare.biz.mybatis.persistence.ActivityDeviceMapper;
+import com.healthcare.biz.service.BodyMeasureService;
 import com.healthcare.common.AES256Util;
 import com.sovate.activity.bean.ActivityBaseInfo;
 import com.sovate.activity.bean.ActivityGrade;
@@ -33,6 +35,9 @@ public class ActivityDeviceServiceImpl implements ActivityDeviceService {
 	
 	@Autowired
 	ActivityDeviceMapper activityDeviceInfoMapper;
+	
+	@Autowired
+	BodyMeasureService bodyMeasureService;
 	
 	
 	
@@ -77,6 +82,11 @@ public class ActivityDeviceServiceImpl implements ActivityDeviceService {
 	public int insertWorkrate(ActivityWorkRate workrate) {
 		// TODO Auto-generated method stub
 		
+		BodyMeasureSummary vo =  bodyMeasureService.getSummary("7007");
+		
+		String bmiStatus = vo.getBmiStatus().replaceAll("\\s[A-Z]", "");
+
+		workrate.setBmiStatus(bmiStatus);
 		return activityDeviceInfoMapper.insertWorkrate(workrate);
 	}
 

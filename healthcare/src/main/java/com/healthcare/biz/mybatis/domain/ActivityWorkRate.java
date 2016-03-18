@@ -15,6 +15,8 @@ public class ActivityWorkRate {
 	String steps = "";
 	String calorie = "";
 	String distance = "";
+	String bmiStatus = "";
+	
 	public String getUserId() {
 		return userId;
 	}
@@ -57,13 +59,16 @@ public class ActivityWorkRate {
 	public void setDistance(String distance) {
 		this.distance = distance;
 	}
-	
+	public String getBmiStatus() {
+		return bmiStatus;
+	}
+	public void setBmiStatus(String bmiStatus) {
+		this.bmiStatus = bmiStatus;
+	}
 	@Override
 	public String toString() {
-		return "ActivityWorkRate [userId=" + userId + ", mac=" + mac + ", sportId=" + sportId + ", collectDt="
-				+ collectDt + ", steps=" + steps + ", calorie=" + calorie + ", distance=" + distance + "]";
+		return "ActivityWorkRate [sdFormat=" + sdFormat + ", userId=" + userId + ", mac=" + mac + ", sportId=" + sportId
+				+ ", collectDt=" + collectDt + ", steps=" + steps + ", calorie=" + calorie + ", distance=" + distance
+				+ ", bmiStatus=" + bmiStatus + "]";
 	}
-	
-	
-	
 }

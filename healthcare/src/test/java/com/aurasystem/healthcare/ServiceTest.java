@@ -61,7 +61,7 @@ public class ServiceTest {
 	
 	
 
-	@Test
+	//@Test
 	public void schoolList() throws IOException {
 			
 		//ArrayList<SchoolInfo> schoolList = schoolService.getSchoolList();
@@ -78,40 +78,40 @@ public class ServiceTest {
 		//List<ActivityDeviceStudentInfo> list = activityDeviceService.getDevicesStudentMap("2015", "16", "7", "1");
 		//System.out.println(list);
 		
-		DateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH");
-		Date collectDt = null;
-		try {
-			
-			collectDt = sdFormat.parse("2016-03-08 13");
-			
-		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		ActivityWorkRate workrate = new ActivityWorkRate();
-		
-		workrate.setUserId("7001");
-		workrate.setMac("DA:A6:91:A2:BE:D9");
-		workrate.setSportId("1");
-		workrate.setCalorie("100");
-		workrate.setSteps("1000");
-		workrate.setDistance("10");
-		workrate.setCollectDt(collectDt);
-		
-		int recordCnt = activityDeviceService.insertWorkrate(workrate);
-		System.out.println(recordCnt);
-		
-//		String encodeMdn = "";
+//		DateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH");
+//		Date collectDt = null;
 //		try {
-//			encodeMdn = aes.encode("01037788036");
-//		} catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
-//				| InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
+//			
+//			collectDt = sdFormat.parse("2016-03-08 13");
+//			
+//		} catch (ParseException e1) {
 //			// TODO Auto-generated catch block
-//			e.printStackTrace();
+//			e1.printStackTrace();
 //		}
 //		
-//		System.out.println(encodeMdn);
+//		ActivityWorkRate workrate = new ActivityWorkRate();
+//		
+//		workrate.setUserId("7001");
+//		workrate.setMac("DA:A6:91:A2:BE:D9");
+//		workrate.setSportId("1");
+//		workrate.setCalorie("100");
+//		workrate.setSteps("1000");
+//		workrate.setDistance("10");
+//		workrate.setCollectDt(collectDt);
+//		
+//		int recordCnt = activityDeviceService.insertWorkrate(workrate);
+//		System.out.println(recordCnt);
+		
+		String encodeMdn = "";
+		try {
+			encodeMdn = aes.encode("01031307092");
+		} catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
+				| InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println(encodeMdn);
 		
 
 		
@@ -143,13 +143,17 @@ public class ServiceTest {
 		System.out.println("testStudent");
 	}
 
-	//@Test
+	@Test
 	public void testgetSummary() throws IOException {
 		
-		BodyMeasureSummary vo =  bodyMeasureService.getSummary("589");
+	
+		BodyMeasureSummary vo =  bodyMeasureService.getSummary("7007");
+		
+		String bimStatus = vo.getBmiStatus().replaceAll("\\s[A-Z]", "");
 		
 		System.out.println(vo);
 		System.out.println("testStudent");
+		System.out.println(bimStatus);
 	}
 	
 	
