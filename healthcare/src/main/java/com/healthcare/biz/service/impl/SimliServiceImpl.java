@@ -4,7 +4,9 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,8 @@ import com.healthcare.biz.service.SimliService;
 @Service("simliType")
 public class SimliServiceImpl  implements SimliService{
 
+	private static final Logger logger = LoggerFactory.getLogger(SimliServiceImpl.class);
+	
 	@Autowired
 	SimliMapper simliMapper;
 
@@ -87,33 +91,40 @@ public class SimliServiceImpl  implements SimliService{
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("userId", userId);
 
-		int sum=0;
+		int questCnt = 0; // 문제 수
+		int resultSum=0; // 실패여부
+		int questSum = 0; // 등록한 답변 수
 
 		try {
 			for(int i=0; i<answerList.length; i++) {
 				String simliId = answerList[i].substring(0, 6);
 				String questId = answerList[i].substring(0, 9);
-	
+				questCnt = questionCnt(simliId);
+						
 				map.put("simliId", simliId);
 				map.put("questId", questId);
 				map.put("answerId", answerList[i]);
-				int cnt;
-					cnt = getSimliResultQuestCnt(map);
+				int cnt = getSimliResultQuestCnt(map);
 				
 				if(cnt==0) {
 					int insert = insertSimliStudentResult(map);
-					if(insert==0) {
-						sum++;
+					if(insert==0) { // 실패
+						resultSum++;
+					} else {
+						questSum++;
 					}
 				} else {
 					int update = updateSimliStudentResult(map);
-					if(update==0) {
-						sum++;
+					if(update==0) { // 실패
+						resultSum++;
+					} else {
+						questSum++;
 					}
 				}
 			}
-			
-			if(sum>0) {
+
+			// 실패한 경우가 있거나 등록된 문제수보다 등록한 답변수가 적으면 실패
+			if(resultSum>0 ) {// || questCnt>questSum
 				deleteSimliStudentResult(map);
 				result = 1; // 실패
 			}
@@ -123,6 +134,10 @@ public class SimliServiceImpl  implements SimliService{
 		}
 		
 		return result;
+	}
+
+	private int questionCnt(String simliId) throws SQLException {
+		return simliMapper.questionCnt(simliId);
 	}
 
 

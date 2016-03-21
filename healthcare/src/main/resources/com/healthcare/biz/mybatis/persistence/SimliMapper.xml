@@ -131,14 +131,19 @@
 		    mod_date = SYSDATE()
 		WHERE
 		    student_id = #{userId} 
-		    AND answer_id CONCAT(#{questId}, '%')
+		    AND answer_id LIKE CONCAT(#{questId}, '%')
 	</update>
+	
+	<select id="questionCnt" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(*) from simli_question
+		where quest_id LIKE CONCAT(#{simliId}, '%')
+	</select>
 	
 	<delete id="deleteSimliStudentResult" parameterType="java.util.Map" >
 		DELETE FROM simli_student_result 
 		WHERE
 		    student_id = #{userId} 
-		    AND answer_id CONCAT(#{simliId}, '%')
+		    AND answer_id like CONCAT(#{simliId}, '%')
 	</delete>
 	
 	<select id="getSimliResultScore" parameterType="java.util.Map" resultType="java.lang.Integer">

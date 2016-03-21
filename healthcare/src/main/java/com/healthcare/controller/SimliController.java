@@ -160,7 +160,7 @@ public class SimliController {
 			@RequestParam(value="answer") String answer) throws Exception {//, required=false
 		logger.debug("/simli/insert_simli_result: userId"+userId);
 		
-		int result = 0;
+		int result = 1;
 		
 		// 답변 등록하기
 		if(answer!=null && !answer.equals("")) {

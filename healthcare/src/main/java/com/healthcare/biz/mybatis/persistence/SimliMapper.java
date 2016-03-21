@@ -37,4 +37,6 @@ public interface SimliMapper {
 
 	List<SimliReviewAnswer> getSimliAnswerReview(Map<String, Object> map) throws SQLException;
 
+	int questionCnt(String simliId) throws SQLException;
+
 }
