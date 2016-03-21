@@ -160,10 +160,15 @@
 	<select id="getAverage" parameterType="java.util.Map" resultType="Activity">
 		SELECT 
 			count(*) cnt,
-		    A.student_id,
-		    ROUND(AVG(A.calorie)) calorie,
-		    ROUND(AVG(A.steps)) steps,
-		    ROUND(AVG(A.distance), 1) distance
+	        <if test="avg_type =='calorie' ">
+		    IFNULL(ROUND(AVG(A.calorie)),0) avg
+	        </if>
+	        <if test="avg_type =='step' ">
+		    IFNULL(ROUND(AVG(A.steps)),0) avg
+	        </if>
+	        <if test="avg_type =='distance' ">
+		    IFNULL(ROUND(AVG(A.distance)),0) avg
+	        </if>
 		FROM
 		    activity_registration A
 		        JOIN

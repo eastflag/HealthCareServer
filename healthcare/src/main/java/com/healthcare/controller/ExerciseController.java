@@ -146,8 +146,9 @@ public class ExerciseController {
 			
 			// 반평균 가져오기
 			map2.put("bmi_status", bodytype);
+			map2.put("avg_type", "calorie");
 			Activity avg = exerciseService.getAverage(map2);
-			calorieAverage = avg.getCalorie();
+			calorieAverage = avg.getAvg();
 			
 			// 학년랭킹 가져오기
 			map2.put("reg_datetime", activity.getReg_datetime().substring(0, 7));
@@ -289,7 +290,16 @@ public class ExerciseController {
 		Activity activity = exerciseService.getStudentActivity(map);
 
 		String acitivityDate = "";
-		String averageCnt = "";
+		int averageCnt = 0;
+		int bodytype0 = 0;
+		int bodytype1 = 0;
+		int bodytype2 = 0;
+		int bodytype3 = 0;
+		int bodytype4 = 0;
+		int bodytype5 = 0;
+		int bodytype6 = 0;
+
+		String max = "";
 		String user = "";
 		if(activity!=null) {
 			acitivityDate = activity.getReg_datetime();
@@ -315,59 +325,97 @@ public class ExerciseController {
 			map2.put("reg_datetime", activity.getReg_datetime());
 			map2.put("sports_id", activity.getSports_id());
 			map2.put("type", groupType);
-			map2.put("bmi_status", bodytype);
+			map2.put("avg_type", averageType);
 
 			// 저체중
+			map2.put("bmi_status", "저체중");
+			Activity avgBodyType1 = exerciseService.getAverage(map2);
+			averageCnt += Integer.parseInt(avgBodyType1.getCnt());
+			bodytype1 = Integer.parseInt(avgBodyType1.getAvg());
+			bodytype0 += bodytype1; 
 			
 			// 정상
+			map2.put("bmi_status", "정상");
+			Activity avgBodyType2 = exerciseService.getAverage(map2);
+			averageCnt += Integer.parseInt(avgBodyType2.getCnt());
+			bodytype2 = Integer.parseInt(avgBodyType2.getAvg());
+			bodytype0 += bodytype2;
 			
 			// 과체중
+			map2.put("bmi_status", "과체중");
+			Activity avgBodyType3 = exerciseService.getAverage(map2);
+			averageCnt += Integer.parseInt(avgBodyType3.getCnt());
+			bodytype3 = Integer.parseInt(avgBodyType3.getAvg());
+			bodytype0 += bodytype3;
 			
 			// 비만
+			map2.put("bmi_status", "비만");
+			Activity avgBodyType4 = exerciseService.getAverage(map2);
+			averageCnt += Integer.parseInt(avgBodyType4.getCnt());
+			bodytype4 = Integer.parseInt(avgBodyType4.getAvg());
+			bodytype0 += bodytype4;
 			
 			// 중도비만
+			map2.put("bmi_status", "중도비만");
+			Activity avgBodyType5 = exerciseService.getAverage(map2);
+			averageCnt += Integer.parseInt(avgBodyType5.getCnt());
+			bodytype5 = Integer.parseInt(avgBodyType5.getAvg());
+			bodytype0 += bodytype5;
 			
 			// 고도비만
+			map2.put("bmi_status", "고도비만");
+			Activity avgBodyType6 = exerciseService.getAverage(map2);
+			averageCnt += Integer.parseInt(avgBodyType6.getCnt());
+			bodytype6 = Integer.parseInt(avgBodyType6.getAvg());
+			bodytype0 += bodytype6;
 			
-			
-			Activity avg = exerciseService.getAverage(map2);
-			
-			
-			
+			bodytype0 = bodytype0/averageCnt;
+
 			if(averageType.equals("calorie")) {
+				max = "600";
 				user = activity.getCalorie();
-				
 			} else if(averageType.equals("step")) {
+				max = "5000";
 				user = activity.getSteps();
-				
 			} else if(averageType.equals("distance")) {
+				max = "20.0";
 				user = activity.getDistance();
-				
 			}
 			
-			averageCnt = avg.getCnt();
+			
 		}
 		
 		
 		exerciseTab.setBodyType(bodytype);
-		exerciseTab.setAverageCnt(averageCnt);
+		exerciseTab.setAverageCnt(Integer.toString(averageCnt));
 		
-		exerciseTab.setUser(user);
-		exerciseTab.setAll("238");
-		exerciseTab.setBodyType1("215");
-		exerciseTab.setBodyType2("265");
-		exerciseTab.setBodyType3("270");
-		exerciseTab.setBodyType4("200");
-		exerciseTab.setBodyType5("222");
-		exerciseTab.setBodyType6("256");
+		if(averageType.equals("distance")) {
+			exerciseTab.setUser(String.format("%.1f", Float.parseFloat(user)/1000));		
+			exerciseTab.setAll(String.format("%.1f", (float)bodytype0/1000));
+			exerciseTab.setBodyType1(String.format("%.1f", (float)bodytype1/1000));
+			exerciseTab.setBodyType2(String.format("%.1f", (float)bodytype2/1000));
+			exerciseTab.setBodyType3(String.format("%.1f", (float)bodytype3/1000));
+			exerciseTab.setBodyType4(String.format("%.1f", (float)bodytype4/1000));
+			exerciseTab.setBodyType5(String.format("%.1f", (float)bodytype5/1000));
+			exerciseTab.setBodyType6(String.format("%.1f", (float)bodytype6/1000));
+		} else {
+			exerciseTab.setUser(user);		
+			exerciseTab.setAll(Integer.toString(bodytype0));
+			exerciseTab.setBodyType1(Integer.toString(bodytype1));
+			exerciseTab.setBodyType2(Integer.toString(bodytype2));
+			exerciseTab.setBodyType3(Integer.toString(bodytype3));
+			exerciseTab.setBodyType4(Integer.toString(bodytype4));
+			exerciseTab.setBodyType5(Integer.toString(bodytype5));
+			exerciseTab.setBodyType6(Integer.toString(bodytype6));
+		}
 		
 
-		exerciseTab.setBodyType1Max("315");
-		exerciseTab.setBodyType2Max("319");
-		exerciseTab.setBodyType3Max("320");
-		exerciseTab.setBodyType4Max("335");
-		exerciseTab.setBodyType5Max("350");
-		exerciseTab.setBodyType6Max("310");
+		exerciseTab.setBodyType1Max(max);
+		exerciseTab.setBodyType2Max(max);
+		exerciseTab.setBodyType3Max(max);
+		exerciseTab.setBodyType4Max(max);
+		exerciseTab.setBodyType5Max(max);
+		exerciseTab.setBodyType6Max(max);
 		
 		response.setContentType("text/html; charset=utf-8");
 		response.getWriter().write(JSONObject.fromObject(exerciseTab).toString());

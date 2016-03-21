@@ -15,9 +15,16 @@ public class Activity {
 	String regist_id_prev = "";
 	String regist_id_next = "";
 	String cnt = "";
+	String avg = "";
 	
 	
 	
+	public String getAvg() {
+		return avg;
+	}
+	public void setAvg(String avg) {
+		this.avg = avg;
+	}
 	public String getCnt() {
 		return cnt;
 	}
