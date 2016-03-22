@@ -13,6 +13,7 @@
 		    A.steps,
 		    A.calorie,
 		    A.distance,
+		    A.bmi_status,
 		    B.alias sports_name,
 		    B.small_image_path,
 		    B.large_image_path,

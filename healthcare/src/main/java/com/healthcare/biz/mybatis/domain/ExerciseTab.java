@@ -4,8 +4,6 @@ import java.util.List;
 
 public class ExerciseTab {
 
-	private String averageType;
-	private String groupType;
 	private String averageCnt;
 	private String user;
 	private String all;
@@ -29,18 +27,6 @@ public class ExerciseTab {
 	}
 	public void setBodyType(String bodyType) {
 		this.bodyType = bodyType;
-	}
-	public String getAverageType() {
-		return averageType;
-	}
-	public void setAverageType(String averageType) {
-		this.averageType = averageType;
-	}
-	public String getGroupType() {
-		return groupType;
-	}
-	public void setGroupType(String groupType) {
-		this.groupType = groupType;
 	}
 	public String getAverageCnt() {
 		return averageCnt;

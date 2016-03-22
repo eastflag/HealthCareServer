@@ -16,9 +16,16 @@ public class Activity {
 	String regist_id_next = "";
 	String cnt = "";
 	String avg = "";
+	String bmi_status = "";
 	
 	
 	
+	public String getBmi_status() {
+		return bmi_status;
+	}
+	public void setBmi_status(String bmi_status) {
+		this.bmi_status = bmi_status;
+	}
 	public String getAvg() {
 		return avg;
 	}

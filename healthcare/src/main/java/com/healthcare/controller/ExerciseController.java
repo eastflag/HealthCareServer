@@ -48,22 +48,14 @@ public class ExerciseController {
 	@RequestMapping("/exercise/main")
 	public void exerciseMain(HttpServletResponse response,
 			@RequestParam(value="userId", required=true) String userId,
-			@RequestParam(value="exerciseId") String exerciseId) throws Exception {//, required=false
+			@RequestParam(value="exerciseId", required=false) String exerciseId) throws Exception {//, required=false
 		logger.debug("/exercise/main:"+userId);
 
 		ExerciseMain exercise = new ExerciseMain();
 
 
-	    // 체형 가져오기
+	    // 학생정보 가져오기
 		BodyMeasureSummary vo = bodyMeasureService.getSummary(userId);
-		String bodytype = "";
-		if(vo.getBmiStatus().length()==4) {
-			bodytype = vo.getBmiStatus().substring(0, 2);
-		}else if (vo.getBmiStatus().length()==5) {
-			bodytype = vo.getBmiStatus().substring(0, 3);
-		}else if (vo.getBmiStatus().length()==6) {
-			bodytype = vo.getBmiStatus().substring(0, 4);
-		}
 		
 		// 운동 가져오기
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -83,6 +75,7 @@ public class ExerciseController {
 		String rangkingGrade = "";
 		String rangkingExercise = "";
 		String calorieAverage = "";
+		String bodytype = "";
 		if(activity!=null) {
 			//요일 가져오기
 			acitivityDate = activity.getReg_datetime();
@@ -123,6 +116,7 @@ public class ExerciseController {
 		    calorie = activity.getCalorie();
 		    step = activity.getSteps();
 		    distance = String.format("%.1f", Float.parseFloat(activity.getDistance())/1000);
+		    bodytype = activity.getBmi_status();
 		    
 		    // 반랭킹 가져오기
 			Map<String, Object> map2 = new HashMap<String, Object>();
@@ -179,11 +173,9 @@ public class ExerciseController {
 		exercise.setRangkingGrade(rangkingGrade);
 		exercise.setRangkingExercise(rangkingExercise);
 		exercise.setCalorieMax("600"); // 고정
-		
-		
-		// ****************** 추후작업
 		exercise.setCalorieAverage(calorieAverage);
-
+		
+		
 		response.setContentType("text/html; charset=utf-8");
 		response.getWriter().write(JSONObject.fromObject(exercise).toString());
 	}
