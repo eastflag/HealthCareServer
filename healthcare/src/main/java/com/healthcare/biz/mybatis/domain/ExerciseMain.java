@@ -14,7 +14,6 @@ public class ExerciseMain {
 	private String bodyType;
 	private String rangkingClass;
 	private String rangkingGrade;
-	private String rangkingExercise;
 	private String calorieAverage;
 	private String calorieMax;
 	public String getExerciseId() {
@@ -88,12 +87,6 @@ public class ExerciseMain {
 	}
 	public void setRangkingGrade(String rangkingGrade) {
 		this.rangkingGrade = rangkingGrade;
-	}
-	public String getRangkingExercise() {
-		return rangkingExercise;
-	}
-	public void setRangkingExercise(String rangkingExercise) {
-		this.rangkingExercise = rangkingExercise;
 	}
 	public String getCalorieAverage() {
 		return calorieAverage;

@@ -73,7 +73,6 @@ public class ExerciseController {
 		String distance = "";
 		String rangkingClass = "";
 		String rangkingGrade = "";
-		String rangkingExercise = "";
 		String calorieAverage = "";
 		String bodytype = "";
 		if(activity!=null) {
@@ -148,13 +147,7 @@ public class ExerciseController {
 			map2.put("reg_datetime", activity.getReg_datetime().substring(0, 7));
 			map2.put("type", "grade");
 			rangkingGrade = exerciseService.getMainRangking(map2);
-			
-			// 종목랭킹 가져오기
-			map2.put("reg_datetime", activity.getReg_datetime().substring(0, 4));
-			map2.put("type", "exercise");
-			rangkingExercise = exerciseService.getMainRangking(map2);
-			
-			
+					
 		    
 		}
 		
@@ -171,7 +164,6 @@ public class ExerciseController {
 		exercise.setBodyType(bodytype);
 		exercise.setRangkingClass(rangkingClass);
 		exercise.setRangkingGrade(rangkingGrade);
-		exercise.setRangkingExercise(rangkingExercise);
 		exercise.setCalorieMax("600"); // 고정
 		exercise.setCalorieAverage(calorieAverage);
 		

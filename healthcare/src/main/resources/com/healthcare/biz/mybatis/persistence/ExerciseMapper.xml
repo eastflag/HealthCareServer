@@ -162,24 +162,25 @@
 		SELECT 
 			count(*) cnt,
 	        <if test="avg_type =='calorie' ">
-		    IFNULL(ROUND(AVG(A.calorie)),0) avg
+		    IFNULL(ROUND(AVG(calorie)),0) avg
 	        </if>
 	        <if test="avg_type =='step' ">
-		    IFNULL(ROUND(AVG(A.steps)),0) avg
+		    IFNULL(ROUND(AVG(steps)),0) avg
 	        </if>
 	        <if test="avg_type =='distance' ">
-		    IFNULL(ROUND(AVG(A.distance)),0) avg
+		    IFNULL(ROUND(AVG(distance)),0) avg
 	        </if>
+		FROM( SELECT * FROM(
+		SELECT 
+			A.student_id, A.calorie, A.steps, A.distance
 		FROM
 		    activity_registration A
 		        JOIN
 		    school_register B ON A.student_id = B.Student_ID
 		        AND B.School_Year = #{school_year}
-		        <if test="type=='grade' or type=='class' or type=='school' ">
-		        AND B.School_ID = #{school_id}
-		        </if>
-		        <if test="type=='grade' or type=='class' ">
 		        AND B.grade_id = #{grade_id}
+		        <if test="type=='class' or type=='school' ">
+		        AND B.School_ID = #{school_id}
 		        </if>
 		        <if test="type =='class' ">
 		        AND B.class = #{class}
@@ -188,6 +189,8 @@
 		    A.reg_datetime LIKE CONCAT(#{reg_datetime},'%')
 		        AND A.sports_id = #{sports_id}
 		        AND A.bmi_status = #{bmi_status}
+		ORDER BY A.reg_datetime desc) Z
+		GROUP BY Z.student_id) ZZ        
 	</select>
 	
 </mapper>
