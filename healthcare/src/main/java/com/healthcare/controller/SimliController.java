@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -155,9 +156,12 @@ public class SimliController {
 	 * 심리 결과 등록하기
 	 * */
 	@RequestMapping(method=RequestMethod.POST, value="/simli/insert_simli_result")
-	public void insertSimliResult(HttpServletResponse response,
-			@RequestParam(value="userId") String userId,
-			@RequestParam(value="answer") String answer) throws Exception {//, required=false
+	public void insertSimliResult(HttpServletRequest request, HttpServletResponse response) throws Exception {//, required=false
+		
+		// TODO questId 를 가져와야 함...
+		String userId = request.getParameter("userId");
+		String answer = request.getParameter("answer");
+		
 		logger.debug("/simli/insert_simli_result: userId"+userId);
 		
 		int result = 1;

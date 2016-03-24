@@ -61,7 +61,7 @@ public class ServiceTest {
 	
 	
 
-	//@Test
+	@Test
 	public void schoolList() throws IOException {
 			
 		//ArrayList<SchoolInfo> schoolList = schoolService.getSchoolList();
@@ -104,7 +104,7 @@ public class ServiceTest {
 		
 		String encodeMdn = "";
 		try {
-			encodeMdn = aes.encode("01031307092");
+			encodeMdn = aes.encode("01045673771");
 		} catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
 				| InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
 			// TODO Auto-generated catch block
@@ -143,7 +143,7 @@ public class ServiceTest {
 		System.out.println("testStudent");
 	}
 
-	@Test
+	//@Test
 	public void testgetSummary() throws IOException {
 		
 	
