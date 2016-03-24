@@ -283,8 +283,8 @@ public class ExerciseController {
 		int bodytype5 = 0;
 		int bodytype6 = 0;
 
-		String max = "";
-		String user = "";
+		String max = "0";
+		String user = "0";
 		if(activity!=null) {
 			acitivityDate = activity.getReg_datetime();
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

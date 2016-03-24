@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.healthcare.biz.mybatis.domain.SimliAnswer;
@@ -150,11 +151,10 @@ public class SimliController {
 		response.getWriter().write(JSONArray.fromObject(questionList).toString());
 	}
 	
-
 	/*
 	 * 심리 결과 등록하기
 	 * */
-	@RequestMapping("/simli/insert_simli_result")
+	@RequestMapping(method=RequestMethod.POST, value="/simli/insert_simli_result")
 	public void insertSimliResult(HttpServletResponse response,
 			@RequestParam(value="userId") String userId,
 			@RequestParam(value="answer") String answer) throws Exception {//, required=false
