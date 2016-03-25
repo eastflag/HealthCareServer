@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import com.healthcare.biz.mybatis.domain.SimliType;
 import com.healthcare.biz.mybatis.domain.Student;
 import com.healthcare.biz.service.SimliService;
 import com.healthcare.biz.service.StudentService;
+import com.sovate.common.util.HttptUtil;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -159,8 +161,25 @@ public class SimliController {
 	public void insertSimliResult(HttpServletRequest request, HttpServletResponse response) throws Exception {//, required=false
 		
 		// TODO questId 를 가져와야 함...
-		String userId = request.getParameter("userId");
-		String answer = request.getParameter("answer");
+		String userId = "";
+		String answer = "";
+//		String userId = request.getParameter("userId");
+//		String answer = request.getParameter("answer");
+		
+		String body = HttptUtil.getBody(request);
+		
+		logger.debug(body);
+		
+		//System.out.println(body);
+		
+		
+		org.json.simple.parser.JSONParser parser = new org.json.simple.parser.JSONParser();
+		
+		
+		org.json.simple.JSONObject jsonObj = (org.json.simple.JSONObject) parser.parse(body);
+
+		userId = (String)jsonObj.get("userId");
+		answer = (String)jsonObj.get("answer");
 		
 		logger.debug("/simli/insert_simli_result: userId"+userId);
 		
