@@ -11,24 +11,25 @@
 	
 	<select id="getDevicesStudentMap" resultType="com.healthcare.biz.mybatis.domain.ActivityDeviceStudentInfo">
 		SELECT 
-		    b.name,
-		    b.mac,
-		    b.description,
-		    a.userId,
-		    a.name as userName,
-		    a.SCHOOL_YEAR AS schoolYear,
-		    a.School_ID AS schoolId,
-		    a.Grade_ID AS schoolGradeId,
-		    a.class AS classNumber
+		    a.name,
+		    a.mac,
+		    a.description,
+		    b.userId,
+		    b.name as userName,
+		    b.SCHOOL_YEAR AS schoolYear,
+		    b.School_ID AS schoolId,
+		    b.Grade_ID AS schoolGradeId,
+		    b.class AS classNumber
 		FROM
 		    (SELECT 
-		        a.name, a.mac, description, b.student_id
+		        *
 		    FROM
-		        activity_device a, activity_device_student_map b
-		    WHERE
-		        a.name = b.device_name) b
+		        activity_device) a
 		        LEFT JOIN
 		    (SELECT 
+		        b.device_name, a.*
+		    FROM
+		        (SELECT 
 		        *
 		    FROM
 		        student_info_detail a
@@ -36,7 +37,12 @@
 		        1 = 1 AND a.school_year = #{year}
 		            AND a.school_id = #{school_id}
 		            AND a.grade_id = #{grade_id}
-		            AND a.class = #{class_id}) a ON a.userId = b.student_id
+		            AND a.class = #{class_id}) a, (SELECT 
+		        *
+		    FROM
+		        activity_device_student_map) b
+		    WHERE
+		        a.userId = b.student_id) b ON a.name = b.device_name
 		;
 	</select>
 	

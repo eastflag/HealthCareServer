@@ -30,12 +30,24 @@
     
 	
 	<!-- DB Pool 생성 : 향후 톰켓 풀을 사용하는 방향으로 변경 요망 -->
+	<!-- 
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="${jdbc.driverClass}"></property>
 		<property name="url" value="${jdbc.url}?useUnicode=true&amp;characterEncoding=utf8"></property>
 		<property name="username" value="${jdbc.username}"></property>
 		<property name="password" value="${jdbc.password}"></property>
+	</bean>
+	-->
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClass}"></property>
+		<property name="url" value="${jdbc.url}?useUnicode=true&amp;characterEncoding=utf8"></property>
+		<property name="username" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+		<property name="maxTotal" value="50"></property>
+		<property name="maxIdle" value="50"></property>
+		<property name="maxWaitMillis" value="3000"></property>
 	</bean>
 	
 	<!-- Transaction 설정 -->
