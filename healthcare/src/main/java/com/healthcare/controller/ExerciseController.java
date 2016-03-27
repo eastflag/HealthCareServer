@@ -318,12 +318,17 @@ public class ExerciseController {
 			map2.put("type", groupType);
 			map2.put("avg_type", averageType);
 
+			int avgCnt = 0;
+			
 			// 저체중
 			map2.put("bmi_status", "저체중");
 			Activity avgBodyType1 = exerciseService.getAverage(map2);
 			averageCnt += Integer.parseInt(avgBodyType1.getCnt());
 			bodytype1 = Integer.parseInt(avgBodyType1.getAvg());
 			bodytype0 += bodytype1; 
+			if(bodytype1 > 0){
+				avgCnt++;
+			}
 			
 			// 정상
 			map2.put("bmi_status", "정상");
@@ -331,6 +336,9 @@ public class ExerciseController {
 			averageCnt += Integer.parseInt(avgBodyType2.getCnt());
 			bodytype2 = Integer.parseInt(avgBodyType2.getAvg());
 			bodytype0 += bodytype2;
+			if(bodytype2 > 0){
+				avgCnt++;
+			}
 			
 			// 과체중
 			map2.put("bmi_status", "과체중");
@@ -338,6 +346,9 @@ public class ExerciseController {
 			averageCnt += Integer.parseInt(avgBodyType3.getCnt());
 			bodytype3 = Integer.parseInt(avgBodyType3.getAvg());
 			bodytype0 += bodytype3;
+			if(bodytype3 > 0){
+				avgCnt++;
+			}
 			
 			// 비만
 			map2.put("bmi_status", "비만");
@@ -345,6 +356,9 @@ public class ExerciseController {
 			averageCnt += Integer.parseInt(avgBodyType4.getCnt());
 			bodytype4 = Integer.parseInt(avgBodyType4.getAvg());
 			bodytype0 += bodytype4;
+			if(bodytype4 > 0){
+				avgCnt++;
+			}
 			
 			// 중도비만
 			map2.put("bmi_status", "중도비만");
@@ -352,6 +366,9 @@ public class ExerciseController {
 			averageCnt += Integer.parseInt(avgBodyType5.getCnt());
 			bodytype5 = Integer.parseInt(avgBodyType5.getAvg());
 			bodytype0 += bodytype5;
+			if(bodytype5 > 0){
+				avgCnt++;
+			}
 			
 			// 고도비만
 			map2.put("bmi_status", "고도비만");
@@ -359,8 +376,12 @@ public class ExerciseController {
 			averageCnt += Integer.parseInt(avgBodyType6.getCnt());
 			bodytype6 = Integer.parseInt(avgBodyType6.getAvg());
 			bodytype0 += bodytype6;
+			if(bodytype6 > 0){
+				avgCnt++;
+			}
 			
-			bodytype0 = bodytype0/averageCnt;
+			//bodytype0 = bodytype0/averageCnt;
+			bodytype0 = bodytype0/avgCnt;
 
 			if(averageType.equals("calorie")) {
 				max = "600";
