@@ -104,7 +104,7 @@ public class ServiceTest {
 		
 		String encodeMdn = "";
 		try {
-			encodeMdn = aes.encode("01045673771");
+			encodeMdn = aes.encode("01031307092");
 		} catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
 				| InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
 			// TODO Auto-generated catch block

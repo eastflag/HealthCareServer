@@ -87,20 +87,27 @@ public class ExerciseController {
 		    switch(dayNum){
 		        case 1:
 		        	dayofweek = "일";
+		        	break;
 		        case 2:
 		        	dayofweek = "월";
+		        	break;
 		        case 3:
 		        	dayofweek = "화";
+		        	break;
 		        case 4:
 		        	dayofweek = "수";
+		        	break;
 		        case 5:
 		        	dayofweek = "목";
+		        	break;
 		        case 6:
 		        	dayofweek = "금";
+		        	break;
 		        case 7:
 		        	dayofweek = "토";
-		             
+		        	break;
 		    }
+		    
 		    if(!dayofweek.equals("")) {
 			    acitivityDate += "("+dayofweek+")";
 		    }
