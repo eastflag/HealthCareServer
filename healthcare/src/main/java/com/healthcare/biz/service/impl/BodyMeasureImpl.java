@@ -277,7 +277,7 @@ public class BodyMeasureImpl implements BodyMeasureService {
 
 					if (resultVo != null) {
 						
-						System.out.println(" BMI 지수 NULL getSummary ");
+						System.out.println(" BMI 지수 NULL getSummary "+resultVo.getGradeDesc());
 						
 						summaryVo.setBmiStatus(resultVo.getGradeDesc());
 						summaryVo.setBmiGradeId(resultVo.getGradeId());
