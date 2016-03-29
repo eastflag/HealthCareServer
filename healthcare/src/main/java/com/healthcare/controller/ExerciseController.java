@@ -381,7 +381,9 @@ public class ExerciseController {
 			}
 			
 			//bodytype0 = bodytype0/averageCnt;
-			bodytype0 = bodytype0/avgCnt;
+			if(avgCnt > 0){
+				bodytype0 = bodytype0/avgCnt;
+			}
 
 			if(averageType.equals("calorie")) {
 				max = "600";
