@@ -313,11 +313,16 @@ public class ExerciseController {
 			map2.put("school_id", vo.getSchoolId());
 			map2.put("grade_id", vo.getSchoolGradeId());
 			map2.put("class", vo.getClassNumber());
-			map2.put("reg_datetime", activity.getReg_datetime());
 			map2.put("sports_id", activity.getSports_id());
 			map2.put("type", groupType);
 			map2.put("avg_type", averageType);
 
+			if(groupType.equals("class")) {
+				map2.put("reg_datetime", activity.getReg_datetime());
+			} else {
+				map2.put("reg_datetime", activity.getReg_datetime().substring(0, 7));
+			}
+			
 			int avgCnt = 0;
 			
 			// 저체중
