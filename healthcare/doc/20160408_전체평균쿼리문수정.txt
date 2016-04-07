@@ -1,0 +1,20 @@
+학생아이디: 7001, 현재 중학교 2학년,
+가장 최근 측정은 중학교 1학년 12월달
+http://127.0.0.1:8080/HealthCare/front-views/view?p=height&userId=7001&ver=1.1.8
+
+* 전체 평균 구하기 수정
+select DATE_FORMAT(body_measure_plan.Measure_Date, '%Y%m') AS measureDate, 'local average' AS name, truncate(avg(inbody_info.HEIGHT), 1) AS value
+from student_info inner join body_measure_plan on student_info.Student_ID = body_measure_plan.Student_ID
+	inner join school_register on body_measure_plan.Grade_ID = school_register.Grade_ID 
+    inner join inbody_info on body_measure_plan.Inbody_seq = inbody_info.Inbody_seq
+where school_register.Grade_ID = 7 and student_info.STU_Sex ='M' and DATE_FORMAT(body_measure_plan.Measure_Date, '%Y%m') = DATE_FORMAT('2015-12-01', '%Y%m') 
+group by body_measure_plan.Measure_Date
+order by value desc; 
+
+기존
+select DATE_FORMAT(body_measure_plan.Measure_Date, '%Y%m') AS measureDate, body_measure_plan.Grade_ID, inbody_info.HEIGHT
+from student_info, school_grade, school_register, body_measure_plan, inbody_info 
+where school_register.Grade_ID = 7 and student_info.STU_Sex ='M' and DATE_FORMAT(body_measure_plan.Measure_Date, '%Y%m') = DATE_FORMAT('2015-12-01', '%Y%m') 
+	and student_info.Student_ID = school_register.Student_ID and school_register.Grade_ID = school_grade.Grade_ID 
+	and student_info.Student_ID = body_measure_plan.Student_ID and body_measure_plan.Inbody_seq = inbody_info.Inbody_seq 
+=>5,6,7,8 학년의 통계를 구하고 있음.
