@@ -211,20 +211,11 @@
 			truncate(avg(inbody_info.BMI), 2) AS value
 			</when>
 		</choose>
-			from
-			    student_info,
-				school_grade,
-				school_register,
-			    body_measure_plan,
-				inbody_info
-			where
-				school_register.Grade_ID = #{schoolGradeId}
-					and student_info.STU_Sex =#{sex}
-					and DATE_FORMAT(body_measure_plan.Measure_Date, '%Y%m') = DATE_FORMAT(#{measureDate}, '%Y%m')
-					and student_info.Student_ID = school_register.Student_ID
-					and school_register.Grade_ID = school_grade.Grade_ID
-			        and student_info.Student_ID = body_measure_plan.Student_ID
-					and body_measure_plan.Inbody_seq = inbody_info.Inbody_seq
+			from student_info inner join body_measure_plan on student_info.Student_ID = body_measure_plan.Student_ID
+				inner join school_register on body_measure_plan.Grade_ID = school_register.Grade_ID 
+    			inner join inbody_info on body_measure_plan.Inbody_seq = inbody_info.Inbody_seq
+			where body_measure_plan.Grade_ID = #{schoolGradeId} and student_info.STU_Sex =#{sex}
+				and DATE_FORMAT(body_measure_plan.Measure_Date, '%Y%m') = DATE_FORMAT(#{measureDate}, '%Y%m') 
 			group by body_measure_plan.Measure_Date
 		<choose>
 			<when test="section == 'Height'">
