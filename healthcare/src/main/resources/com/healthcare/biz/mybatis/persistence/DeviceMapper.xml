@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.healthcare.biz.mybatis.persistence.DeviceMapper">
+
+	<select id="getClassList" parameterType="java.util.Map" resultType="String">
+		SELECT 
+		    class
+		FROM
+		    school_register
+		WHERE
+		    School_Year = #{year} AND school_id = #{schoolId}
+		        AND Grade_ID = #{gradeId}
+		GROUP BY class
+	</select>
+	
+	<select id="getStudentList" parameterType="java.util.Map" resultType="Device">
+		SELECT 
+		    A.Student_ID studentId,
+		    B.STU_Name studentName,
+		    C.device_name deviceName,
+		    D.mac
+		FROM
+		    school_register A
+		        JOIN
+		    student_info B ON A.Student_ID = B.Student_ID
+		        LEFT OUTER JOIN
+		    activity_device_student_map C ON A.Student_ID = C.student_id
+		        LEFT OUTER JOIN
+		    activity_device D ON C.device_name = D.name
+		WHERE
+		    A.School_Year = #{year}
+		        AND A.school_id = #{schoolId}
+		        AND A.Grade_ID = #{gradeId}
+		        AND A.Class = #{classId}
+	</select>
+	
+	<select id="getRestMacList" parameterType="java.util.Map" resultType="Device">
+		SELECT 
+		    name deviceName, mac
+		FROM
+		    activity_device M
+		WHERE
+		    M.mac NOT IN (SELECT 
+		            D.mac
+		        FROM
+		            school_register A
+		                JOIN
+		            student_info B ON A.Student_ID = B.Student_ID
+		                JOIN
+		            activity_device_student_map C ON A.Student_ID = C.student_id
+		                JOIN
+		            activity_device D ON C.device_name = D.name
+		        WHERE
+				    A.School_Year = #{year}
+				        AND A.school_id = #{schoolId}
+				        AND A.Grade_ID = #{gradeId}
+				        AND A.Class = #{classId})
+				ORDER BY M.name
+	</select>
+	
+	<select id ="getStudentDeviceMappingCnt" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(*) from activity_device_student_map
+		where student_id = #{studentId}
+	</select>
+	
+	<update id="updateStudentDevice" parameterType="java.util.Map">
+		UPDATE activity_device_student_map 
+		SET 
+		    device_name = #{deviceName}
+		WHERE
+		    student_id = #{studentId}
+	</update>
+	
+	<update id="insertStudentDevice" parameterType="java.util.Map">
+		INSERT INTO activity_device_student_map (device_name, student_id)
+		VALUES (#{deviceName}, #{studentId})
+	</update>
+	
+	<delete id="deleteStudentDevice" parameterType="java.lang.String">
+		DELETE FROM activity_device_student_map 
+		WHERE
+		    student_id = #{studentId}
+	</delete>
+	
+	<select id="getDeviceListCnt" parameterType="Device" resultType="java.lang.Integer">
+		select count(*) from activity_device
+	</select>
+	
+	<select id="getDeviceList" parameterType="Device" resultType="Device">
+		SELECT 
+		    name deviceName, mac
+		FROM
+		    activity_device
+		ORDER BY name
+		limit ${limitStart} , ${listScale}
+	</select>
+	
+	<select id="checkMac" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(*) from activity_device
+		where mac = #{mac}
+	</select>
+	
+	<select id="macCnt" parameterType="java.util.Map" resultType="java.lang.Integer">
+		SELECT 
+		    COUNT(*)
+		FROM
+		    activity_device
+		WHERE
+		    name != #{deviceNameOld}
+		        AND mac = #{mac}
+	</select>
+	
+	<select id="deviceNameCnt" parameterType="java.util.Map" resultType="java.lang.Integer">
+		SELECT 
+		    COUNT(*)
+		FROM
+		    activity_device
+		WHERE
+		    name != #{deviceNameOld}
+		        AND name = #{deviceName}
+	</select>
+	
+	<update id="saveDevice" parameterType="java.util.Map">
+		UPDATE activity_device 
+		SET 
+		    name = #{deviceName},
+		    mac = #{mac}
+		WHERE
+		    name = #{deviceNameOld}
+	</update>
+	
+	<insert id="addDevice" parameterType="java.util.Map">
+		INSERT INTO activity_device (name, mac)
+		VALUES (#{deviceName}, #{mac})
+	</insert>
+	
+	<update id="deleteDevice" parameterType="java.lang.String">
+		DELETE FROM activity_device 
+		WHERE
+		    name = #{deviceName}
+	</update>
+</mapper>
