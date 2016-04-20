@@ -171,3 +171,8 @@ scrollbar-arrow-color: #666666}
 	font-size: 12px;
 	color: #4F5A8E;
 }
+.list{width:100%;}
+.list th{border-top:2px solid #67AEB8; border-bottom:1px solid #67AEB8; padding-top:4px; padding-bottom:3px; background-color:#F6F5F5;}
+.list td{padding-top:4px; padding-bottom:3px; text-align:center; border-bottom:1px solid #e1e1e1;}
+.list tr.evenTR{background-color:#f9f9f9;}
+.paging{text-align:center; margin-top:10px;}

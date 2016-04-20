@@ -57,6 +57,10 @@ public class SimliController {
 		// 현재 연도 가져오기
 		Calendar cal = Calendar.getInstance();
 		int year = cal.get(cal.YEAR);
+		int month = cal.get(Calendar.MONTH)+1;
+		if(month<3) { // 개학전
+			year--;
+		}
 		
 		// 테스트 (2016데이터가 없어서)
 		year = 2015;

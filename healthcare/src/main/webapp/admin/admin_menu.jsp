@@ -72,6 +72,14 @@
 					<td height="25" class="darkgray11" ><img src="./images/Bullet70-Box-Orange.png" align="absmiddle">
 					<a href="./admin_manage.jsp?pageNo=1&INIT">측정SW계정관리자</a></td>
 				</tr>
+				<tr>
+					<td height="25" class="darkgray11" ><img src="./images/Bullet70-Box-Orange.png" align="absmiddle">
+					<a href="./device_mapping.jsp">디바이스맵핑</a></td>
+				</tr>
+				<tr>
+					<td height="25" class="darkgray11" ><img src="./images/Bullet70-Box-Orange.png" align="absmiddle">
+					<a href="./device_manage.jsp">디바이스관리</a></td>
+				</tr>
 				<!-- tr>
 					<td height="25" class="darkgray11" ><img src="./images/Bullet70-Box-Orange.png" align="absmiddle">
 					<a href="JavaScript:openCallGCM();">학교별 업데이트알림</a></td>

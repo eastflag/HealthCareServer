@@ -486,7 +486,7 @@ function showMenuSetting() {
 	
 	// 알레르기 검색
 	settingDiv += '<div style="position:absolute;top:0px;left:'+(width_position + device_width)+'px;width:100%;" class="subDiv allergy">';
-	settingDiv += '<div class="title" style="background-color:#ff9d4a;">알레르기 검색</div>';
+	settingDiv += '<div class="title" style="background-color:#ff9d4a;">알레르기</div>';
 	settingDiv += '<table id="mainAlgList" class="allergyList">';
 	settingDiv += '</table>';
 	settingDiv += '';
