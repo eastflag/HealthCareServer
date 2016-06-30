@@ -1,0 +1,34 @@
+* Jet Profiler 사용
+시간이 오래걸리는 쿼리문 분석
+StatisticsMapper.xml getAveragePerLocal select 문
+조인문이 20000 * 1 * 10000 = 2억건의 조인문 발생
+select 
+			DATE_FORMAT(body_measure_plan.Measure_Date, '%Y%m') AS measureDate,
+		    'local average' AS name,
+	     
+			truncate(avg(inbody_info.HEIGHT), 1) AS value
+			 
+			from student_info inner join body_measure_plan on student_info.Student_ID = body_measure_plan.Student_ID
+				inner join school_register on body_measure_plan.Grade_ID = school_register.Grade_ID 
+    			inner join inbody_info on body_measure_plan.Inbody_seq = inbody_info.Inbody_seq
+			where body_measure_plan.Grade_ID = '7' and student_info.STU_Sex ='M'
+				and DATE_FORMAT(body_measure_plan.Measure_Date, '%Y%m') = DATE_FORMAT('2015-12-01', '%Y%m') 
+			group by body_measure_plan.Measure_Date
+		 
+			order by value desc
+			
+아래와 같이 수정			
+select 
+			DATE_FORMAT(body_measure_plan.Measure_Date, '%Y%m') AS measureDate,
+		    'local average' AS name,
+	     
+			truncate(avg(inbody_info.HEIGHT), 1) AS value
+			 
+			from student_info inner join body_measure_plan on student_info.Student_ID = body_measure_plan.Student_ID
+				//inner join school_register on body_measure_plan.Grade_ID = school_register.Grade_ID 
+    			inner join inbody_info on body_measure_plan.Inbody_seq = inbody_info.Inbody_seq
+			where body_measure_plan.Grade_ID = '7' and student_info.STU_Sex ='M'
+				and DATE_FORMAT(body_measure_plan.Measure_Date, '%Y%m') = DATE_FORMAT('2015-12-01', '%Y%m') 
+			group by body_measure_plan.Measure_Date
+		 
+			order by value desc

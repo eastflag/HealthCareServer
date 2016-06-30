@@ -212,7 +212,6 @@
 			</when>
 		</choose>
 			from student_info inner join body_measure_plan on student_info.Student_ID = body_measure_plan.Student_ID
-				inner join school_register on body_measure_plan.Grade_ID = school_register.Grade_ID 
     			inner join inbody_info on body_measure_plan.Inbody_seq = inbody_info.Inbody_seq
 			where body_measure_plan.Grade_ID = #{schoolGradeId} and student_info.STU_Sex =#{sex}
 				and DATE_FORMAT(body_measure_plan.Measure_Date, '%Y%m') = DATE_FORMAT(#{measureDate}, '%Y%m') 
