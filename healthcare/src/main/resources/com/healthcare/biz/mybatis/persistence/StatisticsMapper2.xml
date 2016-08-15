@@ -4,9 +4,13 @@
 
 <mapper namespace="com.healthcare.biz.mybatis.persistence.StatisticsMapper2">
 	
-	<select id="getMdnList" resultType="SignUp">
-		select * from guardian_info
-		where mdn is not null
+	<select id="getMdnList" resultType="GcmVO">
+		select guardian_info.mdn, school_info.school_name, school_info.school_id from school_register inner join student_info on school_register.student_id = student_info.student_id 
+			inner join student_guardian_mapping on student_info.student_id = student_guardian_mapping.student_id
+		    inner join guardian_info on student_guardian_mapping.mdn = guardian_info.mdn
+		    inner join school_info on school_register.school_id =school_info.school_id
+		where school_register.school_year = '2016' 
+		order by school_info.school_id asc
 	</select>
 	
 </mapper>

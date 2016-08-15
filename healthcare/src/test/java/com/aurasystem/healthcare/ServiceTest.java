@@ -19,6 +19,7 @@ import com.healthcare.bean.MeasureHistory;
 import com.healthcare.biz.mybatis.domain.AverageItem;
 import com.healthcare.biz.mybatis.domain.BodyMeasureGrade;
 import com.healthcare.biz.mybatis.domain.BodyMeasureSummary;
+import com.healthcare.biz.mybatis.domain.GcmVO;
 import com.healthcare.biz.mybatis.domain.SignUp;
 import com.healthcare.biz.mybatis.domain.Student;
 import com.healthcare.biz.mybatis.persistence.StatisticsMapper2;
@@ -142,16 +143,18 @@ public class ServiceTest {
 	
 	@Test
 	public void getMdnList() {
-		List<SignUp> mdnList = stat2.getMdnList();
+		List<GcmVO> mdnList = stat2.getMdnList();
 		
 		try {
-			File f = new File("c:\\temp\\out.txt");
+			File f = new File("c:\\temp\\out.csv");
 			BufferedWriter out = new BufferedWriter(new FileWriter(f));
 
 			AES256Util aes = new AES256Util();
-			for(SignUp signup: mdnList) {
-				String mdn = aes.decode(signup.getMdn());
-				out.write(mdn + "\r\n");
+			for(GcmVO gcm: mdnList) {
+				String mdn = aes.decode(gcm.getMdn());
+				String school_name = aes.decode(gcm.getSchool_name());
+				
+				out.write(gcm.getSchool_id() + "," + school_name + "," + mdn +  "\r\n");
 				//System.out.println(mdn);
 			}
 			
