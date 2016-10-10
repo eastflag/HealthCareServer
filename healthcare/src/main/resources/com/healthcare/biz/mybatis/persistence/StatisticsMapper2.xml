@@ -13,4 +13,37 @@
 		order by school_info.school_id asc
 	</select>
 	
+	<update id="updateStudent" parameterType="GcmVO">
+		UPDATE healthcare_dev.student_info
+		set stu_name = #{stu_name}
+		WHERE student_id = #{student_id}
+	</update>
+	
+	<select id="selectGadianInfo" parameterType="GcmVO" resultType="Integer" >
+		select count(*) from healthcare_dev.student_info inner join healthcare_dev.student_guardian_mapping 
+			on student_info.student_id = student_guardian_mapping.student_id
+		where student_info.student_id = #{student_id} and student_guardian_mapping.mdn = #{mdn}
+	</select>
+	
+	<update id="updateGadianInfo" parameterType="GcmVO">
+		update healthcare_dev.guardian_info
+		set mdn = #{new_mdn}
+		WHERE mdn = #{mdn} 
+	</update>
+	
+	<delete id="deleteGadianInfo" parameterType="GcmVO">
+		delete from healthcare_dev.guardian_info
+		where mdn = #{mdn}
+	</delete>
+	
+	<insert id="insertGadianMappingInfo" parameterType="GcmVO">
+		INSERT INTO healthcare_dev.student_guardian_mapping(student_id, mdn)
+		VALUES(#{student_id}, #{mdn})
+	</insert>
+	
+	<insert id="insertGadianInfo" parameterType="GcmVO">
+		INSERT INTO healthcare_dev.guardian_info(mdn)
+		VALUES(#{mdn})
+	</insert>
+	
 </mapper>

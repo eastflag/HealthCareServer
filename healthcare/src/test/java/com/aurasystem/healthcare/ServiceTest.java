@@ -4,8 +4,17 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -141,6 +150,7 @@ public class ServiceTest {
 		System.out.println("list : " + list);
 	}
 	
+	@Ignore
 	@Test
 	public void getMdnList() {
 		List<GcmVO> mdnList = stat2.getMdnList();
@@ -161,6 +171,80 @@ public class ServiceTest {
 			out.close();
 		} catch(Exception e) {
 			
+		}
+	}
+	
+	@Test
+	public void setMdn() throws InvalidKeyException, UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+		ArrayList<GcmVO> gcmList = new ArrayList<>();
+		GcmVO gcm = new GcmVO();
+//		gcm.setStudent_id(7001);
+//		gcm.setMdn("01045673771");
+//		gcm.setStu_name("강민성");
+//		gcmList.add(gcm);
+		
+		gcm = new GcmVO();
+		gcm.setStudent_id(7005);
+		gcm.setMdn("01045673771");
+		gcm.setStu_name("강성은");
+		gcmList.add(gcm);
+		
+		gcm = new GcmVO();
+		gcm.setStudent_id(7007);
+		gcm.setMdn("01045673771");
+		gcm.setStu_name("김동근");
+		gcmList.add(gcm);
+		
+		gcm = new GcmVO();
+		gcm.setStudent_id(7010);
+		gcm.setMdn("01045673771");
+		gcm.setStu_name("윤성민");
+		gcmList.add(gcm);
+		
+		gcm = new GcmVO();
+		gcm.setStudent_id(7013);
+		gcm.setMdn("01045673771");
+		gcm.setStu_name("이주형");
+		gcmList.add(gcm);
+		
+		gcm = new GcmVO();
+		gcm.setStudent_id(7018);
+		gcm.setMdn("01045673771");
+		gcm.setStu_name("이하민");
+		gcmList.add(gcm);
+		
+		gcm = new GcmVO();
+		gcm.setStudent_id(7044);
+		gcm.setMdn("01045673771");
+		gcm.setStu_name("설동준");
+		gcmList.add(gcm);
+		
+		gcm = new GcmVO();
+		gcm.setStudent_id(7047);
+		gcm.setMdn("01045673771");
+		gcm.setStu_name("최우진");
+		gcmList.add(gcm);
+
+		AES256Util aes = new AES256Util();
+		for(GcmVO student: gcmList) {
+			System.out.print(student.getStu_name());
+			student.setStu_name(aes.encode(student.getStu_name()));
+			
+			student.setMdn(aes.encode(student.getMdn()));
+			int n = stat2.selectGadianInfo(student);
+			
+			System.out.println( ":" + n + "--------------------------------");
+			
+			if(n>0) {
+				stat2.deleteGadianInfo(student);
+			}
+			
+			
+			//int result = stat2.insertGadianInfo(student);
+			int result2 = stat2.insertGadianMappingInfo(student);
+			
+			System.out.println("insert:" +  "," + result2);
+
 		}
 	}
 }
