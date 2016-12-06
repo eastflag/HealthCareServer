@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.healthcare.biz.mybatis.persistence.PredictMapper">
+	<!--  DATE_FORMAT(FROM_DAYS(TO_DAYS(now()) - TO_DAYS(student_info.STU_Birth)), '%Y') + 1 + 1  AS age,-->
+	<select id="getStudent" parameterType="Integer" resultType="PredictVO">
+		select 
+		    student_info.STU_Name AS student_name,
+		    student_info.STU_Sex AS sex,
+            DATE_FORMAT(student_info.STU_Birth, '%Y-%m-%d') AS birthDate,
+			school_register.*,
+		    Convert(Convert(Date_Format(now(),'%Y'),UNSIGNED) - Convert(substring(student_info.STU_Birth, 1, 4),UNSIGNED)  +1,CHAR) AS age ,
+            school_info.school_name,
+            school_register.class as 'class_id'
+		from
+			student_info inner join school_register  on student_info.Student_ID = school_register.Student_ID
+            inner join school_info on school_register.School_ID = school_info.School_ID
+		where student_info.student_id = #{student_id}
+        order by school_year desc
+        limit 1
+	</select>
+	
+	<select id="getMeasureData" parameterType="Integer" resultType="InbodyInfoVO">
+		select body_measure_plan.*, body_measure_plan.class as 'class_id', school_info.school_name,
+			inbody_info.* 
+		from body_measure_plan inner join inbody_info on body_measure_plan.Inbody_seq = inbody_info.Inbody_seq
+	           inner join school_info on body_measure_plan.SCHOOL_ID = school_info.School_ID
+		where student_id = #{student_id} and body_measure_plan.Inbody_seq is not null
+		order by Measure_Date desc
+		LIMIT 2;
+	</select>
+	
+	<select id="getAverage" parameterType="InbodyInfoVO" resultType="InbodyInfoVO">
+	    SELECT 
+			truncate(avg(inbody_info.HEIGHT), 1) as heightAverageOfSchool,
+	        truncate(avg(inbody_info.Weight), 1) as weightAverageOfSchool,
+	        count(*) as totalNumberOfSchool
+	    FROM student_info inner join body_measure_plan on student_info.Student_ID = body_measure_plan.Student_ID
+			inner join inbody_info on body_measure_plan.Inbody_seq = inbody_info.Inbody_seq
+		WHERE
+			stu_sex = #{sex}
+			and body_measure_plan.school_id = #{school_id}
+			and body_measure_plan.grade_id = #{grade_id}               
+			AND DATE_FORMAT(body_measure_plan.Measure_Date, '%Y%m') = DATE_FORMAT(#{measure_date}, '%Y%m');
+	</select>
+	
+	<select id="getHeightRank" parameterType="InbodyInfoVO" resultType="Integer">
+		SELECT  count(*) + 1 as heightSchoolGrade from 
+		    student_info inner join body_measure_plan on student_info.Student_ID = body_measure_plan.Student_ID
+				inner join inbody_info on body_measure_plan.Inbody_seq = inbody_info.Inbody_seq
+		WHERE
+			stu_sex = #{sex}
+			and body_measure_plan.school_id = #{school_id}
+			and body_measure_plan.grade_id = #{grade_id}               
+			and DATE_FORMAT(body_measure_plan.Measure_Date, '%Y%m') = DATE_FORMAT(#{measure_date}, '%Y%m')
+			and height > #{height};
+	</select>
+	
+	<select id="getWeightRank" parameterType="InbodyInfoVO" resultType="Integer">
+		SELECT  count(*) + 1 as weightSchoolGrade from 
+		    student_info inner join body_measure_plan on student_info.Student_ID = body_measure_plan.Student_ID
+				inner join inbody_info on body_measure_plan.Inbody_seq = inbody_info.Inbody_seq
+		WHERE
+			stu_sex = #{sex}
+			and body_measure_plan.school_id = #{school_id}
+			and body_measure_plan.grade_id = #{grade_id}               
+			and DATE_FORMAT(body_measure_plan.Measure_Date, '%Y%m') = DATE_FORMAT(#{measure_date}, '%Y%m')
+			and weight > #{weight};
+	</select>
+	
+	<select id="getBMI" parameterType="InbodyInfoVO" resultType="InbodyInfoVO">
+		select 
+			ms_grade_data.Srandard_Grade as bodyForm,
+            start_int, end_int
+		from
+		    ms_grade_data,
+			standard_data
+		where
+		    ms_grade_data.Grade_ID = #{grade_id}
+			and ms_grade_data.sex = #{sex}
+			and ms_grade_data.Section = 'BMI'
+			and standard_data.Year = '2012'
+			and standard_data.Ms_Grade_ID = ms_grade_data.Ms_Grade_ID
+			and standard_data.Start_Int &lt;= #{bmi} and  standard_data.End_Int &gt; #{bmi};
+	</select>
+
+</mapper>
