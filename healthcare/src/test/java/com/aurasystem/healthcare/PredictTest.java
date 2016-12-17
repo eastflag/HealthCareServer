@@ -14,14 +14,19 @@ import javax.crypto.NoSuchPaddingException;
 import org.apache.jasper.runtime.ServletResponseWrapperInclude;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.simple.JSONObject;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.healthcare.biz.mybatis.domain.BodyMeasureGrade;
+import com.healthcare.biz.mybatis.domain.CharacterHealthVO;
+import com.healthcare.biz.mybatis.domain.HealthDescriptionVO;
 import com.healthcare.biz.mybatis.domain.InbodyInfoVO;
 import com.healthcare.biz.mybatis.domain.PredictVO;
+import com.healthcare.biz.mybatis.persistence.BodyMeasureMapper;
 import com.healthcare.biz.mybatis.persistence.PredictMapper;
 import com.healthcare.common.AES256Util;
 
@@ -30,7 +35,10 @@ import com.healthcare.common.AES256Util;
 public class PredictTest {
 	@Autowired
 	private PredictMapper predictMapper;
+	@Autowired
+	private BodyMeasureMapper bodyMeasureMapper;
 	
+	//@Ignore
 	@Test
 	public void getStudent() throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		int student_id = 188;
@@ -90,6 +98,44 @@ public class PredictTest {
 			measureList.get(1).setBodyForm(inInbody.getBodyForm());
 			
 			predict.setBeforeMeasure(measureList.get(1));
+		}
+		
+		//8가지 데이터 구하기
+		if(measureList != null) {
+			HealthDescriptionVO descriptionVO = new HealthDescriptionVO();
+			
+			//6가지 데이터 구하기
+			descriptionVO = predictMapper.getCharacterHealth(predict);
+			
+			//Height desc 구하기
+			BodyMeasureGrade grade = new BodyMeasureGrade();
+			grade.setSchoolGradeId(String.valueOf(predict.getGrade_id()));
+			grade.setSex(predict.getSex());
+			grade.setSection("HEIGHT");
+			grade.setYear("2012");
+			grade.setValue(String.valueOf(measureList.get(0).getHeight()));
+			BodyMeasureGrade heightGrade = bodyMeasureMapper.getGradeBySection(grade); 
+			//heightGrade.getGradeDesc(); //표준이하, 표준, 표준이상
+			
+			//dc_1, dc_2 구하기
+			CharacterHealthVO health = new CharacterHealthVO();
+			health.setGrade_id(predict.getGrade_id());
+			health.setHeight(heightGrade.getGradeDesc());
+			health.setBmi(measureList.get(0).getBodyForm());
+			CharacterHealthVO outHealth = predictMapper.getCharacter(health);
+			
+			//최종 평가 구하기
+			descriptionVO.setBodyTotalEvaluation(outHealth.getDc_1() + " " + outHealth.getDc_2());
+			
+			//점심식단 구하기
+			HealthDescriptionVO calory = predictMapper.getLunchCalorie(predict);
+			if(calory != null) {
+				descriptionVO.setSchoolCalorie(calory.getSchoolCalorie());
+			} else {
+				descriptionVO.setSchoolCalorie(800);
+			}
+			
+			predict.setDescription(descriptionVO);
 		}
 		
 		//객체를 json으로 변환

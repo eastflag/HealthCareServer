@@ -17,8 +17,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.healthcare.bean.Result;
+import com.healthcare.biz.mybatis.domain.BodyMeasureGrade;
+import com.healthcare.biz.mybatis.domain.CharacterHealthVO;
+import com.healthcare.biz.mybatis.domain.HealthDescriptionVO;
 import com.healthcare.biz.mybatis.domain.InbodyInfoVO;
 import com.healthcare.biz.mybatis.domain.PredictVO;
+import com.healthcare.biz.mybatis.persistence.BodyMeasureMapper;
 import com.healthcare.biz.mybatis.persistence.PredictMapper;
 import com.healthcare.common.AES256Util;
 
@@ -26,6 +30,8 @@ import com.healthcare.common.AES256Util;
 public class PredictController {
 	@Autowired
 	private PredictMapper predictMapper;
+	@Autowired
+	private BodyMeasureMapper bodyMeasureMapper;
 	
 	@RequestMapping("/getPredict")
 	public @ResponseBody Result<?> getPredict(@RequestParam int student_id) {
@@ -88,6 +94,44 @@ public class PredictController {
 				measureList.get(1).setBodyForm(inInbody.getBodyForm());
 				
 				predict.setBeforeMeasure(measureList.get(1));
+			}
+			
+			//8가지 데이터 구하기
+			if(measureList != null) {
+				HealthDescriptionVO descriptionVO = new HealthDescriptionVO();
+				
+				//6가지 데이터 구하기
+				descriptionVO = predictMapper.getCharacterHealth(predict);
+				
+				//Height desc 구하기
+				BodyMeasureGrade grade = new BodyMeasureGrade();
+				grade.setSchoolGradeId(String.valueOf(predict.getGrade_id()));
+				grade.setSex(predict.getSex());
+				grade.setSection("HEIGHT");
+				grade.setYear("2012");
+				grade.setValue(String.valueOf(measureList.get(0).getHeight()));
+				BodyMeasureGrade heightGrade = bodyMeasureMapper.getGradeBySection(grade); 
+				//heightGrade.getGradeDesc(); //표준이하, 표준, 표준이상
+				
+				//dc_1, dc_2 구하기
+				CharacterHealthVO health = new CharacterHealthVO();
+				health.setGrade_id(predict.getGrade_id());
+				health.setHeight(heightGrade.getGradeDesc());
+				health.setBmi(measureList.get(0).getBodyForm());
+				CharacterHealthVO outHealth = predictMapper.getCharacter(health);
+				
+				//최종 평가 구하기
+				descriptionVO.setBodyTotalEvaluation(outHealth.getDc_1() + " " + outHealth.getDc_2());
+				
+				//점심식단 구하기
+				HealthDescriptionVO calory = predictMapper.getLunchCalorie(predict);
+				if(calory != null) {
+					descriptionVO.setSchoolCalorie(calory.getSchoolCalorie());
+				} else {
+					descriptionVO.setSchoolCalorie(800);
+				}
+				
+				predict.setDescription(descriptionVO);
 			}
 			
 			result.setResult("0");

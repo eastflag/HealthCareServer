@@ -14,6 +14,9 @@ public class PredictVO {
 	
 	private InbodyInfoVO lastMeasure;
 	private InbodyInfoVO beforeMeasure;
+	
+	private HealthDescriptionVO description;
+	
 	public int getStudent_id() {
 		return student_id;
 	}
@@ -86,6 +89,10 @@ public class PredictVO {
 	public void setBeforeMeasure(InbodyInfoVO beforeMeasure) {
 		this.beforeMeasure = beforeMeasure;
 	}
-	
-	
+	public HealthDescriptionVO getDescription() {
+		return description;
+	}
+	public void setDescription(HealthDescriptionVO description) {
+		this.description = description;
+	}
 }

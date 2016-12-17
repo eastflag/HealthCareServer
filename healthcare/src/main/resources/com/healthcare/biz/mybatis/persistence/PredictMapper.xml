@@ -84,5 +84,22 @@
 			and standard_data.Ms_Grade_ID = ms_grade_data.Ms_Grade_ID
 			and standard_data.Start_Int &lt;= #{bmi} and  standard_data.End_Int &gt; #{bmi};
 	</select>
+	
+	<select id="getCharacterHealth" parameterType="PredictVO" resultType="HealthDescriptionVO">
+		SELECT * FROM healthcare_gwangmyeong.character_health
+		WHERE grade_id = #{grade_id} and sex = #{sex}
+	</select>
+	
+	<select id="getCharacter" parameterType="CharacterHealthVO" resultType="CharacterHealthVO">
+		SELECT * FROM healthcare_gwangmyeong.character_health_description
+		where grade_id=#{grade_id} and height= #{height} and bmi = #{bmi};
+	</select>
+	
+	<select id="getLunchCalorie" parameterType="PredictVO" resultType="HealthDescriptionVO">
+		SELECT lunch_calorie as schoolCalorie FROM healthcare_gwangmyeong.menu_info
+		where school_id = 23 
+		order by menu_id desc
+		LIMIT 1
+	</select>
 
 </mapper>
